@@ -34,6 +34,7 @@
   --accent-light: #008165;
   --accent-dark:  #04cda2;
   --accent-hover: #00775e;
+  --accent-btn-text: var(--white); /* text colour on filled accent buttons; override to charcoal on yellow pages */
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -50,7 +51,7 @@ body {
 /* ── Skip Link ── */
 .skip-link {
   position: absolute; top: -40px; left: 16px;
-  background: var(--accent-light); color: var(--white);
+  background: var(--accent); color: var(--accent-btn-text);
   padding: 8px 14px; border-radius: var(--radius-sm);
   font-weight: 700; z-index: 9999; transition: top .2s;
 }
@@ -161,7 +162,7 @@ h1 em { font-style: normal; color: var(--accent-dark); }
 .content a:hover { border-color: var(--accent-light); }
 .content a.download-btn,
 .content a.back-link,
-.content .doc-link-banner a { color: var(--white); border-bottom: none; }
+.content .doc-link-banner a { color: var(--accent-btn-text); border-bottom: none; }
 .content a.back-link { color: var(--accent-light); }
 .content ul, .content ol { margin: 0 0 18px 22px; color: #4a6070; font-size: 0.95rem; line-height: 1.75; }
 .content li { margin-bottom: 6px; }
@@ -292,12 +293,12 @@ footer a:hover { text-decoration: underline; }
 /* ── Download Button (spreadsheet wrappers) ── */
 .download-btn {
   display: inline-flex; align-items: center; gap: 10px;
-  background: var(--accent-light); color: var(--white);
+  background: var(--accent); color: var(--accent-btn-text);
   text-decoration: none; font-size: 0.95rem; font-weight: 700;
   padding: 14px 28px; border-radius: var(--radius-sm);
-  transition: background .2s; margin: 24px 0;
+  transition: background .2s, filter .2s; margin: 24px 0;
 }
-.download-btn:hover { background: var(--accent-hover); }
+.download-btn:hover { filter: brightness(0.85); }
 .download-btn svg { flex-shrink: 0; }
 
 /* ── Slide Gallery ── */
@@ -317,7 +318,7 @@ footer a:hover { text-decoration: underline; }
   font-family: var(--font-body); font-weight: 700; font-size: 0.85rem;
   cursor: pointer; transition: background 0.2s;
 }
-.slide-nav button:hover { background: var(--accent-light); color: var(--white); }
+.slide-nav button:hover { background: var(--accent); color: var(--accent-btn-text); }
 .slide-nav button:hover:disabled { background: var(--charcoal); }
 .slide-nav button:disabled { opacity: 0.4; cursor: default; }
 .slide-counter {
@@ -404,8 +405,8 @@ footer img { height: 32px; opacity: 0.7; }
 /* ── Doc-link Banner ── */
 .doc-link-banner { background: var(--charcoal); border-radius: var(--radius); padding: 24px 28px; margin: 20px 0 32px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
 .doc-link-banner p { color: rgba(255,255,255,0.75); font-size: 0.9rem; margin: 0; }
-.doc-link-banner a { display: inline-flex; align-items: center; gap: 8px; background: var(--accent-light); color: var(--white); text-decoration: none; font-weight: 700; font-size: 0.88rem; padding: 10px 20px; border-radius: var(--radius-sm); white-space: nowrap; transition: background .2s; }
-.doc-link-banner a:hover { background: var(--accent-hover); }
+.doc-link-banner a { display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: var(--accent-btn-text); text-decoration: none; font-weight: 700; font-size: 0.88rem; padding: 10px 20px; border-radius: var(--radius-sm); white-space: nowrap; transition: filter .2s; }
+.doc-link-banner a:hover { filter: brightness(0.85); }
 
 /* ── Three Column Layout ── */
 .three-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 20px 0 28px; }
