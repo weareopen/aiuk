@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Platform Testing Plan · AIUK Community Platform Project</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;600;700&family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --charcoal:   #2F495A;
+      --green:      #00C399;
+      --yellow:     #FFBC42;
+      --blue:       #16A8E2;
+      --red:        #FC594D;
+      --white:      #FFFFFF;
+      --off-white:  #F7F9FA;
+      --light-grey: #EDF1F4;
+      --mid-grey:   #8FA3B0;
+      --text:       #2F495A;
+      --font-head: 'Roboto Slab', Georgia, serif;
+      --font-body: 'Nunito', system-ui, sans-serif;
+      --radius: 12px;
+      --radius-sm: 6px;
+      --shadow: 0 4px 24px rgba(47,73,90,0.10);
+      --shadow-hover: 0 8px 36px rgba(47,73,90,0.18);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-body); color: var(--text); background: var(--off-white); line-height: 1.7; font-size: 16px; }
+
+    .skip-link { position: absolute; top: -40px; left: 16px; background: var(--green); color: var(--white); padding: 8px 14px; border-radius: var(--radius-sm); font-weight: 700; z-index: 9999; transition: top .2s; }
+    .skip-link:focus { top: 16px; }
+
+    nav { position: sticky; top: 0; z-index: 100; background: var(--charcoal); display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(16px, 5vw, 48px); height: 60px; box-shadow: 0 2px 12px rgba(0,0,0,0.2); }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .nav-logo img { height: 36px; }
+    .nav-links { display: flex; gap: 4px; list-style: none; flex-wrap: wrap; }
+    .nav-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.82rem; font-weight: 600; letter-spacing: 0.02em; padding: 6px 10px; border-radius: var(--radius-sm); transition: color .2s, background .2s; }
+    .nav-links a:hover { color: var(--white); background: rgba(255,255,255,0.12); }
+
+    .breadcrumb { background: var(--white); border-bottom: 1px solid var(--light-grey); padding: 10px clamp(16px, 5vw, 48px); font-size: 0.82rem; color: var(--mid-grey); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .breadcrumb a { color: var(--mid-grey); text-decoration: none; font-weight: 600; }
+    .breadcrumb a:hover { color: var(--green); }
+    .breadcrumb span { color: var(--charcoal); font-weight: 700; }
+
+    .hero { background: var(--charcoal); padding: clamp(48px, 8vw, 80px) clamp(16px, 5vw, 48px) clamp(40px, 6vw, 64px); position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 50% 90% at 90% 20%, rgba(22,168,226,0.18) 0%, transparent 60%), radial-gradient(ellipse 40% 60% at 5% 90%, rgba(0,195,153,0.12) 0%, transparent 55%); pointer-events: none; }
+    .hero-inner { max-width: 760px; position: relative; }
+    .hero-tag { display: inline-flex; align-items: center; gap: 8px; background: rgba(47,73,90,0.18); border: 1px solid rgba(47,73,90,0.4); color: var(--charcoal); font-size: 0.75rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 14px; border-radius: 100px; margin-bottom: 18px; }
+    .hero-tag a { color: inherit; text-decoration: none; }
+    .hero-tag a:hover { text-decoration: underline; }
+    h1 { font-family: var(--font-head); font-size: clamp(1.8rem, 4.5vw, 3rem); font-weight: 700; color: var(--white); line-height: 1.2; margin-bottom: 16px; }
+    h1 em { font-style: normal; color: var(--green); }
+    .hero-subtitle { font-size: clamp(0.95rem, 1.8vw, 1.1rem); color: rgba(255,255,255,0.7); max-width: 580px; line-height: 1.65; }
+
+    .page-wrap { max-width: 1100px; margin: 0 auto; padding: clamp(32px, 5vw, 64px) clamp(16px, 5vw, 48px); display: grid; grid-template-columns: 1fr 280px; gap: 48px; align-items: start; }
+    @media (max-width: 780px) { .page-wrap { grid-template-columns: 1fr; } .sidebar { order: -1; } }
+
+    .content { min-width: 0; }
+    .content h2 { font-family: var(--font-head); font-size: clamp(1.3rem, 2.5vw, 1.7rem); font-weight: 600; color: var(--charcoal); margin: 40px 0 14px; padding-top: 40px; border-top: 2px solid var(--light-grey); }
+    .content h2:first-child { margin-top: 0; padding-top: 0; border-top: none; }
+    .content h3 { font-family: var(--font-head); font-size: clamp(1.05rem, 1.8vw, 1.25rem); font-weight: 600; color: var(--charcoal); margin: 28px 0 10px; }
+    .content h4 { font-family: var(--font-head); font-size: 0.97rem; font-weight: 600; color: var(--charcoal); margin: 20px 0 8px; }
+    .content p { margin-bottom: 16px; color: #4a6070; font-size: 0.97rem; line-height: 1.75; }
+    .content p strong { color: var(--charcoal); font-weight: 700; }
+    .content ul { padding-left: 20px; margin-bottom: 16px; }
+    .content ul li { font-size: 0.95rem; color: #4a6070; margin-bottom: 6px; line-height: 1.7; }
+    .content ul li strong { color: var(--charcoal); }
+    .content ol { padding-left: 20px; margin-bottom: 16px; }
+    .content ol li { font-size: 0.95rem; color: #4a6070; margin-bottom: 6px; line-height: 1.7; }
+    .content ol li strong { color: var(--charcoal); }
+    .content a { color: var(--blue); text-decoration: none; }
+    .content a:hover { text-decoration: underline; }
+
+    .info-card { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius); padding: 24px 28px; margin: 20px 0; box-shadow: var(--shadow); }
+    .info-card.blue-border  { border-left: 4px solid var(--blue); }
+    .info-card.green-border { border-left: 4px solid var(--green); }
+    .info-card.yellow-border { border-left: 4px solid var(--yellow); }
+    .info-card.red-border  { border-left: 4px solid var(--red); }
+    .info-card h3 { font-family: var(--font-head); font-size: 0.95rem; font-weight: 600; color: var(--charcoal); margin-bottom: 10px; }
+    .info-card p { margin-bottom: 0; font-size: 0.9rem; }
+    .info-card ul { padding-left: 18px; margin-top: 8px; margin-bottom: 0; }
+    .info-card ul li { font-size: 0.9rem; color: #4a6070; margin-bottom: 5px; line-height: 1.6; }
+    .info-card ul li strong { color: var(--charcoal); }
+    .info-card ol { padding-left: 18px; margin-top: 8px; margin-bottom: 0; }
+    .info-card ol li { font-size: 0.9rem; color: #4a6070; margin-bottom: 5px; line-height: 1.6; }
+
+    .doc-link-banner { background: var(--charcoal); border-radius: var(--radius); padding: 24px 28px; margin: 20px 0 32px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+    .doc-link-banner p { color: rgba(255,255,255,0.75); font-size: 0.9rem; margin: 0; }
+    .doc-link-banner a { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: var(--white); text-decoration: none; font-weight: 700; font-size: 0.88rem; padding: 10px 20px; border-radius: var(--radius-sm); white-space: nowrap; transition: background .2s; }
+    .doc-link-banner a:hover { background: #00a881; }
+
+    .three-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 20px 0 28px; }
+    @media (max-width: 640px) { .three-cols { grid-template-columns: 1fr; } }
+    .col-card { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+    .col-card .col-icon { font-size: 1.6rem; margin-bottom: 10px; }
+    .col-card h4 { font-family: var(--font-head); font-size: 0.9rem; font-weight: 600; color: var(--charcoal); margin-bottom: 8px; }
+    .col-card p { font-size: 0.83rem; color: #4a6070; margin: 0; line-height: 1.55; }
+
+    /* Table styles */
+    .content table { width: 100%; border-collapse: collapse; margin: 20px 0 28px; font-size: 0.9rem; background: var(--white); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+    .content table thead { background: var(--charcoal); }
+    .content table thead th { color: var(--white); font-family: var(--font-head); font-size: 0.82rem; font-weight: 600; letter-spacing: 0.05em; padding: 12px 16px; text-align: left; }
+    .content table tbody tr { border-bottom: 1px solid var(--light-grey); }
+    .content table tbody tr:last-child { border-bottom: none; }
+    .content table tbody td { padding: 12px 16px; color: #4a6070; vertical-align: top; line-height: 1.6; }
+    .content table tbody td strong { color: var(--charcoal); }
+    .content table tbody tr:hover { background: rgba(0,195,153,0.04); }
+
+    /* Script / facilitator block */
+    .facilitator-note { background: rgba(255,188,66,0.1); border: 1px solid rgba(255,188,66,0.4); border-left: 4px solid var(--yellow); border-radius: var(--radius); padding: 14px 18px; margin: 10px 0; font-size: 0.88rem; color: #6b5000; font-style: italic; }
+
+    .script-block { background: var(--white); border: 1px solid var(--light-grey); border-left: 4px solid var(--blue); border-radius: var(--radius); padding: 16px 20px; margin: 12px 0; box-shadow: var(--shadow); }
+    .script-block p { margin-bottom: 8px; font-size: 0.9rem; color: #4a6070; }
+    .script-block p:last-child { margin-bottom: 0; }
+    .script-block ul { padding-left: 18px; margin-top: 6px; margin-bottom: 0; }
+    .script-block ul li { font-size: 0.88rem; color: #4a6070; margin-bottom: 4px; line-height: 1.6; }
+
+    .section-label { font-family: var(--font-body); font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: var(--mid-grey); margin: 32px 0 8px; padding-top: 4px; }
+
+    .sidebar { position: sticky; top: 80px; }
+    .sidebar-card { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); margin-bottom: 20px; }
+    .sidebar-card-head { background: var(--charcoal); padding: 14px 18px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.6); }
+    .sidebar-toc { list-style: none; padding: 8px 0; }
+    .sidebar-toc li a { display: block; padding: 9px 18px; color: #4a6070; font-size: 0.85rem; font-weight: 600; text-decoration: none; border-left: 3px solid transparent; transition: color .2s, border-color .2s, background .2s; }
+    .sidebar-toc li a:hover { color: var(--charcoal); border-color: var(--green); background: rgba(0,195,153,0.06); }
+    .sidebar-toc li.sub a { padding-left: 30px; font-size: 0.8rem; font-weight: 500; }
+    .sidebar-meta { padding: 16px 18px; }
+    .sidebar-meta p { font-size: 0.82rem; color: var(--mid-grey); margin-bottom: 8px; line-height: 1.5; }
+    .sidebar-meta p strong { color: var(--charcoal); }
+    .back-link { display: inline-flex; align-items: center; gap: 7px; background: var(--green); color: var(--white); text-decoration: none; font-size: 0.85rem; font-weight: 700; padding: 10px 18px; border-radius: var(--radius-sm); transition: background .2s; width: 100%; justify-content: center; margin-top: 4px; }
+    .back-link:hover { background: #00a881; }
+
+    footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.1); padding: clamp(28px,4vw,48px) clamp(16px,5vw,48px); display: flex; flex-wrap: wrap; gap: 24px; justify-content: space-between; align-items: center; }
+    footer img { height: 32px; opacity: 0.7; }
+    .footer-bottom { color: rgba(255,255,255,0.35); font-size: 0.78rem; }
+    .footer-bottom a { color: rgba(255,255,255,0.5); text-decoration: none; }
+    .footer-bottom a:hover { color: var(--green); }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    .hero-inner > * { animation: fadeUp 0.5s ease both; }
+    .hero-tag { animation-delay: 0.0s; }
+    h1 { animation-delay: 0.1s; }
+    .hero-subtitle { animation-delay: 0.2s; }
+  </style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<nav aria-label="Primary navigation">
+  <a href="index.html" class="nav-logo" aria-label="Back to project index">
+    <img src="https://wiki.weareopen.coop/wao_logo_whitetr_1500.png" alt="WAO Cooperative logo" />
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html#project-overview">Overview</a></li>
+    <li><a href="index.html#key-reports">Key Reports</a></li>
+    <li><a href="index.html#timeline">All Documents</a></li>
+    <li><a href="charter.html">Project Charter</a></li>
+  </ul>
+</nav>
+
+<div class="breadcrumb" aria-label="Breadcrumb">
+  <a href="index.html">← Project Index</a>
+  <span aria-hidden="true">/</span>
+  <span>Pilot Prep</span>
+  <span aria-hidden="true">/</span>
+  <span>Platform Testing Plan with Users (Jan 2026)</span>
+</div>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">
+      <a href="index.html#timeline">← Pilot Prep</a>
+    </div>
+    <h1>Platform Testing Plan<br/><em>with Users (Jan 2026)</em></h1>
+    <p class="hero-subtitle">
+      A structured, participant-focused plan for testing the Amnesty Community platform with five users — covering session flow, task scenarios, facilitation guidance, success metrics, and a full moderator script.
+    </p>
+  </div>
+</header>
+
+<main id="main">
+  <div class="page-wrap">
+
+    <article class="content">
+
+      <section id="overview">
+        <h2>Overview</h2>
+
+        <div class="doc-link-banner">
+          <p>This document is held in Google Docs and is accessible to project team members.</p>
+          <a href="https://docs.google.com/document/d/1n7Yzd3RiivCdqujvG6pnrvx48FlWYLCiDl0Oqt021bk/edit" rel="noopener" target="_blank">Open in Google Docs ↗</a>
+        </div>
+
+        <p>
+          This testing approach employs a structured, participant-focused method. Five platform testers, drawn from our intended user groups, will carry out core real-life scenarios while working through the Discourse interface. Sessions are observed in real time via video conferencing with recording, screen sharing, and a "think-aloud" protocol providing direct insight into the process.
+        </p>
+
+        <div class="three-cols">
+          <div class="col-card">
+            <div class="col-icon">👥</div>
+            <h4>Five participants</h4>
+            <p>Drawn from our intended user groups to surface commonly encountered usability problems and reveal how onboarding unfolds.</p>
+          </div>
+          <div class="col-card">
+            <div class="col-icon">🎥</div>
+            <h4>Observed sessions</h4>
+            <p>Each 45-minute session is conducted remotely via video call with screen sharing, recording, and a think-aloud protocol.</p>
+          </div>
+          <div class="col-card">
+            <div class="col-icon">📋</div>
+            <h4>Structured tasks</h4>
+            <p>Seven real-life scenarios covering account setup, navigation, content consumption, participation, and trust &amp; safety.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="objectives">
+        <h2>Objectives</h2>
+        <p>
+          <a href="https://www.nngroup.com/articles/why-you-only-need-to-test-with-5-users/" rel="noopener" target="_blank">Testing with five people</a> allows for the swift identification of frequent pain points or confusion. This number is sufficient for surfacing commonly encountered usability problems and gives us a sense of how initial onboarding and use might unfold.
+        </p>
+      </section>
+
+      <section id="step-by-step-plan">
+        <h2>Step-by-Step Plan</h2>
+
+        <h3 id="preparation">Preparation</h3>
+        <div class="info-card blue-border">
+          <h3>Before each session</h3>
+          <ul>
+            <li>Brief each participant beforehand, outlining approximate session timing, session format, and technical requirements (Zoom download, etc.)</li>
+            <li>Each session is scheduled for 45 minutes.</li>
+            <li>Confirm consent for observing, recording, and notetaking in advance.</li>
+          </ul>
+        </div>
+        <p>
+          Also check the staging platform admin settings at <a href="https://amnestyukstaging.discoursehosting.net/admin/site_settings/category/all_results?filter=must_approve_users" rel="noopener" target="_blank">amnestyukstaging.discoursehosting.net</a> to confirm user approval settings before sessions begin.
+        </p>
+
+        <h3 id="session-flow">Session Flow</h3>
+
+        <h4 id="welcome">1. Welcome and introduction (5 minutes)</h4>
+        <div class="info-card green-border">
+          <h3>Facilitator script — Welcome</h3>
+          <ul>
+            <li>"I'm Doug Belshaw from We Are Open Co-op. We're working with Amnesty International UK on a new community platform. That's what we're testing today."</li>
+            <li>"There's three parts to what we're doing in this session. First, I'll ask you a few warm-up questions. Then you'll share your screen and go through a series of tasks. Finally, there's a survey based on the System Usability Scale which will help us decide whether the platform is ready for the pilot."</li>
+            <li>"With the tasks, I'll prompt you at the beginning of each one, and there's no rush to complete them. I'm not giving out any medals for the fastest to get them done. And just to say that obviously we're testing the platform, not you."</li>
+            <li>"I shared a link to our data protection policy in the calendar invite, but I'm also putting it into the chat now. Please could you confirm whether or not you consent to be recorded?"</li>
+            <li>Share link: <a href="https://wiki.weareopen.coop/en/policies/data-protection" rel="noopener" target="_blank">wiki.weareopen.coop/en/policies/data-protection</a></li>
+            <li>"OK, thank you, and just to say you're free to withdraw your consent at any time."</li>
+            <li>"Do you have any questions before we begin?"</li>
+            <li>"I don't yet have mind-reading powers, so just a reminder that if you could verbalise what you're thinking that would really help. So you might say something like 'I noticed there's a button' or 'I'm not sure where that link is so I'm scrolling down the page'. Things like that."</li>
+            <li>"Are you ready to get started with some warm-up questions?"</li>
+            <li>"OK, I'll hit record." — <strong>PRESS RECORD</strong></li>
+          </ul>
+        </div>
+
+        <h4 id="pre-test">2. Pre-test interview (5 minutes)</h4>
+        <div class="info-card blue-border">
+          <h3>Warm-up questions</h3>
+          <ul>
+            <li>"First of all, could you tell me about your previous experience with online forums or communities?"</li>
+            <li>"On a scale of one to five, how confident would you say you are with adapting to new systems and technologies?"</li>
+            <li>"What kind of things might you want to do or achieve on the Amnesty community platform?"</li>
+            <li>"OK, let's get into the platform. In a moment, I'm going to put a link in the chat. This allows you to register on the Amnesty Community."</li>
+            <li>"Please could you share your screen, and then I'll confirm whether I can see it."</li>
+          </ul>
+        </div>
+
+        <h4 id="tasks">3. Task walk-through (25–30 minutes)</h4>
+        <div class="facilitator-note">
+          <strong>Remember:</strong> Encourage natural responses, offering prompts if silent — "What are you thinking about at the moment?" or "What did you expect to happen?"
+        </div>
+
+        <div class="info-card green-border">
+          <h3>Task 1 — Account &amp; Profile Setup</h3>
+          <p>"Please click on the link that I've just entered into the chat and then complete all of the required information. There's no rush or time limit."</p>
+          <ul>
+            <li>Invite link: <a href="https://amnestyukstaging.discoursehosting.net/invites/adpHL4EeKg" rel="noopener" target="_blank">amnestyukstaging.discoursehosting.net/invites/adpHL4EeKg</a></li>
+            <li>"As part of the workflow you will be asked to confirm your email account. Please do this and then complete all onboarding screens."</li>
+          </ul>
+        </div>
+
+        <div class="info-card green-border">
+          <h3>Task 2 — Onboarding &amp; Training</h3>
+          <p>"The first thing to do is to update your profile so other members can learn about you."</p>
+          <ul>
+            <li>Find a way to get to your profile page.</li>
+            <li>Change your profile image to a different one.</li>
+            <li>In the 'About me' section, copy and paste the text: <em>I'm taking part in a test of the Amnesty Community platform. I'm interested in human rights.</em></li>
+            <li>Find the place to select your <strong>Interests</strong>. Choose: Everyday rights, Freedom of expression.</li>
+            <li>"Tell me when you feel you have finished updating your profile for now."</li>
+          </ul>
+        </div>
+
+        <div class="info-card green-border">
+          <h3>Task 3 — Navigation &amp; Discovery</h3>
+          <p>"You want to find out what discussions are happening in the community."</p>
+          <ul>
+            <li>Starting from the homepage, explore the community in the way that feels natural to you. There's no rush — just tell me what you are seeing.</li>
+            <li>Find one discussion topic that you personally find interesting. This could be in any category.</li>
+            <li>"When you have chosen a topic, say its title out loud and show me how you got there."</li>
+          </ul>
+        </div>
+
+        <div class="info-card green-border">
+          <h3>Task 4 — Content Consumption</h3>
+          <p>"Now find the category <strong>Socialising &amp; Sharing</strong> and then <strong>Welcome &amp; Introductions</strong>."</p>
+          <ul>
+            <li>You're then looking for the topic <strong>Tell us a bit about yourself</strong>.</li>
+            <li>Scroll through the replies.</li>
+            <li>Choose <strong>one reply</strong> that you find interesting.</li>
+            <li>"Show me how you would indicate that you found it helpful or interesting. You can use any options you notice on the screen (for example 'like', 'bookmark', 'share', etc.)."</li>
+          </ul>
+        </div>
+
+        <div class="info-card green-border">
+          <h3>Task 5 — Community Interaction</h3>
+          <p>Another member has posted something you'd like to respond to.</p>
+          <ul>
+            <li>Find the <strong>Networks</strong> category and then the <strong>Anti-Racism Network</strong>. If you're not already a member of this network, please join it.</li>
+            <li>In the topic <em>Online actions you've taken recently</em>, find the message that asks: <strong>"Has anyone here tried organising an online event with limited resources? What worked for you?"</strong></li>
+            <li>Reply directly to that message using the reply tools you can see.</li>
+            <li>Copy and paste this text into your reply box (no need to write your own): <em>I would say that small online events work best when they are focused, have a clear purpose, and finish on time.</em></li>
+            <li>Post your reply and tell me when your message appears in the conversation.</li>
+          </ul>
+        </div>
+
+        <div class="info-card green-border">
+          <h3>Task 6 — Content Creation</h3>
+          <p>Now you want to start a new discussion to get input from other members.</p>
+          <ul>
+            <li>Go to the <strong>Socialising &amp; Sharing</strong> category and then to <strong>General Discussion</strong>.</li>
+            <li>Start a new topic. I am going to give you the title and text to copy and paste.</li>
+            <li>For the <strong>title</strong>, copy and paste: <em>Ideas for networks and groups to collaborate using this community</em></li>
+            <li>For the <strong>body of the post</strong>, copy and paste: <em>The Amnesty Community gives us new opportunities for collaboration. What ideas do you have for how we could allow cross-pollination to happen here between networks and groups?</em></li>
+            <li>Publish your new discussion and tell me when you can see your topic listed with the others.</li>
+          </ul>
+        </div>
+
+        <div class="info-card yellow-border">
+          <h3>Task 7 — Optional: Trust &amp; Safety</h3>
+          <p>"You have seen something concerning in a post and want to report it to moderators."</p>
+          <ul>
+            <li>Go to the <strong>Socialising &amp; Sharing</strong> category and then to <strong>Café Random</strong>.</li>
+            <li>Go to the <strong>Ongoing situation in Gaza</strong> topic and read the posts until you find a message that you feel is inappropriate or concerning.</li>
+            <li>Show me how you would report that post to moderators or otherwise flag it for attention.</li>
+            <li>If you are given any options (for example 'It's spam', 'It's inappropriate', 'Something else'), choose the one that seems most suitable and complete any short explanation box with: <em>Test: reporting this post as part of platform testing.</em></li>
+            <li>Tell me when you have completed reporting the post.</li>
+          </ul>
+        </div>
+
+        <h4 id="post-session">4. Post-session usability questions (5 minutes)</h4>
+        <div class="info-card blue-border">
+          <h3>System Usability Scale (SUS)</h3>
+          <p>Use the <a href="https://www.nngroup.com/articles/measuring-perceived-usability/" rel="noopener" target="_blank">System Usability Scale</a> (SUS), a quick ten-item questionnaire, to capture ease-of-use ratings (5-point Likert scale from 'Strongly Disagree' to 'Strongly Agree').</p>
+          <ol>
+            <li>I think that I would like to use this platform frequently</li>
+            <li>I found the system unnecessarily complex</li>
+            <li>I thought the platform was easy to use</li>
+            <li>I think that I would need the support of a technical person to be able to use this system</li>
+            <li>I found the various functions in this platform were well integrated</li>
+            <li>I thought there was too much inconsistency in the platform</li>
+            <li>I would imagine that most people would learn to use this platform very quickly</li>
+            <li>I found the platform very cumbersome to use</li>
+            <li>I felt very confident using the platform</li>
+            <li>I needed to learn a lot of things before I could get going with this platform</li>
+          </ol>
+          <p style="margin-top:10px;">This gives a score from 0–100. The average SUS score is 68. We are looking at achieving 50+ for this platform test.</p>
+          <p>Google Form link: <a href="https://forms.gle/5qKLC8tz8rnA3jo38" rel="noopener" target="_blank">forms.gle/5qKLC8tz8rnA3jo38</a></p>
+        </div>
+
+        <h4 id="debrief">5. Debrief and open comments (5 minutes)</h4>
+        <div class="info-card blue-border">
+          <h3>Closing the session</h3>
+          <ul>
+            <li>Invite overall impressions, praise, criticisms, and suggestions for improvement.</li>
+            <li>Inform the participant that you will now delete their user account and all content they posted.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="facilitation">
+        <h2>Facilitation</h2>
+        <p>For remote moderated testing via video conferencing:</p>
+
+        <div class="info-card blue-border">
+          <h3>Before the session</h3>
+          <p>Send calendar invites 24+ hours ahead with a brief overview. Request a 15-minute technology practice session the day before if possible, or build extra time into the actual session for troubleshooting. Prepare test account credentials for each participant.</p>
+        </div>
+
+        <div class="info-card green-border">
+          <h3>During the session</h3>
+          <p>Start recording with explicit consent. Have the participant share their screen while you observe silently, intervening only with neutral prompts when they go quiet. Useful prompts include:</p>
+          <ul>
+            <li>"What are you thinking right now?"</li>
+            <li>"What did you expect to happen?"</li>
+            <li>"Where would you look for that information?"</li>
+          </ul>
+        </div>
+
+        <div class="info-card yellow-border">
+          <h3>After the session</h3>
+          <p>Complete observation notes within 30 minutes while recall is fresh. Log issues with severity ratings and capture specific quotes that illustrate user reactions.</p>
+        </div>
+      </section>
+
+      <section id="success-metrics">
+        <h2>Success Metrics</h2>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Metric</th>
+              <th>Target</th>
+              <th>Method</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Task completion rate</strong></td>
+              <td>80%+ without assistance</td>
+              <td>Observation</td>
+            </tr>
+            <tr>
+              <td><strong>SUS Score</strong></td>
+              <td>50+</td>
+              <td>Post-test survey</td>
+            </tr>
+            <tr>
+              <td><strong>Critical issues</strong></td>
+              <td>Zero blocking problems</td>
+              <td>Issue log</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>Classify discovered issues by severity:</p>
+        <div class="info-card red-border">
+          <h3>Issue severity classification</h3>
+          <ul>
+            <li><strong>Critical</strong> — issues prevent task completion entirely</li>
+            <li><strong>Major</strong> — issues cause significant confusion requiring assistance</li>
+            <li><strong>Minor</strong> — issues cause hesitation but allow recovery</li>
+            <li><strong>Cosmetic</strong> — issues are noticed but do not affect success</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="after-sessions">
+        <h2>After the Sessions</h2>
+        <p>After completing all five sessions, produce a findings report covering:</p>
+        <ul>
+          <li>Overall SUS score averaged across participants</li>
+          <li>Task completion rates per task</li>
+          <li>Top critical and major issues with frequency counts</li>
+          <li>Representative quotes illustrating key findings</li>
+          <li>Prioritised recommendations for fixes before broader pilot</li>
+        </ul>
+        <p>
+          The combination of quantitative SUS scores and qualitative think-aloud observations provides both measurable benchmarks and actionable detail for improving the platform before wider deployment.
+        </p>
+      </section>
+
+      <section id="facilitator-script">
+        <h2>Facilitator Script</h2>
+        <p>This section contains the full moderator script for running Amnesty Community platform testing sessions. Brief facilitator notes are shown in square brackets and are not read aloud to participants.</p>
+
+        <div class="info-card yellow-border">
+          <h3>Session assumptions</h3>
+          <ul>
+            <li>45-minute remote session</li>
+            <li>Video call with screen sharing and recording</li>
+            <li>Participant has or will be given a test account</li>
+            <li>You are moderating and observing</li>
+          </ul>
+        </div>
+
+        <h3 id="script-before">A. Before the call</h3>
+        <div class="facilitator-note">[Facilitator checklist — not to be read aloud]</div>
+
+        <div class="info-card blue-border">
+          <h3>Check</h3>
+          <ul>
+            <li>Video conferencing link works</li>
+            <li>Recording is set up and you know where files will be saved</li>
+            <li>Screen sharing permissions are working</li>
+            <li>Backup way to contact participant in case of technical issues</li>
+          </ul>
+        </div>
+
+        <div class="info-card blue-border">
+          <h3>Prepare</h3>
+          <ul>
+            <li>Test account or login details for this participant</li>
+            <li>The list of tasks</li>
+            <li>The Google Form link for the System Usability Scale questions</li>
+            <li>A quick template for your notes (time, task, what happened, quotes, issues)</li>
+          </ul>
+        </div>
+
+        <div class="info-card blue-border">
+          <h3>Decide</h3>
+          <ul>
+            <li>Which tasks are essential if time runs short</li>
+            <li>Whether you will include the optional trust and safety task</li>
+          </ul>
+        </div>
+
+        <h3 id="script-welcome">B. Welcome and consent (about 5 minutes)</h3>
+
+        <div class="script-block">
+          <p>"Hello [name], thanks very much for joining today. My name is [facilitator name] and I am from We Are Open Co-op. We're working with Amnesty International UK on the new Amnesty Community platform."</p>
+          <p>"Today's session will take a maximum of 45 minutes. I will ask you to do some typical things you might want to do on the community platform, and I will mostly stay quiet and observe while you talk through what you are doing."</p>
+          <p>"This is not a test of you or your skills. We are testing the platform to see what works well and what needs to be improved. Anything that feels confusing or annoying to you is extremely useful for us to hear about."</p>
+          <p>"Before we start, I would like to confirm a few practical points."</p>
+          <ul>
+            <li>"Can you see and hear me clearly?"</li>
+            <li>"Are you comfortable sharing your screen while you use the platform today?"</li>
+          </ul>
+          <p>"If you are happy to go ahead, I would like to record the session so we can review it later and take accurate notes. The recording will only be used by the small project team working on the platform. Is that all right with you?"</p>
+        </div>
+
+        <div class="facilitator-note">[Wait for explicit consent. If yes:]</div>
+
+        <div class="script-block">
+          <p>"Thank you. I am starting the recording now."</p>
+        </div>
+
+        <div class="facilitator-note">[Start recording.]</div>
+
+        <div class="script-block">
+          <p>"Do you have any questions before we begin?"</p>
+        </div>
+
+        <h3 id="script-pretest">C. Pre-test interview (about 5 minutes)</h3>
+
+        <div class="script-block">
+          <p>"I am going to start with a few short questions about your experience with online communities."</p>
+          <ol>
+            <li>"Can you tell me about any online communities or forums you currently use, if any?"</li>
+            <li>"On a scale from 1 to 5, where 1 is 'not at all confident' and 5 is 'very confident', how confident do you feel when using a new online system or website?"</li>
+            <li>"What would you hope to be able to do in an Amnesty community space like this?"</li>
+          </ol>
+        </div>
+
+        <div class="facilitator-note">[Briefly note examples or phrases that feel important for later.]</div>
+
+        <div class="script-block">
+          <p>"Thanks, that is really helpful. I will now share the link or login details for the test version of the Amnesty Community platform."</p>
+        </div>
+
+        <div class="facilitator-note">[Share login details if needed, then ask them to share their screen.]</div>
+
+        <div class="script-block">
+          <p>"Could you please share your screen now so I can see what you see?"</p>
+        </div>
+
+        <h3 id="script-thinkaloud">D. Instructions about "thinking aloud"</h3>
+
+        <div class="script-block">
+          <p>"During the session, it helps a great deal if you say out loud what you are thinking as you go. For example, 'I am looking for where to change my profile picture' or 'I expected that button to take me somewhere else'."</p>
+          <p>"If you forget to talk out loud, I might occasionally prompt you with questions such as 'What are you thinking about at the moment?' or 'What did you expect to happen there?'"</p>
+          <p>"If you get stuck, stay with it for a little while, then tell me what you are trying to do. I will step in with a small hint only if you seem completely blocked."</p>
+          <p>"Does that all sound OK?"</p>
+        </div>
+
+        <div class="facilitator-note">[Wait for agreement.]</div>
+
+        <h3 id="script-tasks">E. Task walk-through (about 25 to 30 minutes)</h3>
+
+        <div class="facilitator-note">[General facilitator notes] Present tasks one at a time in your own words. Do not point out where things are. If the participant goes quiet for more than 10–15 seconds, use a neutral prompt: "What are you thinking about at the moment?", "What did you expect to happen there?", or "Where would you look for that now?". If they are clearly stuck: "What would you try next?" — after a short attempt, give minimal directional help, then let them continue.</div>
+
+        <div class="info-card green-border">
+          <h3>Task 1: Account and profile setup</h3>
+          <p><strong>Spoken prompt:</strong> "First, please imagine you have just received your invitation to join the Amnesty Community platform. Using the details I have given you, please sign in and set up your account."</p>
+          <div class="facilitator-note" style="margin-top:8px;">[Watch how they deal with the invitation or login, any confusion around sign in or first steps.]</div>
+          <p style="margin-top:8px;"><strong>If quiet:</strong> "Talk me through what you are looking for on this page."</p>
+          <p><strong>When they reach the main area of the platform:</strong> "Great, we will move to the next task."</p>
+        </div>
+
+        <div class="info-card green-border">
+          <h3>Task 2: Update your profile</h3>
+          <p><strong>Spoken prompt:</strong> "Now that you are in, please update your profile so that other members can learn a bit about you. Do whatever you would normally do in a space like this."</p>
+          <div class="facilitator-note" style="margin-top:8px;">[Observe how easily they find profile settings, which fields they notice, and whether anything feels unclear.]</div>
+          <p style="margin-top:8px;"><strong>If quiet:</strong></p>
+          <ul>
+            <li>"What are you expecting to find here?"</li>
+            <li>"What tells you that you are in the right place or the wrong place?"</li>
+          </ul>
+        </div>
+
+        <div class="info-card green-border">
+          <h3>Task 3: Find an interesting discussion</h3>
+          <p><strong>Spoken prompt:</strong> "Next, please explore the platform and find a discussion or topic that genuinely interests you. Take a moment to look around first, then choose something you might want to read."</p>
+          <div class="facilitator-note" style="margin-top:8px;">[Observe navigation: categories, search, filters, home page, etc.]</div>
+          <p style="margin-top:8px;"><strong>Prompts if needed:</strong></p>
+          <ul>
+            <li>"What are you noticing about how things are organised?"</li>
+            <li>"Where would you expect to find new or active discussions?"</li>
+          </ul>
+        </div>
+
+        <div class="info-card green-border">
+          <h3>Task 4: Show that something is helpful or interesting</h3>
+          <p><strong>Spoken prompt:</strong> "Please open one of the discussions and read a little. Then show me how you would indicate that a particular reply is helpful or interesting."</p>
+          <div class="facilitator-note" style="margin-top:8px;">[Look for how they discover likes, reactions, bookmarks, or similar.]</div>
+          <p style="margin-top:8px;"><strong>If they seem unsure:</strong> "If you wanted to show the person who wrote that reply that you found it useful, what would you try?"</p>
+        </div>
+
+        <div class="info-card green-border">
+          <h3>Task 5: Reply in a discussion</h3>
+          <p><strong>Spoken prompt:</strong> "Now choose a discussion where you would like to say something. Add a reply to the conversation in whatever way feels natural to you."</p>
+          <div class="facilitator-note" style="margin-top:8px;">[Observe where they click to reply, how they handle the editor, whether message length or formatting is confusing.]</div>
+          <p style="margin-top:8px;"><strong>Possible prompts:</strong></p>
+          <ul>
+            <li>"What did you expect to happen when you clicked that?"</li>
+            <li>"If you changed your mind at this point, what would you do?"</li>
+          </ul>
+        </div>
+
+        <div class="info-card green-border">
+          <h3>Task 6: Start a new discussion about queer rights</h3>
+          <p><strong>Spoken prompt:</strong> "Imagine you want to start a new discussion about queer rights and ask other members for their input. Please create a new post in the place you think is most appropriate, with a short title and message."</p>
+          <div class="facilitator-note" style="margin-top:8px;">[Watch how they choose category, tags, title, and understand the posting flow.]</div>
+          <p style="margin-top:8px;"><strong>If stuck:</strong></p>
+          <ul>
+            <li>"Where would you look for a way to start a new discussion?"</li>
+            <li>After a short time, you may nudge: "If there were a 'new topic' or 'new post' button, where would you expect to see it?"</li>
+          </ul>
+        </div>
+
+        <div class="info-card yellow-border">
+          <h3>Task 7 (optional): Report concerning content</h3>
+          <p><strong>Spoken prompt:</strong> "For this final task, imagine you have seen something in a post that worries you or feels inappropriate. Show me how you would report it or bring it to a moderator's attention."</p>
+          <div class="facilitator-note" style="margin-top:8px;">[Observe discovery of flag/report tools, any confusion around options.]</div>
+          <p style="margin-top:8px;"><strong>Prompts:</strong></p>
+          <ul>
+            <li>"If you cannot see an obvious option, what would you try next?"</li>
+            <li>"What would you expect to happen after you send a report?"</li>
+          </ul>
+        </div>
+
+        <h3 id="script-sus">F. Post-session usability questions via Google Form (about 5 minutes)</h3>
+
+        <div class="script-block">
+          <p>"Thank you, that is really useful. I now have a short set of statements about your experience of the platform. I will send you a link via the chat right now. It should only take a couple of minutes to complete."</p>
+        </div>
+
+        <div class="facilitator-note">[Send the Google Form link via chat: <a href="https://forms.gle/5U8Dx1fmb5VtXjJF6" rel="noopener" target="_blank">forms.gle/5U8Dx1fmb5VtXjJF6</a>]</div>
+
+        <div class="script-block">
+          <p>"Go ahead and open it whenever you are ready. I will stay on the call so you can ask me anything if you need to, though the questions should be straightforward."</p>
+        </div>
+
+        <div class="facilitator-note">[Observe the form silently. Once they submit, you will see a confirmation. You can then move to the debrief.]</div>
+
+        <h3 id="script-debrief">G. Debrief and open comments (about 5 minutes)</h3>
+
+        <div class="script-block">
+          <p>"Before we finish, I would like to hear your overall impressions."</p>
+          <p><strong>Possible questions:</strong></p>
+          <ul>
+            <li>"What stood out to you as working well?"</li>
+            <li>"Was anything confusing, frustrating, or slower than you would like?"</li>
+            <li>"Is there anything you looked for today but did not find?"</li>
+            <li>"If you could change one thing about the platform after today's session, what would you change first?"</li>
+          </ul>
+          <p>"Is there anything we have not talked about that you would like to mention?"</p>
+          <p>"Thank you very much, this has been extremely helpful. Your comments will feed into the next round of changes to the platform before it is used more widely."</p>
+          <p>"If you are happy for us to contact you again with follow up questions, you might hear from us, although we will keep that light."</p>
+          <p>"Thanks again for your time today."</p>
+        </div>
+
+        <div class="facilitator-note">[Stop recording. After the call, complete your notes while details are fresh.]</div>
+      </section>
+
+      <section id="google-form-setup">
+        <h2>Creating the Google Form</h2>
+        <p>Set up a Google Form with the ten SUS statements below. Use a multiple-choice or linear scale question type, with the scale running from 1 (Strongly Disagree) to 5 (Strongly Agree).</p>
+
+        <div class="info-card blue-border">
+          <h3>Form setup</h3>
+          <ul>
+            <li><strong>Form title:</strong> Amnesty Community Platform – Feedback (or similar)</li>
+            <li><strong>Instructions on the form:</strong> "Please rate each statement on a scale from 1 to 5, where 1 means 'Strongly Disagree' and 5 means 'Strongly Agree'."</li>
+          </ul>
+        </div>
+
+        <div class="info-card green-border">
+          <h3>Statements (in order)</h3>
+          <ol>
+            <li>I think that I would like to use this platform frequently.</li>
+            <li>I found the system unnecessarily complex.</li>
+            <li>I thought the platform was easy to use.</li>
+            <li>I think that I would need the support of a technical person to be able to use this system.</li>
+            <li>I found the various functions in this platform were well integrated.</li>
+            <li>I thought there was too much inconsistency in the platform.</li>
+            <li>I would imagine that most people would learn to use this platform very quickly.</li>
+            <li>I found the platform very cumbersome to use.</li>
+            <li>I felt very confident using the platform.</li>
+            <li>I needed to learn a lot of things before I could get going with this platform.</li>
+          </ol>
+        </div>
+
+        <div class="info-card yellow-border">
+          <h3>Settings</h3>
+          <ul>
+            <li>Set the form to collect email addresses if you want to link responses to participants (optional but useful for analysis).</li>
+            <li>Make all questions required so you capture a full response from each person.</li>
+            <li>Keep the form clean and simple; avoid unnecessary branding or instructions.</li>
+          </ul>
+        </div>
+
+        <p>Once you have created the form, test it yourself. Copy the shareable link and paste it into the script where indicated, so you have it ready to send during the session.</p>
+      </section>
+
+      <section id="email-template">
+        <h2>Email to Testers</h2>
+        <p>Use the following email template when recruiting participants for the testing sessions:</p>
+
+        <div class="info-card blue-border">
+          <h3>Recruitment email template</h3>
+          <p>Hi [first name],</p>
+          <p>Amnesty International UK is getting ready to launch a new online community space for activists and supporters. Before we get into the pilot, we would like to run a small number of one-to-one testing sessions with people who are in our intended audience.</p>
+          <p>The session would:</p>
+          <ul>
+            <li>Take a maximum of 45 minutes over a video call, with screen sharing</li>
+            <li>Involve you signing in to a test version of the Amnesty Community platform and carrying out some typical activities, such as updating your profile, finding discussions, and contributing to conversations</li>
+            <li>Result in you being offered a gift voucher as a token of appreciation for your time</li>
+          </ul>
+          <p>The focus is on how the Amnesty Community platform works for you, rather than on your skills. We want it to be an inclusive, safe space which works for everyone. The session will be observed and recorded so that our small project team can review what happens and improve the experience.</p>
+          <p>If you are willing to take part, thank you! Please choose a time that suits you using the following appointment calendar:</p>
+          <p>[Abi to paste WAO Google appointment calendar link here]</p>
+          <p><em>Note: our partners We Are Open Co-op (WAO) are running this platform testing process to ensure it is objective.</em></p>
+          <p>Once you have requested a slot, they will send you:</p>
+          <ul>
+            <li>A calendar invitation with the video call link</li>
+            <li>A link to their data protection policy</li>
+            <li>A short reminder of what to expect on the day</li>
+          </ul>
+          <p>If you have any access needs, or particular requirements for taking part in an online session, please reply to this email so we can plan accordingly.</p>
+          <p>Thank you for considering this. Your feedback will help shape how the Amnesty Community develops!</p>
+          <p>Best wishes,</p>
+          <p>Abi [surname]<br/>Community Manager<br/>Amnesty International UK</p>
+        </div>
+      </section>
+
+    </article>
+
+    <aside class="sidebar" aria-label="Page navigation">
+      <div class="sidebar-card">
+        <div class="sidebar-card-head">On this page</div>
+        <ul class="sidebar-toc">
+          <li><a href="#overview">Overview</a></li>
+          <li><a href="#objectives">Objectives</a></li>
+          <li><a href="#step-by-step-plan">Step-by-Step Plan</a></li>
+          <li class="sub"><a href="#preparation">Preparation</a></li>
+          <li class="sub"><a href="#session-flow">Session Flow</a></li>
+          <li class="sub"><a href="#welcome">1. Welcome</a></li>
+          <li class="sub"><a href="#pre-test">2. Pre-test interview</a></li>
+          <li class="sub"><a href="#tasks">3. Task walk-through</a></li>
+          <li class="sub"><a href="#post-session">4. Post-session SUS</a></li>
+          <li class="sub"><a href="#debrief">5. Debrief</a></li>
+          <li><a href="#facilitation">Facilitation</a></li>
+          <li><a href="#success-metrics">Success Metrics</a></li>
+          <li><a href="#after-sessions">After the Sessions</a></li>
+          <li><a href="#facilitator-script">Facilitator Script</a></li>
+          <li class="sub"><a href="#script-before">A. Before the call</a></li>
+          <li class="sub"><a href="#script-welcome">B. Welcome &amp; consent</a></li>
+          <li class="sub"><a href="#script-pretest">C. Pre-test interview</a></li>
+          <li class="sub"><a href="#script-thinkaloud">D. Think aloud</a></li>
+          <li class="sub"><a href="#script-tasks">E. Task walk-through</a></li>
+          <li class="sub"><a href="#script-sus">F. Google Form</a></li>
+          <li class="sub"><a href="#script-debrief">G. Debrief</a></li>
+          <li><a href="#google-form-setup">Creating the Google Form</a></li>
+          <li><a href="#email-template">Email to Testers</a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sidebar-card-head">Document details</div>
+        <div class="sidebar-meta">
+          <p><strong>Phase</strong><br />Pilot Prep</p>
+          <p><strong>Group</strong><br />Testing</p>
+          <p><strong>Participants</strong><br />5 testers from intended user groups</p>
+          <p><strong>Session length</strong><br />45 minutes</p>
+          <p><strong>Status</strong><br />Active</p>
+          <p><strong>Source</strong><br /><a href="https://docs.google.com/document/d/1n7Yzd3RiivCdqujvG6pnrvx48FlWYLCiDl0Oqt021bk/edit" rel="noopener" target="_blank">Open in Google Docs ↗</a></p>
+          <a href="index.html#timeline" class="back-link">← Pilot Prep</a>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+</main>
+
+<footer>
+  <img src="https://wiki.weareopen.coop/wao_logo_whitetr_1500.png" alt="WAO Cooperative" />
+  <div class="footer-bottom">
+    <span>AIUK Community Platform Project · Produced by <a href="https://weareopen.coop" rel="noopener">WAO Cooperative</a></span>
+  </div>
+</footer>
+
+</body>
+</html>

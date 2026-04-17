@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Online Safety Act Advice and Guidance · AIUK Community Platform Project</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;600;700&family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --charcoal:   #2F495A;
+      --green:      #00C399;
+      --yellow:     #FFBC42;
+      --blue:       #16A8E2;
+      --red:        #FC594D;
+      --white:      #FFFFFF;
+      --off-white:  #F7F9FA;
+      --light-grey: #EDF1F4;
+      --mid-grey:   #8FA3B0;
+      --text:       #2F495A;
+      --font-head: 'Roboto Slab', Georgia, serif;
+      --font-body: 'Nunito', system-ui, sans-serif;
+      --radius: 12px;
+      --radius-sm: 6px;
+      --shadow: 0 4px 24px rgba(47,73,90,0.10);
+      --shadow-hover: 0 8px 36px rgba(47,73,90,0.18);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-body); color: var(--text); background: var(--off-white); line-height: 1.7; font-size: 16px; }
+
+    .skip-link { position: absolute; top: -40px; left: 16px; background: var(--green); color: var(--white); padding: 8px 14px; border-radius: var(--radius-sm); font-weight: 700; z-index: 9999; transition: top .2s; }
+    .skip-link:focus { top: 16px; }
+
+    nav { position: sticky; top: 0; z-index: 100; background: var(--charcoal); display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(16px, 5vw, 48px); height: 60px; box-shadow: 0 2px 12px rgba(0,0,0,0.2); }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .nav-logo img { height: 36px; }
+    .nav-links { display: flex; gap: 4px; list-style: none; flex-wrap: wrap; }
+    .nav-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.82rem; font-weight: 600; letter-spacing: 0.02em; padding: 6px 10px; border-radius: var(--radius-sm); transition: color .2s, background .2s; }
+    .nav-links a:hover { color: var(--white); background: rgba(255,255,255,0.12); }
+
+    .breadcrumb { background: var(--white); border-bottom: 1px solid var(--light-grey); padding: 10px clamp(16px, 5vw, 48px); font-size: 0.82rem; color: var(--mid-grey); display: flex; align-items: center; gap: 8px; }
+    .breadcrumb a { color: var(--mid-grey); text-decoration: none; font-weight: 600; }
+    .breadcrumb a:hover { color: var(--green); }
+    .breadcrumb span { color: var(--charcoal); font-weight: 700; }
+
+    .hero { background: var(--charcoal); padding: clamp(48px, 8vw, 80px) clamp(16px, 5vw, 48px) clamp(40px, 6vw, 64px); position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 50% 90% at 90% 20%, rgba(22,168,226,0.18) 0%, transparent 60%), radial-gradient(ellipse 40% 60% at 5% 90%, rgba(0,195,153,0.12) 0%, transparent 55%); pointer-events: none; }
+    .hero-inner { max-width: 760px; position: relative; }
+    .hero-tag { display: inline-flex; align-items: center; gap: 8px; background: rgba(47,73,90,0.18); border: 1px solid rgba(47,73,90,0.4); color: var(--charcoal); font-size: 0.75rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 14px; border-radius: 100px; margin-bottom: 18px; }
+    .hero-tag a { color: inherit; text-decoration: none; }
+    .hero-tag a:hover { text-decoration: underline; }
+    h1 { font-family: var(--font-head); font-size: clamp(1.8rem, 4.5vw, 3rem); font-weight: 700; color: var(--white); line-height: 1.2; margin-bottom: 16px; }
+    h1 em { font-style: normal; color: var(--green); }
+    .hero-subtitle { font-size: clamp(0.95rem, 1.8vw, 1.1rem); color: rgba(255,255,255,0.7); max-width: 580px; line-height: 1.65; }
+
+    .page-wrap { max-width: 1100px; margin: 0 auto; padding: clamp(32px, 5vw, 64px) clamp(16px, 5vw, 48px); display: grid; grid-template-columns: 1fr 280px; gap: 48px; align-items: start; }
+    @media (max-width: 780px) { .page-wrap { grid-template-columns: 1fr; } .sidebar { order: -1; } }
+
+    .content { min-width: 0; }
+    .content h2 { font-family: var(--font-head); font-size: clamp(1.3rem, 2.5vw, 1.7rem); font-weight: 600; color: var(--charcoal); margin: 40px 0 14px; padding-top: 40px; border-top: 2px solid var(--light-grey); }
+    .content h2:first-child { margin-top: 0; padding-top: 0; border-top: none; }
+    .content h3 { font-family: var(--font-head); font-size: clamp(1.05rem, 2vw, 1.25rem); font-weight: 600; color: var(--charcoal); margin: 28px 0 10px; }
+    .content h4 { font-family: var(--font-head); font-size: 0.97rem; font-weight: 600; color: var(--charcoal); margin: 20px 0 8px; }
+    .content p { margin-bottom: 16px; color: #4a6070; font-size: 0.97rem; line-height: 1.75; }
+    .content p strong { color: var(--charcoal); font-weight: 700; }
+    .content ul { padding-left: 22px; margin-bottom: 16px; }
+    .content ul li { color: #4a6070; font-size: 0.97rem; line-height: 1.7; margin-bottom: 6px; }
+    .content ul li strong { color: var(--charcoal); }
+    .content ol { padding-left: 22px; margin-bottom: 16px; }
+    .content ol li { color: #4a6070; font-size: 0.97rem; line-height: 1.7; margin-bottom: 6px; }
+
+    blockquote { border-left: 4px solid var(--green); background: var(--white); padding: 16px 22px; margin: 20px 0; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; box-shadow: var(--shadow); }
+    blockquote p { color: var(--charcoal); font-style: italic; margin-bottom: 0; font-size: 0.97rem; }
+
+    .info-card { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius); padding: 24px 28px; margin: 20px 0; box-shadow: var(--shadow); }
+    .info-card.blue-border  { border-left: 4px solid var(--blue); }
+    .info-card.green-border { border-left: 4px solid var(--green); }
+    .info-card.yellow-border { border-left: 4px solid var(--yellow); }
+    .info-card.red-border  { border-left: 4px solid var(--red); }
+    .info-card h3 { font-family: var(--font-head); font-size: 0.95rem; font-weight: 600; color: var(--charcoal); margin-bottom: 10px; }
+    .info-card p { margin-bottom: 8px; font-size: 0.9rem; }
+    .info-card p:last-child { margin-bottom: 0; }
+    .info-card ul { padding-left: 18px; margin-top: 8px; margin-bottom: 0; }
+    .info-card ul li { font-size: 0.9rem; color: #4a6070; margin-bottom: 5px; line-height: 1.6; }
+    .info-card ul li strong { color: var(--charcoal); }
+
+    .doc-link-banner { background: var(--charcoal); border-radius: var(--radius); padding: 24px 28px; margin: 20px 0 32px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+    .doc-link-banner p { color: rgba(255,255,255,0.75); font-size: 0.9rem; margin: 0; }
+    .doc-link-banner a { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: var(--white); text-decoration: none; font-weight: 700; font-size: 0.88rem; padding: 10px 20px; border-radius: var(--radius-sm); white-space: nowrap; transition: background .2s; }
+    .doc-link-banner a:hover { background: #00a881; }
+
+    .three-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 20px 0 28px; }
+    @media (max-width: 640px) { .three-cols { grid-template-columns: 1fr; } }
+    .col-card { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+    .col-card .col-icon { font-size: 1.6rem; margin-bottom: 10px; }
+    .col-card h4 { font-family: var(--font-head); font-size: 0.9rem; font-weight: 600; color: var(--charcoal); margin-bottom: 8px; }
+    .col-card p { font-size: 0.83rem; color: #4a6070; margin: 0; line-height: 1.55; }
+
+    .two-cols { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin: 20px 0 28px; }
+    @media (max-width: 640px) { .two-cols { grid-template-columns: 1fr; } }
+
+    /* Age assurance table */
+    .age-table { width: 100%; border-collapse: collapse; margin: 20px 0 28px; font-size: 0.85rem; background: var(--white); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+    .age-table thead { background: var(--charcoal); color: var(--white); }
+    .age-table thead th { padding: 12px 14px; text-align: left; font-family: var(--font-head); font-size: 0.8rem; font-weight: 600; }
+    .age-table tbody tr { border-bottom: 1px solid var(--light-grey); }
+    .age-table tbody tr:last-child { border-bottom: none; }
+    .age-table tbody td { padding: 12px 14px; color: #4a6070; vertical-align: top; line-height: 1.55; }
+    .age-table tbody td:first-child { font-weight: 700; color: var(--charcoal); }
+    .age-table .rec-yes { color: #00a86b; font-weight: 700; }
+    .age-table .rec-maybe { color: #c8841a; font-weight: 700; }
+    .age-table .rec-no { color: var(--red); font-weight: 700; }
+    .age-table .tag { display: inline-block; font-size: 0.75rem; font-weight: 700; padding: 2px 8px; border-radius: 100px; margin-bottom: 4px; }
+    .tag-high { background: rgba(0,195,153,0.15); color: #00a86b; }
+    .tag-med { background: rgba(255,188,66,0.15); color: #c8841a; }
+    .tag-low { background: rgba(252,89,77,0.15); color: var(--red); }
+
+    /* timeline / phase list */
+    .phase-list { list-style: none; padding: 0; margin: 20px 0 28px; }
+    .phase-list li { display: flex; gap: 16px; margin-bottom: 16px; }
+    .phase-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--green); margin-top: 7px; flex-shrink: 0; }
+    .phase-content strong { display: block; color: var(--charcoal); font-size: 0.95rem; }
+    .phase-content span { color: #4a6070; font-size: 0.9rem; }
+
+    /* risk grid */
+    .risk-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin: 20px 0 28px; }
+    @media (max-width: 640px) { .risk-grid { grid-template-columns: 1fr; } }
+    .risk-card { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius); padding: 18px 20px; box-shadow: var(--shadow); }
+    .risk-card.compliance { border-top: 4px solid var(--red); }
+    .risk-card.operational { border-top: 4px solid var(--yellow); }
+    .risk-card.mission { border-top: 4px solid var(--blue); }
+    .risk-card.reputational { border-top: 4px solid var(--mid-grey); }
+    .risk-card h4 { font-family: var(--font-head); font-size: 0.9rem; font-weight: 600; color: var(--charcoal); margin-bottom: 6px; }
+    .risk-card p { font-size: 0.85rem; color: #4a6070; margin-bottom: 6px; line-height: 1.55; }
+    .risk-card .mitigation { font-size: 0.82rem; color: #4a6070; background: var(--off-white); border-radius: var(--radius-sm); padding: 8px 12px; margin-top: 8px; }
+    .risk-card .mitigation strong { color: var(--charcoal); }
+
+    .sidebar { position: sticky; top: 80px; }
+    .sidebar-card { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); margin-bottom: 20px; }
+    .sidebar-card-head { background: var(--charcoal); padding: 14px 18px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.6); }
+    .sidebar-toc { list-style: none; padding: 8px 0; }
+    .sidebar-toc li a { display: block; padding: 9px 18px; color: #4a6070; font-size: 0.85rem; font-weight: 600; text-decoration: none; border-left: 3px solid transparent; transition: color .2s, border-color .2s, background .2s; }
+    .sidebar-toc li a:hover { color: var(--charcoal); border-color: var(--green); background: rgba(0,195,153,0.06); }
+    .sidebar-meta { padding: 16px 18px; }
+    .sidebar-meta p { font-size: 0.82rem; color: var(--mid-grey); margin-bottom: 8px; line-height: 1.5; }
+    .sidebar-meta p strong { color: var(--charcoal); }
+    .back-link { display: inline-flex; align-items: center; gap: 7px; background: var(--green); color: var(--white); text-decoration: none; font-size: 0.85rem; font-weight: 700; padding: 10px 18px; border-radius: var(--radius-sm); transition: background .2s; width: 100%; justify-content: center; margin-top: 4px; }
+    .back-link:hover { background: #00a881; }
+
+    footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.1); padding: clamp(28px,4vw,48px) clamp(16px,5vw,48px); display: flex; flex-wrap: wrap; gap: 24px; justify-content: space-between; align-items: center; }
+    footer img { height: 32px; opacity: 0.7; }
+    .footer-bottom { color: rgba(255,255,255,0.35); font-size: 0.78rem; }
+    .footer-bottom a { color: rgba(255,255,255,0.5); text-decoration: none; }
+    .footer-bottom a:hover { color: var(--green); }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    .hero-inner > * { animation: fadeUp 0.5s ease both; }
+    .hero-tag { animation-delay: 0.0s; }
+    h1 { animation-delay: 0.1s; }
+    .hero-subtitle { animation-delay: 0.2s; }
+
+    .note-box { background: rgba(255,188,66,0.1); border: 1px solid rgba(255,188,66,0.4); border-radius: var(--radius-sm); padding: 14px 18px; margin: 16px 0; font-size: 0.88rem; color: #5a4a20; line-height: 1.6; }
+    .note-box strong { color: #3a2e10; }
+  </style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<nav aria-label="Primary navigation">
+  <a href="index.html" class="nav-logo" aria-label="Back to project index">
+    <img src="https://wiki.weareopen.coop/wao_logo_whitetr_1500.png" alt="WAO Cooperative logo" />
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html#project-overview">Overview</a></li>
+    <li><a href="index.html#key-reports">Key Reports</a></li>
+    <li><a href="index.html#timeline">All Documents</a></li>
+    <li><a href="charter.html">Project Charter</a></li>
+  </ul>
+</nav>
+
+<div class="breadcrumb" aria-label="Breadcrumb">
+  <a href="index.html">← Project Index</a>
+  <span aria-hidden="true">/</span>
+  <span>Pilot Prep</span>
+  <span aria-hidden="true">/</span>
+  <span>Online Safety Act Advice and Guidance</span>
+</div>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">
+      <a href="index.html#timeline">← Pilot Prep</a>
+    </div>
+    <h1>Online Safety Act<br/><em>Advice and Guidance</em></h1>
+    <p class="hero-subtitle">
+      A practical compliance guide for AIUK's Discourse community platform — covering age assurance, risk assessment, content moderation, data protection, and transparency obligations under the Online Safety Act 2023.
+    </p>
+  </div>
+</header>
+
+<main id="main">
+  <div class="page-wrap">
+
+    <article class="content">
+
+      <!-- ===== OVERVIEW ===== -->
+      <section id="overview">
+        <h2>About this document</h2>
+        <p>
+          The Online Safety Act 2023 (OSA) represents the UK's most significant internet regulation to date. It places legal duties on platforms to protect users from illegal content and shield children from harmful material.
+        </p>
+        <p>
+          Amnesty International UK (AIUK) plans to host a Discourse community platform for activists and educators. Despite being hosted in the EU, the OSA applies because the platform will have UK users and be accessible to UK residents.
+        </p>
+        <p>
+          The decision to include children rather than restricting access to 18+ carries specific compliance obligations, particularly around age assurance, risk assessment, and content moderation.
+        </p>
+
+        <div class="note-box">
+          <strong>Important note:</strong> This guidance is prepared by We Are Open Co-op (WAO) and provides a step-by-step approach to OSA compliance whilst balancing AIUK's mission to engage young activists with statutory child protection requirements. WAO are not lawyers, and AIUK's Data Protection Officer (DPO) should provide specific advice, especially around how political opinions are processed (Article 9 UK GDPR).
+        </div>
+
+        <p>
+          <strong>Last updated:</strong> 24th October 2025 (after meeting with Yoti)
+        </p>
+
+        <div class="doc-link-banner">
+          <p>This document is held in Google Docs and is accessible to project team members.</p>
+          <a href="https://docs.google.com/document/d/14kJALWB_uJO3T_34hz5ztZ7E_491st6riFuPFk7AnbE/edit" rel="noopener" target="_blank">Open in Google Docs ↗</a>
+        </div>
+      </section>
+
+      <!-- ===== SECTION 1: REGULATORY FRAMEWORK ===== -->
+      <section id="regulatory-framework">
+        <h2>1. Understanding the Regulatory Framework</h2>
+
+        <h3 id="scope-enforcement">1.1. OSA Scope and Enforcement</h3>
+        <p>
+          The OSA has "extraterritorial application," meaning EU-hosted platforms like AIUK's community platform must comply if they have UK users or target UK audiences. Ofcom serves as the independent regulator with enforcement powers including fines up to £18 million or 10% of global revenue, whichever is greater. The child safety provisions came fully into force on 25 July 2025.
+        </p>
+
+        <div class="info-card blue-border">
+          <h3>OSA Rollout Phases</h3>
+          <p>The OSA rolled out in three phases, at least two of which will apply to the AIUK community platform:</p>
+          <ul>
+            <li><strong>Illegal harms duties (March 2025):</strong> Platforms must protect users from illegal content including child sexual abuse material, terrorism content, and material inciting violence</li>
+            <li><strong>Child safety duties (July 2025):</strong> Platforms must prevent children accessing harmful or age-inappropriate content</li>
+            <li><strong>Categorised service duties (ongoing):</strong> Additional requirements for larger platforms based on reach and functionality</li>
+          </ul>
+        </div>
+
+        <h3 id="definitions-children">1.2. Definitions of Children Under the OSA</h3>
+        <p>
+          The OSA defines children as anyone under 18. By allowing teenage users, AIUK's platform will be providing services to children under the legal definition, triggering specific child safety duties.
+        </p>
+      </section>
+
+      <!-- ===== SECTION 2: CHILDREN'S ACCESS ASSESSMENT ===== -->
+      <section id="childrens-access-assessment">
+        <h2>2. Conduct a Children's Access Assessment</h2>
+
+        <h3 id="caa-legal">2.1. Legal Requirement</h3>
+        <p>
+          The OSA requires every in-scope platform to complete a Children's Access Assessment (CAA) to determine whether children are likely to access the service. AIUK has already identified that children will be permitted users, meaning the platform definitively meets the "child user condition".
+        </p>
+
+        <h3 id="caa-two-stage">2.2. Two-Stage Assessment Process</h3>
+        <p>Ofcom guidance establishes a two-stage process:</p>
+
+        <h4>2.2.1. Age Assurance Assessment</h4>
+        <p>
+          Platforms must evaluate whether highly effective age assurance mechanisms are in place that prevent children from accessing the service. If "highly effective" age assurance exists and works reliably, platforms may conclude children cannot access the service and avoid further child safety duties.
+        </p>
+        <p>
+          For AIUK, this stage is moot because the platform intentionally permits children. The platform will not have highly effective age assurance preventing all under-18s.
+        </p>
+
+        <h4>2.2.2. Child User Condition</h4>
+        <p>Platforms must determine if either:</p>
+        <ul>
+          <li>A significant number of children are using the service, or</li>
+          <li>The service is of a kind likely to attract a significant number of children</li>
+        </ul>
+        <p>
+          "Significant number" depends on context. Even relatively small numbers of children could constitute "significant" if they represent a material proportion of the user base. AIUK's deliberate inclusion of children means this condition is met.
+        </p>
+
+        <h3 id="caa-documentation">2.3. Documentation Requirements</h3>
+        <div class="info-card yellow-border">
+          <h3>CAA Documentation Obligations</h3>
+          <p>AIUK must document the CAA outcome and supporting evidence. This assessment must be repeated annually or whenever significant changes occur to the platform's design, operation, or evidence emerges about age assurance effectiveness.</p>
+        </div>
+      </section>
+
+      <!-- ===== SECTION 3: AGE ASSURANCE ===== -->
+      <section id="age-assurance">
+        <h2>3. Implement Age Assurance</h2>
+
+        <h3 id="age-assurance-definitions">3.1. Understanding Age Assurance vs Age Verification</h3>
+        <p>
+          <strong>Age assurance</strong> encompasses any method of estimating or verifying user age. <strong>Age verification</strong> refers specifically to hard-identifier methods (passports, driving licences, credit cards) that provide high confidence in age.
+        </p>
+
+        <h3 id="age-assurance-options">3.2. Age Assurance Technology Options</h3>
+        <p>Government research identifies four broad categories of age assurance methods, each with distinct inclusion and privacy considerations.</p>
+
+        <h4>3.2.1. Hard Identifiers (Age Verification)</h4>
+        <p>Users verify age using government-issued ID, credit cards, or other documents linked to minimum age thresholds. This approach provides high confidence but presents significant exclusion risks.</p>
+
+        <div class="two-cols">
+          <div class="info-card green-border">
+            <h3>Advantages</h3>
+            <ul>
+              <li>High accuracy and confidence in age determination</li>
+              <li>Well-established in regulated sectors like online gambling</li>
+            </ul>
+          </div>
+          <div class="info-card red-border">
+            <h3>Disadvantages</h3>
+            <ul>
+              <li>Many children lack suitable ID documents</li>
+              <li>Creates acute barriers for vulnerable groups including care-experienced young people</li>
+              <li>Users express security concerns about submitting ID information</li>
+              <li>Not privacy-preserving</li>
+            </ul>
+          </div>
+        </div>
+
+        <h4>3.2.2. Verified Parental Consent (VPC)</h4>
+        <p>An adult verifies their age and grants permission for a child user, typically using credit card verification.</p>
+
+        <div class="two-cols">
+          <div class="info-card green-border">
+            <h3>Advantages</h3>
+            <ul>
+              <li>Natural fit for some situations where parents engage with children's online activity</li>
+              <li>Already widely used in paid services</li>
+            </ul>
+          </div>
+          <div class="info-card red-border">
+            <h3>Disadvantages</h3>
+            <ul>
+              <li>Inappropriate for teenagers seeking privacy from parents</li>
+              <li>Problematic for care-experienced youth lacking consistent parental figures</li>
+              <li>Not suitable for activist communities where independence from family is important</li>
+            </ul>
+          </div>
+        </div>
+
+        <h4>3.2.3. Behavioural Data and Artificial Intelligence</h4>
+        <p>AI analyses user behaviour patterns (content interactions, typing patterns, browsing habits) to estimate age.</p>
+
+        <div class="two-cols">
+          <div class="info-card green-border">
+            <h3>Advantages</h3>
+            <ul>
+              <li>Privacy-preserving and relatively frictionless</li>
+              <li>Most inclusive for vulnerable groups</li>
+              <li>No ID documents required</li>
+            </ul>
+          </div>
+          <div class="info-card red-border">
+            <h3>Disadvantages</h3>
+            <ul>
+              <li>Provides estimation rather than verification</li>
+              <li>Less accurate for younger users with limited platform history</li>
+              <li>May misclassify atypical users</li>
+              <li>Requires substantial user data collection</li>
+            </ul>
+          </div>
+        </div>
+
+        <h4>3.2.4. Biometric Data and Artificial Intelligence</h4>
+        <p>AI estimates age from biometric data, typically facial scanning.</p>
+
+        <div class="two-cols">
+          <div class="info-card green-border">
+            <h3>Advantages</h3>
+            <ul>
+              <li>No ID documents required</li>
+              <li>Can be privacy-preserving when properly implemented</li>
+              <li>Relatively frictionless user experience</li>
+            </ul>
+          </div>
+          <div class="info-card red-border">
+            <h3>Disadvantages</h3>
+            <ul>
+              <li>Performs less accurately for darker skin tones and atypical facial structures</li>
+              <li>Raises privacy concerns from some users</li>
+              <li>May be inaccessible to users with disabilities affecting facial features</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 id="age-assurance-recommended">3.3. Recommended Approach for AIUK</h3>
+        <p>
+          Given the specific context of a community being inclusive of teenage activists, a layered approach combining multiple methods offers the best balance of accuracy, inclusion, and privacy protection. Research shows platforms are increasingly adopting this strategy to improve accuracy whilst maximising inclusion.
+        </p>
+
+        <div class="info-card green-border">
+          <h3>Recommended Layered Age Assurance Implementation</h3>
+          <ul>
+            <li><strong>Self-declaration as first gateway</strong> — Users affirm they are 13+ during registration. Use neutral age declaration screens that don't display the minimum age requirement prominently, reducing incentive to lie. Prevent users from immediately re-entering different birthdates if initially declined.</li>
+            <li><strong>Email-based age estimation</strong> — Cross-reference email addresses with educational institution databases or age-associated email patterns. Ofcom guidance recognises email-based estimation as potentially highly effective when properly implemented.</li>
+            <li><strong>Behavioural monitoring</strong> — Implement ongoing age estimation based on user interaction patterns. This catches users who bypassed initial checks. Discourse's existing user trust levels and engagement metrics can support this approach.</li>
+            <li><strong>Risk-based verification</strong> — Reserve 'hard' identifier verification for edge cases where behavioural signals consistently suggest under-age users or where access to particularly sensitive areas requires higher assurance.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== SECTION 4: RISK ASSESSMENT ===== -->
+      <section id="risk-assessment">
+        <h2>4. Complete Comprehensive Risk Assessment</h2>
+
+        <h3 id="risk-legal">4.1. Legal Obligation</h3>
+        <p>
+          Platforms likely to be accessed by children must conduct risk assessments identifying potential harms and implementing proportionate safety measures. Existing platforms had until 24 July 2025 to complete initial children's risk assessments, so AIUK should complete this as soon as possible given the intention for children aged 13+ to access the platform.
+        </p>
+
+        <h3 id="risk-framework">4.2. Risk Assessment Framework</h3>
+        <p>Ofcom provides a four-step process, contextualised below.</p>
+
+        <h4>4.2.1. Identify functionalities that could present risks</h4>
+        <p>For a Discourse platform, consider:</p>
+        <ul>
+          <li>User-to-user messaging (direct messages)</li>
+          <li>Public posting and replies</li>
+          <li>Profile information and customisation</li>
+          <li>File uploads and image sharing</li>
+          <li>External link sharing</li>
+          <li>Search functionality</li>
+          <li>User mentions and notifications</li>
+        </ul>
+
+        <h4>4.2.2. Assess likelihood and severity of harm</h4>
+        <p>Ofcom identifies content harmful to children including:</p>
+        <ul>
+          <li>Bullying and harassment</li>
+          <li>Content promoting self-harm or suicide</li>
+          <li>Eating disorder content</li>
+          <li>Serious violence</li>
+          <li>Hateful content</li>
+          <li>Content promoting dangerous activities</li>
+        </ul>
+
+        <div class="info-card yellow-border">
+          <h3>Additional Risk Considerations for an Activist Community</h3>
+          <ul>
+            <li>Exposure to graphic documentation of human rights abuses</li>
+            <li>Coordinated harassment from opposing groups</li>
+            <li>Surveillance and targeting by hostile state actors</li>
+            <li>Doxxing and privacy violations</li>
+          </ul>
+        </div>
+
+        <h4>4.2.3. Determine if risks are significant</h4>
+        <p>
+          Consider whether harms could occur with sufficient likelihood and severity to require mitigation. Given AIUK's focus on human rights activism, the risk profile differs from general social platforms.
+        </p>
+
+        <h4>4.2.4. Implement proportionate mitigations</h4>
+        <p>Safety measures must be proportionate to identified risks.</p>
+
+        <h4>4.2.5. Documentation Requirements</h4>
+        <p>Document the risk assessment process, findings, and mitigation decisions. Update assessments when platform changes occur or new evidence about risks emerges.</p>
+      </section>
+
+      <!-- ===== SECTION 5: CONTENT MODERATION ===== -->
+      <section id="content-moderation">
+        <h2>5. Implement Content Moderation and Safety Measures</h2>
+
+        <h3 id="moderation-core">5.1. Core Content Moderation Obligations</h3>
+        <div class="info-card blue-border">
+          <h3>OSA Content Moderation Requirements</h3>
+          <p>The OSA requires platforms to:</p>
+          <ul>
+            <li>Prevent illegal content from appearing</li>
+            <li>Remove illegal content swiftly when identified</li>
+            <li>Prevent children accessing harmful or age-inappropriate content</li>
+            <li>Implement proactive detection technologies</li>
+            <li>Use content moderation tools and human review where appropriate</li>
+          </ul>
+        </div>
+
+        <h3 id="discourse-safety">5.2. Discourse-Specific Safety Features</h3>
+        <p>Discourse provides multiple safety tools that can support OSA compliance, including the following.</p>
+
+        <h4>5.2.1. Content Controls</h4>
+        <ul>
+          <li>Moderation queues for first posts by new users</li>
+          <li>Trust level system that restricts new user capabilities</li>
+          <li>Flagging system for user reports</li>
+          <li>Automatic spam and abuse detection</li>
+          <li>Content filters and word lists</li>
+          <li>Rate limiting to prevent flooding</li>
+        </ul>
+
+        <h4>5.2.2. User Safety Features</h4>
+        <ul>
+          <li>User blocking and muting</li>
+          <li>Private/public category controls</li>
+          <li>Silencing and suspending user accounts</li>
+          <li>IP address blocking</li>
+          <li>Required approval for new accounts</li>
+        </ul>
+
+        <h4>5.2.3. Visibility Controls</h4>
+        <ul>
+          <li>Category-level permissions</li>
+          <li>Topic visibility restrictions</li>
+          <li>Age-gated content areas</li>
+          <li>Content warnings and tags</li>
+        </ul>
+
+        <h3 id="safety-architecture">5.3. Recommended Safety Architecture</h3>
+        <p>To comply with the OSA and include children aged 13+ WAO recommend:</p>
+
+        <div class="three-cols">
+          <div class="col-card">
+            <div class="col-icon">🔒</div>
+            <h4>Graduated Access</h4>
+            <p>New users enter at restricted trust levels, gaining privileges as they demonstrate appropriate behaviour. This aligns with Discourse's existing trust level system.</p>
+          </div>
+          <div class="col-card">
+            <div class="col-icon">🗂️</div>
+            <h4>Content Categorisation</h4>
+            <p>Separate potentially distressing human rights documentation from general discussion areas. Require age verification or additional warnings before accessing graphic content categories.</p>
+          </div>
+          <div class="col-card">
+            <div class="col-icon">🔍</div>
+            <h4>Proactive Monitoring</h4>
+            <p>Use Discourse's flagging system alongside automated filters for priority harmful content including self-harm, suicide, and child sexual abuse material.</p>
+          </div>
+          <div class="col-card">
+            <div class="col-icon">👥</div>
+            <h4>Human Moderation</h4>
+            <p>Maintain trained moderators familiar with both human rights context and child safety concerns. Research shows human moderation remains important alongside automated tools.</p>
+          </div>
+          <div class="col-card">
+            <div class="col-icon">🚨</div>
+            <h4>Clear Reporting</h4>
+            <p>Implement accessible reporting tools and communicate response timeframes. The OSA requires swift action on illegal content and harmful content flagged by users.</p>
+          </div>
+        </div>
+
+        <h3 id="terms-of-service">5.4. Terms of Service Requirements</h3>
+        <p>
+          The OSA mandates clear, accessible Terms of Service that children can understand. AIUK must ensure the following relating to the community platform:
+        </p>
+        <ul>
+          <li>State what content is prohibited</li>
+          <li>Explain enforcement procedures</li>
+          <li>Describe age restrictions and verification processes</li>
+          <li>Outline user rights including appeals</li>
+          <li>Write in language accessible to children</li>
+          <li>Apply these terms consistently — inconsistent enforcement can trigger Ofcom complaints and enforcement action</li>
+        </ul>
+      </section>
+
+      <!-- ===== SECTION 6: COMPLAINTS ===== -->
+      <section id="complaints">
+        <h2>6. Establish Complaints and Redress Mechanisms</h2>
+
+        <h3 id="complaints-legal">6.1. Legal Requirements</h3>
+        <p>
+          Platforms must provide clear, accessible mechanisms for users to report problems and challenge moderation decisions. For children, these systems must be age-appropriate and easy to understand.
+        </p>
+
+        <h3 id="complaints-implementation">6.2. Implementation Recommendations</h3>
+        <div class="info-card green-border">
+          <h3>Complaints Mechanism Checklist</h3>
+          <ul>
+            <li><strong>Multiple reporting channels</strong> — Offer in-platform flagging, direct contact with moderators, and escalation to platform administrators</li>
+            <li><strong>Clear communication</strong> — Explain what happens after a report is submitted, expected response times, and how decisions are made</li>
+            <li><strong>Appeals process</strong> — Allow users to appeal moderation decisions with clear timelines for responses</li>
+            <li><strong>External escalation</strong> — Inform users they can raise super-complaints with expert organisations or ultimately escalate to Ofcom</li>
+            <li><strong>Documentation</strong> — Maintain records of complaints, responses, and resolution outcomes for transparency reporting</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== SECTION 7: DATA PROTECTION ===== -->
+      <section id="data-protection">
+        <h2>7. Ensure Data Protection Compliance</h2>
+
+        <h3 id="data-gdpr">7.1. Intersection of OSA and UK GDPR</h3>
+        <p>
+          The OSA operates alongside data protection obligations. The UK GDPR sets 13 as the age of digital consent, but the OSA's child safety provisions extend to all under-18s.
+        </p>
+
+        <h3 id="special-category">7.2. Special Category Data</h3>
+        <p>
+          AIUK's community platform will process or infer political opinions through posts, profiles, tags, and moderation, which are special category data. This will have to be specifically referenced in the Data Protection Impact Assessment (DPIA).
+        </p>
+        <div class="info-card yellow-border">
+          <h3>The 'Manifestly Made Public' Clause</h3>
+          <p>
+            The 'manifestly made public' clause around political opinions only applies when a user has intentionally made the information public to a 'genuinely public audience'. Closed or limited forums do not typically satisfy this threshold, so the clause is unlikely to apply to AIUK's community platform. AIUK's DPO should be consulted on this point.
+          </p>
+        </div>
+
+        <h3 id="data-minimisation">7.3. Data Minimisation Principles</h3>
+        <p>
+          Age assurance creates tension between collecting data to verify age and data minimisation principles. The Information Commissioner's Office (ICO) has clarified that the Age Appropriate Design Code (2022) doesn't prevent collecting data for age assurance purposes.
+        </p>
+
+        <div class="info-card blue-border">
+          <h3>Data Minimisation Best Practices</h3>
+          <ul>
+            <li><strong>Purpose limitation</strong> — Collect age data only for age assurance and safety purposes</li>
+            <li><strong>Storage limitation</strong> — Retain age verification data only as long as necessary</li>
+            <li><strong>Security measures</strong> — Implement robust data security for sensitive age verification information</li>
+            <li><strong>Transparency</strong> — Clearly explain what age data is collected, how it's used, and how it's protected</li>
+            <li><strong>Third-party processors</strong> — When using external age verification services, ensure they meet GDPR standards</li>
+          </ul>
+        </div>
+
+        <h3 id="childrens-data">7.4. Special Protections for Children's Data</h3>
+        <p>The UK Age Appropriate Design Code requires:</p>
+        <ul>
+          <li>High privacy settings by default for child users</li>
+          <li>Data collection minimised to what's necessary for service provision</li>
+          <li>Location tracking disabled unless strictly necessary</li>
+          <li>No use of children's data for profiling or targeted advertising</li>
+          <li>Transparent privacy information written for children</li>
+        </ul>
+      </section>
+
+      <!-- ===== SECTION 8: TRANSPARENCY ===== -->
+      <section id="transparency">
+        <h2>8. Develop Transparency and Reporting Practices</h2>
+
+        <h3 id="transparency-obligations">8.1. Transparency Obligations</h3>
+        <p>
+          Whilst AIUK's platform likely won't qualify as a 'Category 1' service under the OSA (which would require full transparency reports), good practice nevertheless includes:
+        </p>
+        <ul>
+          <li><strong>Public safety statement</strong> — Explain how the platform approaches child safety, what measures are in place, and how risks are managed</li>
+          <li><strong>Terms of Service</strong> — Make safety policies visible and accessible</li>
+          <li><strong>User communications</strong> — Regularly communicate safety information to users, particularly when policies or features change</li>
+          <li><strong>Age assurance disclosure</strong> — Explain what age verification methods are used and why</li>
+        </ul>
+
+        <h3 id="internal-documentation">8.2. Internal Documentation</h3>
+        <p>Maintain comprehensive internal records including:</p>
+        <ul>
+          <li>Children's access assessments (updated annually)</li>
+          <li>Risk assessments (updated when significant changes occur)</li>
+          <li>Moderation decisions and rationales</li>
+          <li>Complaints and their resolutions</li>
+          <li>Safety incidents and responses</li>
+          <li>Age assurance effectiveness reviews</li>
+        </ul>
+
+        <h3 id="ofcom-contact">8.3. Ofcom Contact</h3>
+        <p>
+          Designate a direct contact point for Ofcom correspondence regarding compliance queries or enforcement actions. Respond promptly to Ofcom requests, as delays can escalate enforcement responses.
+        </p>
+      </section>
+
+      <!-- ===== SECTION 9: CASE STUDIES ===== -->
+      <section id="case-studies">
+        <h2>9. Case Studies and Examples</h2>
+
+        <h3 id="discourse-approaches">9.1. Discourse Platform Approaches</h3>
+        <p>
+          Discourse's own guidance acknowledges the OSA challenges. The company emphasises that compliance depends not only on software capabilities but on how administrators configure and operate their communities. Discourse provides tools but places responsibility on community operators to implement age assurance and safety measures appropriate to their context.
+        </p>
+        <p>
+          One Discourse community operator (Weather-Watch, 2025) documented their OSA compliance approach on the platform's forum. They implemented:
+        </p>
+        <ul>
+          <li>Age verification at registration using email verification against known databases</li>
+          <li>Layered moderation with automated filters and human review</li>
+          <li>Content categorisation separating general discussion from potentially harmful material</li>
+          <li>Regular risk assessment reviews tied to feature updates</li>
+        </ul>
+
+        <h3 id="parental-consent-case-study">9.2. Strengthened Parental Consent Case Study</h3>
+        <div class="info-card yellow-border">
+          <h3>High Drop-off From Strict Verification</h3>
+          <p>
+            One platform interviewed for government research (UK Government, 2023) strengthened its Verified Parental Consent process by requiring credit card or ID verification. This resulted in 50–80% user drop-off. The platform was not able to determine whether drop-off resulted from the effort required, lack of ID access, or privacy concerns.
+          </p>
+          <p>
+            This case study reinforces why layered approaches starting with lighter-touch methods are preferable for teenagers who merit more autonomy than younger children.
+          </p>
+        </div>
+
+        <h3 id="france-case-study">9.3. Learning from France</h3>
+        <p>
+          France's data protection authority CNIL and media regulator ARCOM developed detailed age verification guidance emphasising privacy-preserving methods (Baker McKenzie, 2025). Their approach advocates:
+        </p>
+        <ul>
+          <li>Double-blind architecture where verification and access-granting are separated</li>
+          <li>Favouring cryptographic proofs of age over identity disclosure</li>
+          <li>Independent third-party certification of age assurance systems</li>
+          <li>Proportionality based on content risk</li>
+        </ul>
+
+        <blockquote>
+          <p>This privacy-first approach offers a model for activist organisations like AIUK where user anonymity and security are priorities.</p>
+        </blockquote>
+      </section>
+
+      <!-- ===== SECTION 10: RISK ANALYSIS ===== -->
+      <section id="risk-analysis">
+        <h2>10. Risk Analysis</h2>
+
+        <h3 id="compliance-risks">10.1. Compliance Risks</h3>
+
+        <div class="risk-grid">
+          <div class="risk-card compliance">
+            <h4>10.1.1. Inadequate Age Assurance</h4>
+            <p>If AIUK relies solely on self-declaration without additional measures, Ofcom could deem age assurance ineffective. This exposes the platform to enforcement action.</p>
+            <div class="mitigation"><strong>Mitigation:</strong> Implement layered age assurance combining self-declaration with email verification, behavioural monitoring, and reserved capacity for hard identifier verification when needed.</div>
+          </div>
+          <div class="risk-card compliance">
+            <h4>10.1.2. Insufficient Risk Assessment</h4>
+            <p>Failure to identify and address risks of harm to teenagers could breach child safety duties.</p>
+            <div class="mitigation"><strong>Mitigation:</strong> Conduct thorough initial risk assessment and update regularly, particularly when adding new features or if incidents occur.</div>
+          </div>
+          <div class="risk-card compliance">
+            <h4>10.1.3. Slow Content Removal</h4>
+            <p>The OSA requires swift removal of illegal content. Delays could trigger enforcement action, particularly for priority illegal content like child sexual abuse material or terrorist content.</p>
+            <div class="mitigation"><strong>Mitigation:</strong> Establish clear moderation workflows with defined response timeframes. Use automated detection for priority illegal content categories.</div>
+          </div>
+          <div class="risk-card compliance">
+            <h4>10.1.4. Inadequate Complaints Handling</h4>
+            <p>Failing to provide accessible, age-appropriate reporting mechanisms or not responding to complaints appropriately breaches OSA requirements.</p>
+            <div class="mitigation"><strong>Mitigation:</strong> Implement multiple reporting channels, clear communication about processes, and documented appeals procedures.</div>
+          </div>
+        </div>
+
+        <h3 id="operational-risks">10.2. Operational Risks</h3>
+
+        <div class="risk-grid">
+          <div class="risk-card operational">
+            <h4>10.2.1. Moderator Capacity</h4>
+            <p>Human moderation requires trained staff understanding both human rights context and child safety. Insufficient moderation capacity could allow harmful content to persist.</p>
+            <div class="mitigation"><strong>Mitigation:</strong> Invest in training moderators on OSA requirements, child safety concerns, and trauma-informed practices for reviewing human rights documentation.</div>
+          </div>
+          <div class="risk-card operational">
+            <h4>10.2.2. Technology Limitations</h4>
+            <p>Automated content filters may generate false positives (blocking legitimate human rights content) or false negatives (missing harmful content).</p>
+            <div class="mitigation"><strong>Mitigation:</strong> Combine automated tools with human review. Tune filters to your community's specific context. Allow appeals of automated decisions.</div>
+          </div>
+          <div class="risk-card operational">
+            <h4>10.2.3. User Circumvention</h4>
+            <p>Young people may attempt to bypass age assurance. Research indicates vulnerable youth might be highly motivated to gain access because online communities provide important inclusion and connection.</p>
+            <div class="mitigation"><strong>Mitigation:</strong> Ongoing behavioural monitoring can identify users who bypassed initial checks. Education about why age limits exist may increase compliance.</div>
+          </div>
+        </div>
+
+        <h3 id="mission-risks">10.3. Mission Risks</h3>
+
+        <div class="risk-grid">
+          <div class="risk-card mission">
+            <h4>10.3.1. Deterring Legitimate Young Activists</h4>
+            <p>Overly restrictive age assurance could exclude genuine teenage activists AIUK wants to engage.</p>
+            <div class="mitigation"><strong>Mitigation:</strong> Use inclusive age assurance methods that don't require ID documents many young people lack. Layered approaches maximise inclusion.</div>
+          </div>
+          <div class="risk-card mission">
+            <h4>10.3.2. Chilling Effect on Sensitive Discussions</h4>
+            <p>Excessive content moderation or surveillance could deter open discussion of human rights issues.</p>
+            <div class="mitigation"><strong>Mitigation:</strong> Use privacy-preserving age assurance. Communicate clearly about what content moderation occurs and why. Focus moderation on genuine harms rather than legitimate human rights documentation.</div>
+          </div>
+          <div class="risk-card mission">
+            <h4>10.3.3. Activist Security Concerns</h4>
+            <p>Age verification requiring ID submission creates security risks for activists in hostile environments.</p>
+            <div class="mitigation"><strong>Mitigation:</strong> Use privacy-preserving age assurance that doesn't require ID submission to third parties. If hard identifier verification is needed in specific cases, use certified services with strong data protection.</div>
+          </div>
+        </div>
+
+        <h3 id="reputational-risks">10.4. Reputational Risks</h3>
+
+        <div class="risk-grid">
+          <div class="risk-card reputational">
+            <h4>10.4.1. Ofcom Enforcement Action</h4>
+            <p>Public enforcement action including fines or service restriction orders would damage AIUK's reputation.</p>
+            <div class="mitigation"><strong>Mitigation:</strong> Prioritise compliance, document your approach thoroughly, and engage proactively with Ofcom if questions arise.</div>
+          </div>
+          <div class="risk-card reputational">
+            <h4>10.4.2. Child Safety Incidents</h4>
+            <p>High-profile cases of children being harmed through the platform would generate significant criticism and negative publicity.</p>
+            <div class="mitigation"><strong>Mitigation:</strong> Robust risk assessment, proactive safety measures, and swift incident response.</div>
+          </div>
+          <div class="risk-card reputational">
+            <h4>10.4.3. Excluding Young Activists</h4>
+            <p>Being seen to exclude young people AIUK claims to support could contradict organisational mission.</p>
+            <div class="mitigation"><strong>Mitigation:</strong> Choose inclusive age assurance methods. Communicate clearly about the legal requirements driving age assurance decisions.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== SECTION 11: TECHNOLOGY RECOMMENDATIONS ===== -->
+      <section id="technology">
+        <h2>11. Technology Recommendations</h2>
+
+        <h3 id="discourse-config">11.1. Discourse Configuration</h3>
+        <p>Core Safety Settings:</p>
+
+        <div class="info-card blue-border">
+          <h3>Recommended Discourse Safety Configuration</h3>
+          <ul>
+            <li><strong>Registration controls</strong> — Require email verification, implement registration screening questions, enable manual approval for new accounts if needed</li>
+            <li><strong>Trust level progression</strong> — Configure Discourse's trust levels to limit new user capabilities until they demonstrate appropriate behaviour</li>
+            <li><strong>Content filters</strong> — Implement watched words lists for terms associated with self-harm, suicide, eating disorders, and other priority harms</li>
+            <li><strong>Flagging thresholds</strong> — Set appropriate thresholds for automated actions when users flag content</li>
+            <li><strong>Rate limiting</strong> — Configure post limits, reply limits, and message limits to prevent harassment and flooding</li>
+            <li><strong>Category permissions</strong> — Create graduated access with some categories restricted to higher trust levels or requiring additional verification</li>
+          </ul>
+        </div>
+
+        <h3 id="third-party-providers">11.2. Third-Party Age Assurance Services</h3>
+        <p>
+          Several providers offer age assurance technologies with which Discourse can integrate. The table below provides some options, with some providers combining multiple approaches to give end users a choice.
+        </p>
+
+        <div style="overflow-x:auto;">
+          <table class="age-table">
+            <thead>
+              <tr>
+                <th>Solution</th>
+                <th>Description</th>
+                <th>Privacy</th>
+                <th>Compliance</th>
+                <th>Approx. Cost</th>
+                <th>HR Suitability</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Zero-Knowledge Proof (ZKP) age verification</td>
+                <td>Cryptographic proof of age without revealing birth date or identity. Uses digital wallet with government ID verification.</td>
+                <td><span class="tag tag-high">Very High</span></td>
+                <td><span class="tag tag-high">High</span></td>
+                <td>£0.50–£2.00 per verification</td>
+                <td class="rec-yes">Excellent</td>
+                <td>Cutting-edge privacy-preserving technology. Limited user adoption currently but growing. Providers: World ID, Nuggets, or custom ZKP solution.</td>
+              </tr>
+              <tr>
+                <td>Email-based age estimation</td>
+                <td>Estimates user age based on email account creation patterns and associated services without storing email data.</td>
+                <td><span class="tag tag-high">Medium-High</span></td>
+                <td><span class="tag tag-med">Medium</span></td>
+                <td>£0.10–£0.50 per verification</td>
+                <td class="rec-yes">Good</td>
+                <td>Ofcom-recognised method. May struggle with users of more private email services — which is common in activist communities. Providers: Yoti, Verifymy.</td>
+              </tr>
+              <tr>
+                <td>Facial age estimation</td>
+                <td>AI estimates age from selfies without storing images or identifying individuals. Photo deleted immediately after processing.</td>
+                <td><span class="tag tag-med">Medium</span></td>
+                <td><span class="tag tag-high">High</span></td>
+                <td>£0.15–£0.75 per check</td>
+                <td class="rec-maybe">Fair</td>
+                <td>OSA-compliant but may raise surveillance concerns. Yoti reports 99.3% accuracy. Quick but biometric concerns for high-risk individuals. <em>Note: after discussion with Yoti, this option is not recommended for AIUK.</em></td>
+              </tr>
+              <tr>
+                <td>Mobile Network Operator (MNO) age checks</td>
+                <td>Verifies age through mobile account holder information without sharing personal details with the platform.</td>
+                <td><span class="tag tag-med">Medium</span></td>
+                <td><span class="tag tag-high">High</span></td>
+                <td>£0.20–£1.00 per verification</td>
+                <td class="rec-maybe">Fair</td>
+                <td>Highly effective for OSA compliance but excludes prepaid users and those using burner phones — a concern for activist communities.</td>
+              </tr>
+              <tr>
+                <td>Self-declaration with cookie consent pattern</td>
+                <td>Simple age confirmation popup (Yes/No or birthdate entry) with cookie storage for return visits.</td>
+                <td><span class="tag tag-high">High</span></td>
+                <td><span class="tag tag-low">Basic</span></td>
+                <td>Free–£500 (development)</td>
+                <td class="rec-yes">Excellent</td>
+                <td class="rec-no">❌ Explicitly deemed insufficient by Ofcom guidance. Cannot be used as standalone method.</td>
+              </tr>
+              <tr>
+                <td>Document verification</td>
+                <td>Upload government ID to verify age, with automated extraction of birth date only and immediate document deletion.</td>
+                <td><span class="tag tag-low">Low-Medium</span></td>
+                <td><span class="tag tag-high">Very High</span></td>
+                <td>£0.75–£3.00 per verification</td>
+                <td class="rec-no">Poor</td>
+                <td>Highest compliance level but conflicts with activist anonymity needs. One billion people globally lack official ID. Providers: Jumio, ComplyCube, Sumsub.</td>
+              </tr>
+              <tr>
+                <td>Open banking age verification</td>
+                <td>Temporary bank account access to verify account holder age, with immediate disconnection after verification.</td>
+                <td><span class="tag tag-low">Medium-Low</span></td>
+                <td><span class="tag tag-high">High</span></td>
+                <td>£0.30–£1.20 per verification</td>
+                <td class="rec-no">Poor</td>
+                <td>OSA-recognised but inappropriate for human rights context due to financial tracking risks. Excludes unbanked individuals. Providers: TrueLayer, Plaid.</td>
+              </tr>
+              <tr>
+                <td>Credit card age verification</td>
+                <td>Credit card ownership verification (minimum age 18 in UK) without storing card details or processing payments.</td>
+                <td><span class="tag tag-low">Low</span></td>
+                <td><span class="tag tag-high">High</span></td>
+                <td>£0.20–£1.00 per verification</td>
+                <td class="rec-no">Poor</td>
+                <td>Financial surveillance risk; excludes those without credit cards.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="info-card green-border">
+          <h3>Recommended: Yoti</h3>
+          <p>
+            Yoti is worth exploring as it provides multiple methods for users to prove their age online. Although they offer over 10 different ways to do this, the options most relevant to AIUK community members are:
+          </p>
+          <ul>
+            <li><strong>Email-based age estimation</strong></li>
+            <li><strong>Digital ID app</strong> — whilst not strictly a ZKP solution, it works in a similar way, being privacy-focused and providing minimal disclosure</li>
+          </ul>
+          <p>
+            Zero-knowledge proofs (ZKP) rely on adding government ID to a wallet provided by a third-party provider. Whilst this might be a good option in future, it is likely to be confusing at the time of AIUK's community platform launch.
+          </p>
+        </div>
+      </section>
+
+      <!-- ===== SECTION 12: IMPLEMENTATION TIMELINE ===== -->
+      <section id="implementation">
+        <h2>12. Implementation Timeline</h2>
+
+        <h3 id="immediate-actions">12.1. Immediate Actions</h3>
+        <div class="info-card red-border">
+          <h3>Immediate Actions Required</h3>
+          <ul>
+            <li>Complete formal Children's Access Assessment documenting that children will access the platform</li>
+            <li>Conduct comprehensive risk assessment identifying harms children might encounter</li>
+            <li>Designate Ofcom contact point</li>
+            <li>Review and strengthen Terms of Service to meet OSA requirements</li>
+          </ul>
+        </div>
+
+        <h3 id="short-term-actions">12.2. Short-Term Actions</h3>
+        <div class="info-card yellow-border">
+          <h3>Short-Term Actions</h3>
+          <ul>
+            <li>Implement layered age assurance combining self-declaration, email verification, and behavioural monitoring</li>
+            <li>Configure Discourse safety features including trust levels, content filters, and moderation queues</li>
+            <li>Establish content moderation workflows and train moderators on OSA requirements</li>
+            <li>Create user-facing safety information and reporting guides</li>
+            <li>Develop internal documentation templates for tracking compliance activities</li>
+          </ul>
+        </div>
+
+        <h3 id="ongoing-actions">12.3. Ongoing Actions</h3>
+        <div class="info-card green-border">
+          <h3>Ongoing Compliance Activities</h3>
+          <ul>
+            <li>Monitor age assurance effectiveness monthly and adjust as needed</li>
+            <li>Review and update risk assessments quarterly or after significant changes</li>
+            <li>Conduct annual Children's Access Assessment</li>
+            <li>Analyse moderation metrics and user reports to identify emerging issues</li>
+            <li>Update policies and procedures as Ofcom guidance evolves</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== SECTION 13: CONCLUSION ===== -->
+      <section id="conclusion">
+        <h2>13. Conclusion</h2>
+        <p>
+          The OSA represents a significant shift in UK internet regulation, placing substantial obligations on platforms serving children aged under 18. For AIUK's Discourse community including teenage activists, compliance requires implementing age assurance, conducting thorough risk assessments, establishing robust content moderation, and maintaining comprehensive documentation.
+        </p>
+        <p>
+          The recommended approach balances statutory obligations with AIUK's mission to engage young activists. Layered age assurance maximises inclusion whilst meeting effectiveness standards. Privacy-preserving methods protect activist security. Risk-proportionate safety measures address genuine harms without excessive censorship.
+        </p>
+        <p>
+          Starting with teenagers rather than 18+ increases compliance complexity but remains achievable with proper planning and resource allocation. The alternative — initially restricting the platform to 18+ and later expanding to teenage activists — would require conducting new risk assessments and implementing age assurance at that later stage anyway.
+        </p>
+        <p>
+          By following this guidance, AIUK can create a community platform that complies with the OSA whilst fulfilling its mission to engage and support young human rights activists.
+        </p>
+      </section>
+
+      <!-- ===== REFERENCES ===== -->
+      <section id="references">
+        <h2>References</h2>
+        <ul style="font-size:0.88rem; color:#4a6070; line-height:1.7;">
+          <li>Aardwolf Security. (2025). <a href="https://aardwolfsecurity.com/uk-age-verification-the-online-safety-acts-privacy-nightmare/" rel="noopener" target="_blank">UK age verification: The Online Safety Act's privacy nightmare.</a></li>
+          <li>Baker McKenzie. (2025). <a href="https://connectontech.bakermckenzie.com/age-assurance-and-privacy-regulatory-trends-in-youth-online-protection/" rel="noopener" target="_blank">Age assurance and privacy: Regulatory trends in youth online protection.</a></li>
+          <li>BBC News. (2025). <a href="https://www.bbc.co.uk/news/articles/c1k81lj8nvpo" rel="noopener" target="_blank">Which sites will require UK age verification?</a></li>
+          <li>CometChat. (2025). <a href="https://www.cometchat.com/blog/online-safety-act-compliance" rel="noopener" target="_blank">How to comply with the UK Online Safety Act: A step-by-step guide.</a></li>
+          <li>Consumer Society. (2025). <a href="https://consoc.org.uk/the-online-safety-act-privacy-threats-and-free-speech-risks/" rel="noopener" target="_blank">Online Safety Act: Privacy threats and free speech risks.</a></li>
+          <li>Discourse. (2025). <a href="https://blog.discourse.org/2025/08/strategies-for-keeping-children-safe-in-your-online-community/" rel="noopener" target="_blank">Strategies for keeping children safe in your online community.</a></li>
+          <li>HSF Kramer. (2025). <a href="https://www.hsfkramer.com/notes/publiclaw/2025-posts/Forecasting-disputes-under-the-Online-Safety-Act--what-can-we-learn-from-proceedings-under-the-Digital-Services-Act-to-date-" rel="noopener" target="_blank">Forecasting disputes under the Online Safety Act.</a></li>
+          <li>Index on Censorship. (2025). <a href="https://www.indexoncensorship.org/2025/07/free-expression-concerns-over-online-safety-acts-age-verification-requirements/" rel="noopener" target="_blank">Free expression concerns over Online Safety Act's age verification requirements.</a></li>
+          <li>Information Commissioner's Office. (2022). <a href="https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/childrens-information/childrens-code-guidance-and-resources/age-appropriate-design-a-code-of-practice-for-online-services/" rel="noopener" target="_blank">Age appropriate design: a code of practice for online services.</a></li>
+          <li>Information Commissioner's Office. (2024). <a href="https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/childrens-information/childrens-code-guidance-and-resources/how-to-use-our-guidance-for-standard-one-best-interests-of-the-child/best-interests-framework/age-assurance/" rel="noopener" target="_blank">Age assurance: Estimating or verifying the age of service users.</a></li>
+          <li>Information Technology and Innovation Foundation. (2025). <a href="https://itif.org/publications/2025/10/06/three-fixes-to-improve-the-uks-online-safety-act/" rel="noopener" target="_blank">Three fixes to improve the UK's Online Safety Act.</a></li>
+          <li>Kingsley Napley. (2025). <a href="https://www.kingsleynapley.co.uk/insights/blogs/criminal-law-blog/new-child-safety-duties-under-the-online-safety-act-what-online-platforms-must-know" rel="noopener" target="_blank">New child safety duties under the Online Safety Act: What online platforms must know.</a></li>
+          <li>LCF. (2025). <a href="https://lcf.co.uk/media-centre/blogs/new-duties-under-the-online-safety-act-tcs-children-can-understand/" rel="noopener" target="_blank">New duties under the Online Safety Act: T&amp;Cs children can understand.</a></li>
+          <li>Lewis Silkin. (2025, January). <a href="https://www.lewissilkin.com/en/insights/2025/01/14/content-moderation-and-the-uks-online-safety-act-osa-102jtmq" rel="noopener" target="_blank">Content moderation and the UK's Online Safety Act (OSA).</a></li>
+          <li>Lewis Silkin. (2025, September). <a href="https://www.lewissilkin.com/en/insights/2025/09/19/whats-new-on-online-safety-102l5gi" rel="noopener" target="_blank">What's new on online safety?</a></li>
+          <li>Mishcon de Reya. (2025). <a href="https://www.mishcon.com/news/online-safety-act-deadline-approaches-for-compliance-with-childrens-access-assessment" rel="noopener" target="_blank">Online Safety Act: Deadline approaches for compliance with Children's Access Assessment.</a></li>
+          <li>NSPCC Learning. (2023). <a href="https://learning.nspcc.org.uk/news/2023/november/what-online-safety-act-means-children-professionals" rel="noopener" target="_blank">The Online Safety Act: What it means for children and professionals.</a></li>
+          <li>Osborne Clarke. (2025). <a href="https://www.osborneclarke.com/insights/uk-online-safety-act-ofcom-publishes-guidance-age-assurance-and-childrens-access" rel="noopener" target="_blank">UK Online Safety Act: Ofcom publishes guidance on age assurance and children's access assessments.</a></li>
+          <li>Sumsub. (2025). <a href="https://sumsub.com/blog/age-verification-on-social-media/" rel="noopener" target="_blank">Age verification on social media in 2025: Laws and technologies.</a></li>
+          <li>Travers Smith. (2025). <a href="https://www.traverssmith.com/knowledge/knowledge-container/navigating-the-online-safety-act/" rel="noopener" target="_blank">Navigating the Online Safety Act.</a></li>
+          <li>Trilateral Research. (2024). <a href="https://trilateralresearch.com/data-protection/the-online-safety-act-uk-contents-implementation-and-compliance" rel="noopener" target="_blank">The Online Safety Act (UK): Contents, implementation, and compliance.</a></li>
+          <li>Turing Institute CETAS. <a href="https://cetas.turing.ac.uk/publications/age-assurance-technologies-and-online-safety" rel="noopener" target="_blank">Age assurance technologies and online safety.</a></li>
+          <li>UK Government. (2023). <a href="https://assets.publishing.service.gov.uk/media/642572d160a35e000c0cb1ae/age_assurance_technologies_and_inclusion_considerations.pdf" rel="noopener" target="_blank">Age assurance technologies and inclusion considerations.</a> GOV.UK.</li>
+          <li>UK Government. (2025, April). <a href="https://www.gov.uk/government/publications/online-safety-act-explainer/online-safety-act-explainer" rel="noopener" target="_blank">Online Safety Act: Explainer.</a> GOV.UK.</li>
+          <li>UK Government. (2025, July). <a href="https://www.gov.uk/government/publications/statement-of-strategic-priorities-for-online-safety/final-statement-of-strategic-priorities-for-online-safety" rel="noopener" target="_blank">Final Statement of Strategic Priorities for Online Safety.</a> GOV.UK.</li>
+          <li>UK Government. (2025, July). <a href="https://www.gov.uk/government/collections/online-safety-act" rel="noopener" target="_blank">Online Safety Act.</a> GOV.UK.</li>
+          <li>Weather-Watch Community. (2025). <a href="https://discourse.weather-watch.com/t/compliance-with-the-uk-online-safety-act-2023/75072" rel="noopener" target="_blank">Compliance with the UK Online Safety Act 2023.</a></li>
+          <li>Wiggin. (2025). <a href="https://www.wiggin.co.uk/insight/childrens-access-assessments-ofcom-issues-guidance/" rel="noopener" target="_blank">Children's Access Assessments: Ofcom issues guidance.</a></li>
+          <li>Yoti. (2025). <a href="https://www.yoti.com/blog/understanding-age-verification-online-safety-act/" rel="noopener" target="_blank">Understanding age assurance in the Online Safety Act.</a></li>
+        </ul>
+      </section>
+
+    </article>
+
+    <aside class="sidebar" aria-label="Page navigation">
+      <div class="sidebar-card">
+        <div class="sidebar-card-head">On this page</div>
+        <ul class="sidebar-toc">
+          <li><a href="#overview">About this document</a></li>
+          <li><a href="#regulatory-framework">1. Regulatory Framework</a></li>
+          <li><a href="#childrens-access-assessment">2. Children's Access Assessment</a></li>
+          <li><a href="#age-assurance">3. Age Assurance</a></li>
+          <li><a href="#risk-assessment">4. Risk Assessment</a></li>
+          <li><a href="#content-moderation">5. Content Moderation</a></li>
+          <li><a href="#complaints">6. Complaints &amp; Redress</a></li>
+          <li><a href="#data-protection">7. Data Protection</a></li>
+          <li><a href="#transparency">8. Transparency</a></li>
+          <li><a href="#case-studies">9. Case Studies</a></li>
+          <li><a href="#risk-analysis">10. Risk Analysis</a></li>
+          <li><a href="#technology">11. Technology</a></li>
+          <li><a href="#implementation">12. Implementation Timeline</a></li>
+          <li><a href="#conclusion">13. Conclusion</a></li>
+          <li><a href="#references">References</a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sidebar-card-head">Document details</div>
+        <div class="sidebar-meta">
+          <p><strong>Phase</strong><br />Pilot Prep</p>
+          <p><strong>Group</strong><br />Pilot Resources</p>
+          <p><strong>Updated</strong><br />24 October 2025</p>
+          <p><strong>Author</strong><br />We Are Open Co-op (WAO)</p>
+          <p><strong>Source</strong><br /><a href="https://docs.google.com/document/d/14kJALWB_uJO3T_34hz5ztZ7E_491st6riFuPFk7AnbE/edit" rel="noopener" target="_blank">Open in Google Docs ↗</a></p>
+          <a href="index.html#timeline" class="back-link">← Pilot Prep</a>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+</main>
+
+<footer>
+  <img src="https://wiki.weareopen.coop/wao_logo_whitetr_1500.png" alt="WAO Cooperative" />
+  <div class="footer-bottom">
+    <span>AIUK Community Platform Project · Produced by <a href="https://weareopen.coop" rel="noopener">WAO Cooperative</a></span>
+  </div>
+</footer>
+
+</body>
+</html>
