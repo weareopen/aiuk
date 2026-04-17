@@ -12,7 +12,7 @@
     :root {
       --accent: #16A8E2;
       --accent-rgb: 22,168,226;
-      --accent-hover: #1290c4;
+      --accent-light: #107aa4; --accent-dark: #2ac2ff; --accent-hover: #0e6f96;
     }
 
     .doc-table {
@@ -33,7 +33,7 @@
     .doc-table tbody tr:last-child { border-bottom: none; }
     .doc-table tbody tr:hover { background: #f0f7ff; }
     .doc-table td { padding: 12px 16px; color: var(--text); line-height: 1.5; }
-    .doc-table td a { color: var(--blue); font-weight: 600; text-decoration: none; }
+    .doc-table td a { color: var(--accent-light); font-weight: 600; text-decoration: none; }
     .doc-table td a:hover { text-decoration: underline; }
     .doc-table .note { color: var(--mid-grey); font-size: 0.82rem; }
     .people-grid {
@@ -57,13 +57,13 @@
       font-weight: 800; font-size: 1rem; margin-bottom: 12px;
       color: var(--white);
     }
-    .person-card:nth-child(1) .person-avatar { background: var(--green); }
-    .person-card:nth-child(2) .person-avatar { background: var(--blue); }
+    .person-card:nth-child(1) .person-avatar { background: #008165; }
+    .person-card:nth-child(2) .person-avatar { background: #017daf; }
     .person-card:nth-child(3) .person-avatar { background: var(--yellow); color: var(--charcoal); }
-    .person-card:nth-child(4) .person-avatar { background: var(--red); }
+    .person-card:nth-child(4) .person-avatar { background: #d43e33; }
     .person-card:nth-child(5) .person-avatar { background: var(--charcoal); }
-    .person-card:nth-child(6) .person-avatar { background: var(--green); }
-    .person-card:nth-child(7) .person-avatar { background: var(--blue); }
+    .person-card:nth-child(6) .person-avatar { background: #008165; }
+    .person-card:nth-child(7) .person-avatar { background: #017daf; }
     .person-name { font-weight: 800; font-size: 0.92rem; color: var(--charcoal); margin-bottom: 3px; }
     .person-role { font-size: 0.8rem; color: var(--mid-grey); line-height: 1.4; }
     .person-org {
@@ -126,7 +126,7 @@
     }
     .heartbeat-box h3 {
       font-family: var(--font-head); font-size: 1rem; font-weight: 600;
-      color: var(--green); margin-bottom: 10px;
+      color: #008165; margin-bottom: 10px;
     }
     .heartbeat-box p { color: rgba(255,255,255,0.75); font-size: 0.9rem; margin-bottom: 0; }
     .heartbeat-box blockquote {

@@ -12,7 +12,7 @@
     :root {
       --accent: #16A8E2;
       --accent-rgb: 22,168,226;
-      --accent-hover: #1290c4;
+      --accent-light: #107aa4; --accent-dark: #2ac2ff; --accent-hover: #0e6f96;
     }
 
     .content ul li, .content ol li { font-size: 0.95rem; color: #4a6070; margin-bottom: 6px; line-height: 1.65; }
@@ -20,7 +20,7 @@
     .process-steps { display: flex; flex-direction: column; gap: 0; margin: 24px 0 32px; }
     .step { display: flex; gap: 20px; position: relative; }
     .step:not(:last-child)::after { content: ''; position: absolute; left: 19px; top: 44px; bottom: -1px; width: 2px; background: var(--light-grey); }
-    .step-num { width: 40px; height: 40px; border-radius: 50%; background: var(--blue); color: var(--white); font-weight: 800; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 4px; z-index: 1; }
+    .step-num { width: 40px; height: 40px; border-radius: 50%; background: #017daf; color: var(--white); font-weight: 800; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 4px; z-index: 1; }
     .step-body { padding-bottom: 28px; flex: 1; min-width: 0; }
     .step-body h4 { font-family: var(--font-head); font-size: 0.95rem; font-weight: 600; color: var(--charcoal); margin-bottom: 8px; }
     .step-body p { font-size: 0.88rem; color: #4a6070; margin: 0; line-height: 1.6; }

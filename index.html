@@ -12,7 +12,7 @@
     :root {
       --accent: #00C399;
       --accent-rgb: 0,195,153;
-      --accent-hover: #00a881;
+      --accent-light: #008165; --accent-dark: #04cda2; --accent-hover: #00775e;
     }
 
     .hero-tag span { width: 7px; height: 7px; background: var(--green); border-radius: 50%; display: inline-block; }
@@ -179,8 +179,8 @@
     .doc-item .doc-icon.gdoc  { background: #e8f0fe; color: #4285f4; }
     .doc-item .doc-icon.gslide { background: #fff3e0; color: #fb8c00; }
     .doc-item .doc-icon.gsheet { background: #e6f4ea; color: #34a853; }
-    .doc-item .doc-icon.link   { background: rgba(0,195,153,0.12); color: var(--green); }
-    .doc-item .doc-icon.blog   { background: rgba(252,89,77,0.12); color: var(--red); }
+    .doc-item .doc-icon.link   { background: rgba(0,195,153,0.12); color: #008165; }
+    .doc-item .doc-icon.blog   { background: rgba(252,89,77,0.12); color: #c7463c; }
     .doc-item .checked::after {
       content: '✅';
       font-size: 0.75rem;
@@ -238,7 +238,7 @@
       font-size: 0.85rem; font-weight: 600;
       transition: color .2s;
     }
-    .footer-links a:hover { color: var(--green); }
+    .footer-links a:hover { color: var(--accent-dark); }
     .hero-meta         { animation-delay: 0.3s; }
   </style>
 </head>

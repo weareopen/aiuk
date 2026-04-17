@@ -12,12 +12,12 @@
     :root {
       --accent: #FFBC42;
       --accent-rgb: 255,188,66;
-      --accent-hover: #e5a630;
+      --accent-light: #916b25; --accent-dark: #FFBC42; --accent-hover: #846122;
     }
 
     .heartbeat-box { background: var(--charcoal); color: var(--white); border-radius: var(--radius); padding: 28px 32px; margin: 20px 0 32px; position: relative; overflow: hidden; }
     .heartbeat-box::after { content: '♥'; position: absolute; right: 24px; top: 50%; transform: translateY(-50%); font-size: 5rem; opacity: 0.06; pointer-events: none; }
-    .heartbeat-box h3 { font-family: var(--font-head); font-size: 1rem; font-weight: 600; color: var(--green); margin-bottom: 10px; }
+    .heartbeat-box h3 { font-family: var(--font-head); font-size: 1rem; font-weight: 600; color: #008165; margin-bottom: 10px; }
     .heartbeat-box p { color: rgba(255,255,255,0.75); font-size: 0.9rem; margin-bottom: 0; }
     .standup-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0 28px; }
     @media (max-width: 600px) { .standup-strip { grid-template-columns: 1fr; } }
