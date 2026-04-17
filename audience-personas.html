@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Audience Refinement &amp; Persona Spectrums · AIUK Community Platform Project</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;600;700&family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --charcoal:   #2F495A;
+      --green:      #00C399;
+      --yellow:     #FFBC42;
+      --blue:       #16A8E2;
+      --red:        #FC594D;
+      --white:      #FFFFFF;
+      --off-white:  #F7F9FA;
+      --light-grey: #EDF1F4;
+      --mid-grey:   #8FA3B0;
+      --text:       #2F495A;
+      --font-head: 'Roboto Slab', Georgia, serif;
+      --font-body: 'Nunito', system-ui, sans-serif;
+      --radius: 12px;
+      --radius-sm: 6px;
+      --shadow: 0 4px 24px rgba(47,73,90,0.10);
+      --shadow-hover: 0 8px 36px rgba(47,73,90,0.18);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-body); color: var(--text); background: var(--off-white); line-height: 1.7; font-size: 16px; }
+
+    .skip-link { position: absolute; top: -40px; left: 16px; background: var(--green); color: var(--white); padding: 8px 14px; border-radius: var(--radius-sm); font-weight: 700; z-index: 9999; transition: top .2s; }
+    .skip-link:focus { top: 16px; }
+
+    nav { position: sticky; top: 0; z-index: 100; background: var(--charcoal); display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(16px, 5vw, 48px); height: 60px; box-shadow: 0 2px 12px rgba(0,0,0,0.2); }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .nav-logo img { height: 36px; }
+    .nav-links { display: flex; gap: 4px; list-style: none; flex-wrap: wrap; }
+    .nav-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.82rem; font-weight: 600; letter-spacing: 0.02em; padding: 6px 10px; border-radius: var(--radius-sm); transition: color .2s, background .2s; }
+    .nav-links a:hover { color: var(--white); background: rgba(255,255,255,0.12); }
+
+    .breadcrumb { background: var(--white); border-bottom: 1px solid var(--light-grey); padding: 10px clamp(16px, 5vw, 48px); font-size: 0.82rem; color: var(--mid-grey); display: flex; align-items: center; gap: 8px; }
+    .breadcrumb a { color: var(--mid-grey); text-decoration: none; font-weight: 600; }
+    .breadcrumb a:hover { color: var(--green); }
+    .breadcrumb span { color: var(--charcoal); font-weight: 700; }
+
+    .hero { background: var(--charcoal); padding: clamp(48px, 8vw, 80px) clamp(16px, 5vw, 48px) clamp(40px, 6vw, 64px); position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 50% 90% at 90% 20%, rgba(252,89,77,0.18) 0%, transparent 60%), radial-gradient(ellipse 40% 60% at 5% 90%, rgba(0,195,153,0.12) 0%, transparent 55%); pointer-events: none; }
+    .hero-inner { max-width: 760px; position: relative; }
+    .hero-tag { display: inline-flex; align-items: center; gap: 8px; background: rgba(252,89,77,0.18); border: 1px solid rgba(252,89,77,0.4); color: var(--red); font-size: 0.75rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 14px; border-radius: 100px; margin-bottom: 18px; }
+    .hero-tag a { color: inherit; text-decoration: none; }
+    .hero-tag a:hover { text-decoration: underline; }
+    h1 { font-family: var(--font-head); font-size: clamp(1.8rem, 4.5vw, 3rem); font-weight: 700; color: var(--white); line-height: 1.2; margin-bottom: 16px; }
+    h1 em { font-style: normal; color: var(--green); }
+    .hero-subtitle { font-size: clamp(0.95rem, 1.8vw, 1.1rem); color: rgba(255,255,255,0.7); max-width: 580px; line-height: 1.65; }
+
+    .page-wrap { max-width: 1100px; margin: 0 auto; padding: clamp(32px, 5vw, 64px) clamp(16px, 5vw, 48px); display: grid; grid-template-columns: 1fr 280px; gap: 48px; align-items: start; }
+    @media (max-width: 780px) { .page-wrap { grid-template-columns: 1fr; } .sidebar { order: -1; } }
+
+    .content { min-width: 0; }
+    .content h2 { font-family: var(--font-head); font-size: clamp(1.3rem, 2.5vw, 1.7rem); font-weight: 600; color: var(--charcoal); margin: 40px 0 14px; padding-top: 40px; border-top: 2px solid var(--light-grey); }
+    .content h2:first-child { margin-top: 0; padding-top: 0; border-top: none; }
+    .content h3 { font-family: var(--font-head); font-size: 1.1rem; font-weight: 600; color: var(--charcoal); margin: 28px 0 10px; }
+    .content p { margin-bottom: 16px; color: #4a6070; font-size: 0.97rem; line-height: 1.75; }
+    .content p strong { color: var(--charcoal); font-weight: 700; }
+    .content ul { padding-left: 20px; margin-bottom: 16px; }
+    .content ul li { color: #4a6070; font-size: 0.95rem; margin-bottom: 6px; line-height: 1.65; }
+    .content ul li strong { color: var(--charcoal); }
+
+    .info-card { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius); padding: 24px 28px; margin: 20px 0; box-shadow: var(--shadow); }
+    .info-card.blue-border  { border-left: 4px solid var(--blue); }
+    .info-card.green-border { border-left: 4px solid var(--green); }
+    .info-card.yellow-border { border-left: 4px solid var(--yellow); }
+    .info-card.red-border  { border-left: 4px solid var(--red); }
+    .info-card h3 { font-family: var(--font-head); font-size: 0.95rem; font-weight: 600; color: var(--charcoal); margin-bottom: 10px; }
+    .info-card p { margin-bottom: 0; font-size: 0.9rem; }
+    .info-card ul { padding-left: 18px; margin-top: 8px; }
+    .info-card ul li { font-size: 0.9rem; color: #4a6070; margin-bottom: 5px; line-height: 1.6; }
+    .info-card ul li strong { color: var(--charcoal); }
+
+    .doc-link-banner { background: var(--charcoal); border-radius: var(--radius); padding: 24px 28px; margin: 20px 0 32px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+    .doc-link-banner p { color: rgba(255,255,255,0.75); font-size: 0.9rem; margin: 0; }
+    .doc-link-banner a { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: var(--white); text-decoration: none; font-weight: 700; font-size: 0.88rem; padding: 10px 20px; border-radius: var(--radius-sm); white-space: nowrap; transition: background .2s; }
+    .doc-link-banner a:hover { background: #00a881; }
+
+    .three-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 20px 0 28px; }
+    @media (max-width: 640px) { .three-cols { grid-template-columns: 1fr; } }
+    .col-card { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+    .col-card .col-icon { font-size: 1.6rem; margin-bottom: 10px; }
+    .col-card h4 { font-family: var(--font-head); font-size: 0.9rem; font-weight: 600; color: var(--charcoal); margin-bottom: 8px; }
+    .col-card p { font-size: 0.83rem; color: #4a6070; margin: 0; line-height: 1.55; }
+
+    .two-cols { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin: 20px 0 28px; }
+    @media (max-width: 640px) { .two-cols { grid-template-columns: 1fr; } }
+
+    .feature-group { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius); padding: 22px 24px; margin: 0 0 14px; box-shadow: var(--shadow); }
+    .feature-group h4 { font-family: var(--font-head); font-size: 0.92rem; font-weight: 700; color: var(--charcoal); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--light-grey); }
+    .feature-group ul { padding-left: 16px; margin: 0; }
+    .feature-group ul li { font-size: 0.88rem; color: #4a6070; margin-bottom: 5px; line-height: 1.55; }
+    .feature-group ul li strong { color: var(--charcoal); }
+
+    .sidebar { position: sticky; top: 80px; }
+    .sidebar-card { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); margin-bottom: 20px; }
+    .sidebar-card-head { background: var(--charcoal); padding: 14px 18px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.6); }
+    .sidebar-toc { list-style: none; padding: 8px 0; }
+    .sidebar-toc li a { display: block; padding: 9px 18px; color: #4a6070; font-size: 0.85rem; font-weight: 600; text-decoration: none; border-left: 3px solid transparent; transition: color .2s, border-color .2s, background .2s; }
+    .sidebar-toc li a:hover { color: var(--charcoal); border-color: var(--green); background: rgba(0,195,153,0.06); }
+    .sidebar-meta { padding: 16px 18px; }
+    .sidebar-meta p { font-size: 0.82rem; color: var(--mid-grey); margin-bottom: 8px; line-height: 1.5; }
+    .sidebar-meta p strong { color: var(--charcoal); }
+    .back-link { display: inline-flex; align-items: center; gap: 7px; background: var(--green); color: var(--white); text-decoration: none; font-size: 0.85rem; font-weight: 700; padding: 10px 18px; border-radius: var(--radius-sm); transition: background .2s; width: 100%; justify-content: center; margin-top: 4px; }
+    .back-link:hover { background: #00a881; }
+
+    footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.1); padding: clamp(28px,4vw,48px) clamp(16px,5vw,48px); display: flex; flex-wrap: wrap; gap: 24px; justify-content: space-between; align-items: center; }
+    footer img { height: 32px; opacity: 0.7; }
+    .footer-bottom { color: rgba(255,255,255,0.35); font-size: 0.78rem; }
+    .footer-bottom a { color: rgba(255,255,255,0.5); text-decoration: none; }
+    .footer-bottom a:hover { color: var(--green); }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    .hero-inner > * { animation: fadeUp 0.5s ease both; }
+    .hero-tag { animation-delay: 0.0s; }
+    h1 { animation-delay: 0.1s; }
+    .hero-subtitle { animation-delay: 0.2s; }
+  </style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<nav aria-label="Primary navigation">
+  <a href="index.html" class="nav-logo" aria-label="Back to project index">
+    <img src="https://wiki.weareopen.coop/wao_logo_whitetr_1500.png" alt="WAO Cooperative logo" />
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html#project-overview">Overview</a></li>
+    <li><a href="index.html#key-reports">Key Reports</a></li>
+    <li><a href="index.html#timeline">All Documents</a></li>
+    <li><a href="charter.html">Project Charter</a></li>
+  </ul>
+</nav>
+
+<div class="breadcrumb" aria-label="Breadcrumb">
+  <a href="index.html">← Project Index</a>
+  <span aria-hidden="true">/</span>
+  <span>Phase Four: Strategy Design</span>
+  <span aria-hidden="true">/</span>
+  <span>Audience Refinement &amp; Persona Spectrums</span>
+</div>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">
+      <a href="index.html#timeline">← Phase Four: Strategy Design</a>
+    </div>
+    <h1>Audience Refinement &amp;<br /><em>Persona Spectrums</em></h1>
+    <p class="hero-subtitle">
+      A refined audience approach and persona spectrums for the AIUK Community Platform — defining who we are building for, and the spectrum of needs from new advocates to seasoned community leaders.
+    </p>
+  </div>
+</header>
+
+<main id="main">
+  <div class="page-wrap">
+
+    <article class="content">
+
+      <section id="overview">
+        <h2>About this document</h2>
+        <p>
+          Building power and making change is a collective endeavour. The AIUK Community Platform is not being built for everybody — it is being built for those who <strong>choose to step inside</strong>. Social media is the window, but activists are welcome to come inside. Activism is more like a café than a secret conversation.
+        </p>
+        <p>
+          This document draws on user research from the AIUK Data Report and proposes a refined audience approach, along with persona spectrums that highlight potential user groups and their distinct needs.
+        </p>
+
+        <div class="doc-link-banner">
+          <p>This document is held in Google Docs and is accessible to project team members.</p>
+          <a href="https://docs.google.com/document/d/1HWA8n_ssLZr0lKUF2vS5ooe1g3Po8vAssFqoG4wjeQY/edit" rel="noopener" target="_blank">View Stakeholder Mapping ↗</a>
+        </div>
+      </section>
+
+      <section id="potential-audience">
+        <h2>The potential audience</h2>
+        <p>
+          The AIUK audience is wide, diverse and multi-faceted. Stakeholder mapping shows a variety of connection points, audience groupings and different ways to think about the AIUK audience as a whole. An <a href="https://kumu.io/weareopen/aiuk-stakeholder-mapping" rel="noopener" target="_blank">interactive stakeholder map</a> helps illustrate the full landscape.
+        </p>
+        <p>
+          Insights from an April 2024 DaAT presentation informed thinking about how <em>active</em> different audience groups might be on the community platform. Groups likely to engage with the digital platform were mapped alongside stakeholder quadrants — those to "Engage Closely" and "Keep Satisfied." Audience groups with an engagement rating of three or higher were prioritised.
+        </p>
+
+        <div class="three-cols">
+          <div class="col-card">
+            <div class="col-icon">🌐</div>
+            <h4>Digital Action Takers</h4>
+            <p>People who engage primarily online — signing petitions, sharing content, participating in digital campaigns.</p>
+          </div>
+          <div class="col-card">
+            <div class="col-icon">🤝</div>
+            <h4>Active Volunteers</h4>
+            <p>Regular participants in AIUK activities — attending events, joining local groups, taking part in campaigns.</p>
+          </div>
+          <div class="col-card">
+            <div class="col-icon">🏛️</div>
+            <h4>Community Leaders</h4>
+            <p>Organisers who run groups and networks, coordinate country responses, and mentor other activists.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="refined-audience">
+        <h2>Refined audience focus</h2>
+        <p>
+          The potential audience for the AIUK Community Platform is huge and complex. To build with intention and serve the needs of those activists most likely to not only engage but also <strong>promote, improve, and help populate</strong> the platform, the project started with a focus on Community Leaders of Amnesty groups and networks.
+        </p>
+        <p>
+          These are the educators and activists who sit on committees, coordinate country responses, build youth or teacher networks, run local groups, and <em>organise</em> communities. This group includes a variety of both volunteers and staff — and they are engaged and responsive.
+        </p>
+
+        <div class="info-card green-border">
+          <h3>Why start with Community Leaders?</h3>
+          <p>Focusing on the existing activist base — the people already engaged with AIUK as activists and educators — before trying to build for wider conversion ensures the platform is well-grounded. This audience is extremely diverse in demographics and digital acumen, so focusing on known community activists will be representative of the wider potential audience.</p>
+        </div>
+
+        <p>
+          As the platform launches, the focus should be on <strong>Organiser activists</strong> while also inviting in all members of the various groups. These are the first community members — and understanding what they have in common requires assembling Persona Spectrums.
+        </p>
+      </section>
+
+      <section id="persona-spectrums">
+        <h2>Persona spectrums</h2>
+        <p>
+          A <a href="https://medium.com/microsoft-design/kill-your-personas-1c332d4908cc" rel="noopener" target="_blank">Persona Spectrum</a> is an approach that groups people by shared motivations or constraints. Rather than a single story, it is a collection of related experiences which highlight how a particular need can be met in different circumstances.
+        </p>
+        <p>
+          This approach considers a wider set of needs. For example, voice recognition software benefits those with a permanent speech impairment, someone who has lost their voice temporarily, or a person whose hands are occupied. By focusing on motivations and constraints, persona spectrums encourage solutions useful to more people — not just a narrowly defined type of community member.
+        </p>
+        <p>
+          In the AIUK context, there are both activists and educators. The needs of these two groups overlap significantly, but each also has distinct needs explored below.
+        </p>
+
+        <h3>Activist spectrum</h3>
+        <p>
+          Although initial focus is on Community Leaders, the goal is to build an AIUK community that is sustainable and accessible for all activists — new or experienced. The three-step activist persona spectrum is:
+        </p>
+
+        <div class="three-cols">
+          <div class="col-card">
+            <div class="col-icon">🌱</div>
+            <h4>New Human Rights Advocates</h4>
+            <p>Newcomers, casual users, digital action takers, curious people exploring human rights issues for the first time.</p>
+          </div>
+          <div class="col-card">
+            <div class="col-icon">✊</div>
+            <h4>Active Volunteers</h4>
+            <p>Regular users, community members, activists, educators, volunteers engaged in ongoing campaign and community work.</p>
+          </div>
+          <div class="col-card">
+            <div class="col-icon">🏆</div>
+            <h4>AIUK Community Leaders</h4>
+            <p>Committee members, country coordinators, local group leaders, long-term activists who organise and mentor others.</p>
+          </div>
+        </div>
+
+        <h3>Educator spectrum</h3>
+        <p>
+          A second spectrum focuses specifically on educators to capture the unique or outlying needs of teachers, trainers, and people who discuss human rights in classrooms or workshops:
+        </p>
+
+        <div class="three-cols">
+          <div class="col-card">
+            <div class="col-icon">📖</div>
+            <h4>Novice Educator</h4>
+            <p>A teacher or trainer new to human rights education but eager to learn. May or may not have existing community relationships.</p>
+          </div>
+          <div class="col-card">
+            <div class="col-icon">🎓</div>
+            <h4>Educational Practitioner</h4>
+            <p>Actively using AIUK programmes and resources, with some connections to other community members.</p>
+          </div>
+          <div class="col-card">
+            <div class="col-icon">⭐</div>
+            <h4>Veteran Educator</h4>
+            <p>Highly experienced in human rights organising and education, able to mentor and support other AIUK educators in various ways.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="features">
+        <h2>Features useful across the spectrum</h2>
+        <p>
+          Using research-backed Community Platform User Stories, five themes and associated user stories across the spectrum were established to identify base-level feature requirements. A full list is available in the <a href="https://docs.google.com/spreadsheets/d/1auNL5QeZnSSKoZSQA5sDI1OXosl0w8wXXtnriNC49p8/edit" rel="noopener" target="_blank">User Stories — Community Persona Spectrums spreadsheet</a>.
+        </p>
+
+        <div class="feature-group">
+          <h4>Communication &amp; Interaction</h4>
+          <ul>
+            <li><strong>Direct Messaging</strong> – Private messaging system with appropriate privacy controls</li>
+            <li><strong>Email Digests</strong> – Automatic email digests and on-demand group messaging by email</li>
+            <li><strong>Inclusive Messaging</strong> – Inclusive language guidelines and alternative terminology suggestions</li>
+            <li><strong>Local Connection</strong> – Geographic filtering and local group organisation tools</li>
+            <li><strong>Notifications</strong> – Customisable notifications, digests and alerts</li>
+            <li><strong>Search</strong> – Comprehensive search functionality with filters and suggestions</li>
+          </ul>
+        </div>
+
+        <div class="feature-group">
+          <h4>User Management &amp; Identity</h4>
+          <ul>
+            <li><strong>Onboarding workflow</strong> – Automated workflow for onboarding, including guidance and user trust levels</li>
+            <li><strong>Permissions</strong> – Content and discussion topic creation/sharing permissions</li>
+            <li><strong>Profile</strong> – Customisable user profiles</li>
+            <li><strong>Trust Levels</strong> – Customisable member trust levels</li>
+          </ul>
+        </div>
+
+        <div class="feature-group">
+          <h4>Safety &amp; Compliance</h4>
+          <ul>
+            <li><strong>Content Warnings</strong> – The ability to hide content behind a warning message</li>
+            <li><strong>GDPR &amp; Legal</strong> – GDPR compliance</li>
+            <li><strong>Moderation</strong> – Moderation tools available to appropriate user levels</li>
+            <li><strong>Privacy</strong> – Granular privacy controls for profiles, groups, and discussion threads</li>
+          </ul>
+        </div>
+
+        <div class="feature-group">
+          <h4>Recognition &amp; Motivation</h4>
+          <ul>
+            <li><strong>Engagement</strong> – Recognition of different types and levels of activism and trust levels</li>
+            <li><strong>Recognition</strong> – Open Recognition in the form of digital badges and credentials</li>
+            <li><strong>Impact</strong> – Impact tracking and reporting dashboard with multiple detail levels</li>
+            <li><strong>Variety</strong> – Visibility of types of activism opportunities available</li>
+            <li><strong>Templates</strong> – Posting guides and templates</li>
+          </ul>
+        </div>
+
+        <div class="feature-group">
+          <h4>Accessibility &amp; Usability</h4>
+          <ul>
+            <li><strong>Accessibility</strong> – Adherence to accessibility guidelines</li>
+            <li><strong>Bookmarking</strong> – Bookmarking and favouriting functionality</li>
+            <li><strong>Languages</strong> – Interface available in multiple languages</li>
+            <li><strong>Pinning Content</strong> – Functionality to pin content so all users see it</li>
+            <li><strong>Purpose</strong> – Pop-up/banner for users who aren't logged in or are new, giving purpose and links to Code of Conduct</li>
+          </ul>
+        </div>
+      </section>
+
+    </article>
+
+    <aside class="sidebar" aria-label="Page navigation">
+      <div class="sidebar-card">
+        <div class="sidebar-card-head">On this page</div>
+        <ul class="sidebar-toc">
+          <li><a href="#overview">About this document</a></li>
+          <li><a href="#potential-audience">The potential audience</a></li>
+          <li><a href="#refined-audience">Refined audience focus</a></li>
+          <li><a href="#persona-spectrums">Persona spectrums</a></li>
+          <li><a href="#features">Features across the spectrum</a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sidebar-card-head">Document details</div>
+        <div class="sidebar-meta">
+          <p><strong>Phase</strong><br />Phase Four: Strategy Design</p>
+          <p><strong>Group</strong><br />Audience &amp; Engagement Strategy</p>
+          <p><strong>Audience</strong><br />Project team, AIUK stakeholders</p>
+          <p><strong>Status</strong><br />Referenced in final reports ✅</p>
+          <p><strong>Source</strong><br /><a href="https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/6133965/ec060d40-2f99-4b7f-b603-d3d83b0cb011/Audience%20refinement%20and%20personas%20spectrum.md" rel="noopener" target="_blank">Source document ↗</a></p>
+          <a href="index.html" class="back-link">← Back to full index</a>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+</main>
+
+<footer>
+  <img src="https://wiki.weareopen.coop/wao_logo_whitetr_1500.png" alt="WAO Cooperative" />
+  <div class="footer-bottom">
+    <span>AIUK Community Platform Project · Produced by <a href="https://weareopen.coop" rel="noopener">WAO Cooperative</a></span>
+  </div>
+</footer>
+
+</body>
+</html>

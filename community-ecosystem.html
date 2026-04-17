@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Building an AIUK Community Ecosystem · AIUK Community Platform Project</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;600;700&family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --charcoal:   #2F495A;
+      --green:      #00C399;
+      --yellow:     #FFBC42;
+      --blue:       #16A8E2;
+      --red:        #FC594D;
+      --white:      #FFFFFF;
+      --off-white:  #F7F9FA;
+      --light-grey: #EDF1F4;
+      --mid-grey:   #8FA3B0;
+      --text:       #2F495A;
+      --font-head: 'Roboto Slab', Georgia, serif;
+      --font-body: 'Nunito', system-ui, sans-serif;
+      --radius: 12px;
+      --radius-sm: 6px;
+      --shadow: 0 4px 24px rgba(47,73,90,0.10);
+      --shadow-hover: 0 8px 36px rgba(47,73,90,0.18);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-body); color: var(--text); background: var(--off-white); line-height: 1.7; font-size: 16px; }
+
+    .skip-link { position: absolute; top: -40px; left: 16px; background: var(--green); color: var(--white); padding: 8px 14px; border-radius: var(--radius-sm); font-weight: 700; z-index: 9999; transition: top .2s; }
+    .skip-link:focus { top: 16px; }
+
+    nav { position: sticky; top: 0; z-index: 100; background: var(--charcoal); display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(16px, 5vw, 48px); height: 60px; box-shadow: 0 2px 12px rgba(0,0,0,0.2); }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .nav-logo img { height: 36px; }
+    .nav-links { display: flex; gap: 4px; list-style: none; flex-wrap: wrap; }
+    .nav-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.82rem; font-weight: 600; letter-spacing: 0.02em; padding: 6px 10px; border-radius: var(--radius-sm); transition: color .2s, background .2s; }
+    .nav-links a:hover { color: var(--white); background: rgba(255,255,255,0.12); }
+
+    .breadcrumb { background: var(--white); border-bottom: 1px solid var(--light-grey); padding: 10px clamp(16px, 5vw, 48px); font-size: 0.82rem; color: var(--mid-grey); display: flex; align-items: center; gap: 8px; }
+    .breadcrumb a { color: var(--mid-grey); text-decoration: none; font-weight: 600; }
+    .breadcrumb a:hover { color: var(--green); }
+    .breadcrumb span { color: var(--charcoal); font-weight: 700; }
+
+    .hero { background: var(--charcoal); padding: clamp(48px, 8vw, 80px) clamp(16px, 5vw, 48px) clamp(40px, 6vw, 64px); position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 50% 90% at 90% 20%, rgba(0,195,153,0.18) 0%, transparent 60%), radial-gradient(ellipse 40% 60% at 5% 90%, rgba(0,195,153,0.12) 0%, transparent 55%); pointer-events: none; }
+    .hero-inner { max-width: 760px; position: relative; }
+    .hero-tag { display: inline-flex; align-items: center; gap: 8px; background: rgba(0,195,153,0.18); border: 1px solid rgba(0,195,153,0.4); color: var(--green); font-size: 0.75rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 14px; border-radius: 100px; margin-bottom: 18px; }
+    .hero-tag a { color: inherit; text-decoration: none; }
+    .hero-tag a:hover { text-decoration: underline; }
+    h1 { font-family: var(--font-head); font-size: clamp(1.8rem, 4.5vw, 3rem); font-weight: 700; color: var(--white); line-height: 1.2; margin-bottom: 16px; }
+    h1 em { font-style: normal; color: var(--green); }
+    .hero-subtitle { font-size: clamp(0.95rem, 1.8vw, 1.1rem); color: rgba(255,255,255,0.7); max-width: 580px; line-height: 1.65; }
+
+    .page-wrap { max-width: 1100px; margin: 0 auto; padding: clamp(32px, 5vw, 64px) clamp(16px, 5vw, 48px); display: grid; grid-template-columns: 1fr 280px; gap: 48px; align-items: start; }
+    @media (max-width: 780px) { .page-wrap { grid-template-columns: 1fr; } .sidebar { order: -1; } }
+
+    .content { min-width: 0; }
+    .content h2 { font-family: var(--font-head); font-size: clamp(1.3rem, 2.5vw, 1.7rem); font-weight: 600; color: var(--charcoal); margin: 40px 0 14px; padding-top: 40px; border-top: 2px solid var(--light-grey); }
+    .content h2:first-child { margin-top: 0; padding-top: 0; border-top: none; }
+    .content h3 { font-family: var(--font-head); font-size: 1.1rem; font-weight: 600; color: var(--charcoal); margin: 28px 0 10px; }
+    .content p { margin-bottom: 16px; color: #4a6070; font-size: 0.97rem; line-height: 1.75; }
+    .content p strong { color: var(--charcoal); font-weight: 700; }
+    .content ul { padding-left: 20px; margin-bottom: 16px; }
+    .content ul li { color: #4a6070; font-size: 0.97rem; margin-bottom: 6px; line-height: 1.7; }
+    .content ul li strong { color: var(--charcoal); font-weight: 700; }
+    .content a { color: var(--blue); text-decoration: none; }
+    .content a:hover { text-decoration: underline; }
+
+    .info-card { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius); padding: 24px 28px; margin: 20px 0; box-shadow: var(--shadow); }
+    .info-card.blue-border  { border-left: 4px solid var(--blue); }
+    .info-card.green-border { border-left: 4px solid var(--green); }
+    .info-card.yellow-border { border-left: 4px solid var(--yellow); }
+    .info-card.red-border  { border-left: 4px solid var(--red); }
+    .info-card h3 { font-family: var(--font-head); font-size: 0.95rem; font-weight: 600; color: var(--charcoal); margin-bottom: 10px; }
+    .info-card p { margin-bottom: 0; font-size: 0.9rem; }
+    .info-card ul { padding-left: 18px; margin-top: 8px; margin-bottom: 0; }
+    .info-card ul li { font-size: 0.9rem; color: #4a6070; margin-bottom: 5px; line-height: 1.6; }
+    .info-card ul li strong { color: var(--charcoal); }
+
+    .doc-link-banner { background: var(--charcoal); border-radius: var(--radius); padding: 24px 28px; margin: 20px 0 32px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+    .doc-link-banner p { color: rgba(255,255,255,0.75); font-size: 0.9rem; margin: 0; }
+    .doc-link-banner a { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: var(--white); text-decoration: none; font-weight: 700; font-size: 0.88rem; padding: 10px 20px; border-radius: var(--radius-sm); white-space: nowrap; transition: background .2s; }
+    .doc-link-banner a:hover { background: #00a881; }
+
+    .three-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 20px 0 28px; }
+    @media (max-width: 640px) { .three-cols { grid-template-columns: 1fr; } }
+    .col-card { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+    .col-card .col-icon { font-size: 1.6rem; margin-bottom: 10px; }
+    .col-card h4 { font-family: var(--font-head); font-size: 0.9rem; font-weight: 600; color: var(--charcoal); margin-bottom: 8px; }
+    .col-card p { font-size: 0.83rem; color: #4a6070; margin: 0; line-height: 1.55; }
+
+    .org-card { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius); padding: 24px 28px; margin: 16px 0; box-shadow: var(--shadow); }
+    .org-card h3 { font-family: var(--font-head); font-size: 1rem; font-weight: 700; color: var(--charcoal); margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--light-grey); }
+    .org-card p { font-size: 0.88rem; color: #4a6070; margin-bottom: 10px; }
+    .tool-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin: 12px 0; }
+    .tool-table th { background: var(--charcoal); color: rgba(255,255,255,0.8); text-align: left; padding: 8px 12px; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; }
+    .tool-table td { padding: 8px 12px; border-bottom: 1px solid var(--light-grey); color: #4a6070; vertical-align: top; }
+    .tool-table tr:last-child td { border-bottom: none; }
+    .tool-table tr:nth-child(even) td { background: var(--off-white); }
+    .tool-table a { color: var(--blue); text-decoration: none; font-size: 0.82rem; }
+    .tool-table a:hover { text-decoration: underline; }
+    .further-reading { margin-top: 12px; }
+    .further-reading p { font-size: 0.82rem; font-weight: 700; color: var(--charcoal); margin-bottom: 6px; }
+    .further-reading ul { padding-left: 16px; margin: 0; }
+    .further-reading ul li { font-size: 0.82rem; color: #4a6070; margin-bottom: 4px; }
+
+    .sidebar { position: sticky; top: 80px; }
+    .sidebar-card { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); margin-bottom: 20px; }
+    .sidebar-card-head { background: var(--charcoal); padding: 14px 18px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.6); }
+    .sidebar-toc { list-style: none; padding: 8px 0; }
+    .sidebar-toc li a { display: block; padding: 9px 18px; color: #4a6070; font-size: 0.85rem; font-weight: 600; text-decoration: none; border-left: 3px solid transparent; transition: color .2s, border-color .2s, background .2s; }
+    .sidebar-toc li a:hover { color: var(--charcoal); border-color: var(--green); background: rgba(0,195,153,0.06); }
+    .sidebar-meta { padding: 16px 18px; }
+    .sidebar-meta p { font-size: 0.82rem; color: var(--mid-grey); margin-bottom: 8px; line-height: 1.5; }
+    .sidebar-meta p strong { color: var(--charcoal); }
+    .back-link { display: inline-flex; align-items: center; gap: 7px; background: var(--green); color: var(--white); text-decoration: none; font-size: 0.85rem; font-weight: 700; padding: 10px 18px; border-radius: var(--radius-sm); transition: background .2s; width: 100%; justify-content: center; margin-top: 4px; }
+    .back-link:hover { background: #00a881; }
+
+    footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.1); padding: clamp(28px,4vw,48px) clamp(16px,5vw,48px); display: flex; flex-wrap: wrap; gap: 24px; justify-content: space-between; align-items: center; }
+    footer img { height: 32px; opacity: 0.7; }
+    .footer-bottom { color: rgba(255,255,255,0.35); font-size: 0.78rem; }
+    .footer-bottom a { color: rgba(255,255,255,0.5); text-decoration: none; }
+    .footer-bottom a:hover { color: var(--green); }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    .hero-inner > * { animation: fadeUp 0.5s ease both; }
+    .hero-tag { animation-delay: 0.0s; }
+    h1 { animation-delay: 0.1s; }
+    .hero-subtitle { animation-delay: 0.2s; }
+  </style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<nav aria-label="Primary navigation">
+  <a href="index.html" class="nav-logo" aria-label="Back to project index">
+    <img src="https://wiki.weareopen.coop/wao_logo_whitetr_1500.png" alt="WAO Cooperative logo" />
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html#project-overview">Overview</a></li>
+    <li><a href="index.html#key-reports">Key Reports</a></li>
+    <li><a href="index.html#timeline">All Documents</a></li>
+    <li><a href="charter.html">Project Charter</a></li>
+  </ul>
+</nav>
+
+<div class="breadcrumb" aria-label="Breadcrumb">
+  <a href="index.html">← Project Index</a>
+  <span aria-hidden="true">/</span>
+  <span>Phase Five: Platform Selection &amp; Strategy</span>
+  <span aria-hidden="true">/</span>
+  <span>Building an AIUK Community Ecosystem</span>
+</div>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">
+      <a href="index.html#timeline">← Phase Five: Platform Selection &amp; Strategy</a>
+    </div>
+    <h1>Building an <em>AIUK Community Ecosystem</em></h1>
+    <p class="hero-subtitle">
+      A holistic look at the digital tools, platform stacks, and activist workflows needed to support a vibrant AIUK community — beyond any single platform.
+    </p>
+  </div>
+</header>
+
+<main id="main">
+  <div class="page-wrap">
+
+    <article class="content">
+
+      <section id="overview">
+        <h2>About this document</h2>
+        <p>
+          When thinking about the experience of the AIUK community, we need to consider the holistic experience of activists, educators, and staff members. While the new community platform will provide a focal point, the community itself is not constrained by a single platform.
+        </p>
+        <p>
+          By reviewing and analysing the digital tools used by other activist communities, we can begin to understand the additional spaces and functionality that the AIUK community may require. We can then make some recommendations as to what kind of 'platform stack' might support a vibrant community ecosystem.
+        </p>
+
+        <div class="doc-link-banner">
+          <p>This document is held in Google Docs and is accessible to project team members.</p>
+          <a href="https://docs.google.com/document/d/1V0NhJw9X7au74P0pHjQNo1tBa-cNmxZgcSA8uFrOEiU/edit" rel="noopener" target="_blank">Open in Google Docs ↗</a>
+        </div>
+      </section>
+
+      <section id="digital-tools">
+        <h2>Digital tools used by activist communities</h2>
+        <p>
+          Activist communities require robust, secure, and accessible platforms to facilitate meaningful discussion, decision-making, and collaboration. Unlike mainstream social media or chat apps, these platforms must prioritise <strong>privacy, decentralisation, and resilience</strong> against surveillance or censorship.
+        </p>
+        <p>
+          Platforms tend to serve one or two specific purposes and, chosen carefully, can work well in harmony with each other. The tools used for broadcast tend to meet people where they currently are — on centralised, algorithmically-controlled social networks controlled by Big Tech companies. An invite to a web page allows for greater control of the message, which then encourages visitors to learn more and get involved. From here, those who have made a commitment to the cause can join the community platform. For protests and actions that require coordination, encrypted chat apps are the best option.
+        </p>
+
+        <div class="info-card green-border">
+          <h3>The platform stack principle</h3>
+          <p>This platform stack needs to be taken into account when choosing a community platform, as no one tool exists in isolation. It's part of a series of workflows that cover onboarding, engagement, and security.</p>
+        </div>
+
+        <div class="three-cols">
+          <div class="col-card">
+            <div class="col-icon">📢</div>
+            <h4>Broadcast</h4>
+            <p>Meet people where they are — on mainstream social media and email lists. Drive awareness and initial engagement.</p>
+          </div>
+          <div class="col-card">
+            <div class="col-icon">🌐</div>
+            <h4>Web presence</h4>
+            <p>A controlled web page to present the mission clearly and invite deeper involvement on your own terms.</p>
+          </div>
+          <div class="col-card">
+            <div class="col-icon">🔒</div>
+            <h4>Secure coordination</h4>
+            <p>Encrypted chat apps for committed activists who need to coordinate actions with privacy and trust.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="examples">
+        <h2>Examples from other organisations</h2>
+        <p>
+          No two activist organisations are identical. Along with differences in focus areas, there are variations in geography and culture, leadership style, and risk tolerance. Below we look at examples of the tools used by NGOs and movements to help further their activism.
+        </p>
+
+        <div class="org-card">
+          <h3>Black Lives Matter (BLM)</h3>
+          <p>BLM is a decentralised movement with a strong focus on security, autonomy, and decentralised governance.</p>
+          <table class="tool-table">
+            <thead><tr><th>Tool</th><th>Purpose &amp; Use Case</th><th>URL</th></tr></thead>
+            <tbody>
+              <tr><td>Signal</td><td>Encrypted messaging for organisers and trusted volunteers.</td><td><a href="https://signal.org" rel="noopener" target="_blank">signal.org</a></td></tr>
+              <tr><td>Telegram</td><td>Large group announcements and resource sharing.</td><td><a href="https://telegram.org" rel="noopener" target="_blank">telegram.org</a></td></tr>
+              <tr><td>RadicalxChange</td><td>Blockchain-based voting and governance for decentralised decision-making.</td><td><a href="https://www.radicalxchange.org" rel="noopener" target="_blank">radicalxchange.org</a></td></tr>
+            </tbody>
+          </table>
+          <div class="further-reading">
+            <p>Further reading</p>
+            <ul>
+              <li><a href="https://en.wikipedia.org/wiki/Black_Lives_Matter" rel="noopener" target="_blank">Wikipedia overview (structure, decentralisation, digital presence)</a></li>
+              <li><a href="https://thesis.eur.nl/pub/65003/Korhonen_Sara.pdf" rel="noopener" target="_blank">Academic research on BLM's digital practices (Instagram, hashtag activism)</a></li>
+              <li><a href="https://journals.sagepub.com/doi/full/10.1177/2056305118807911" rel="noopener" target="_blank">Case study on BLM and movement scaling via digital tools</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="org-card">
+          <h3>Electronic Frontier Foundation (EFF)</h3>
+          <p>EFF and allied groups support activists with privacy-first infrastructure, focusing on secure communication and knowledge management.</p>
+          <table class="tool-table">
+            <thead><tr><th>Tool</th><th>Purpose &amp; Use Case</th><th>URL</th></tr></thead>
+            <tbody>
+              <tr><td>Signal</td><td>Secure group and one-on-one messaging.</td><td><a href="https://signal.org" rel="noopener" target="_blank">signal.org</a></td></tr>
+              <tr><td>Cwtch</td><td>Peer-to-peer, metadata-resistant group messaging.</td><td><a href="https://cwtch.im" rel="noopener" target="_blank">cwtch.im</a></td></tr>
+            </tbody>
+          </table>
+          <div class="further-reading">
+            <p>Further reading</p>
+            <ul>
+              <li><a href="https://en.wikipedia.org/wiki/Electronic_Frontier_Foundation" rel="noopener" target="_blank">Wikipedia overview of EFF (history, activities, digital rights)</a></li>
+              <li><a href="https://www.eff.org/deeplinks/2025/04/calyx-institute-case-study-grassroots-innovation" rel="noopener" target="_blank">EFF case study on grassroots digital privacy innovation</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="org-card">
+          <h3>Extinction Rebellion (XR)</h3>
+          <p>XR uses a suite of open-source and privacy-focused tools to decentralise organising, protect sensitive discussions, and support both local and global coordination.</p>
+          <table class="tool-table">
+            <thead><tr><th>Tool</th><th>Purpose &amp; Use Case</th><th>URL</th></tr></thead>
+            <tbody>
+              <tr><td>Mattermost</td><td>Main platform for ongoing group discussions, planning, and coordination. Threaded, self-hosted, supports file sharing.</td><td><a href="https://mattermost.com" rel="noopener" target="_blank">mattermost.com</a></td></tr>
+              <tr><td>Signal</td><td>Secure, encrypted messaging for urgent updates and small group coordination.</td><td><a href="https://signal.org" rel="noopener" target="_blank">signal.org</a></td></tr>
+              <tr><td>Telegram</td><td>Broadcasting announcements to large supporter groups; sometimes bridged to Mattermost.</td><td><a href="https://telegram.org" rel="noopener" target="_blank">telegram.org</a></td></tr>
+              <tr><td>Discourse</td><td>Forum-style, in-depth asynchronous discussions (used by some XR chapters).</td><td><a href="https://www.discourse.org" rel="noopener" target="_blank">discourse.org</a></td></tr>
+            </tbody>
+          </table>
+          <div class="further-reading">
+            <p>Further reading</p>
+            <ul>
+              <li><a href="https://hub.extinctionrebellion.uk/" rel="noopener" target="_blank">XR UK the Hub</a></li>
+              <li><a href="https://rebeltoolkit.extinctionrebellion.uk" rel="noopener" target="_blank">Rebel Toolkit (official resource for XR tools and organising)</a></li>
+              <li><a href="https://wiki.extinctionrebellion.nl/en/hulpmiddelen/snelstartgids/digitale-tools" rel="noopener" target="_blank">XR NL Digital Tools Quick Start</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="org-card">
+          <h3>Fridays for Future (FFF)</h3>
+          <p>FFF, a global youth climate movement, uses a layered stack of open-source and privacy-respecting tools to coordinate actions and discussions across thousands of cities.</p>
+          <table class="tool-table">
+            <thead><tr><th>Tool</th><th>Purpose &amp; Use Case</th><th>URL</th></tr></thead>
+            <tbody>
+              <tr><td>Action Network</td><td>Supporter management, email campaigns, event registration, volunteer tracking.</td><td><a href="https://actionnetwork.org" rel="noopener" target="_blank">actionnetwork.org</a></td></tr>
+              <tr><td>GetThru</td><td>Peer-to-peer SMS/calling for mass mobilisation.</td><td><a href="https://www.getthru.io" rel="noopener" target="_blank">getthru.io</a></td></tr>
+            </tbody>
+          </table>
+          <div class="further-reading">
+            <p>Further reading</p>
+            <ul>
+              <li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9791069/" rel="noopener" target="_blank">Academic analysis of FFF's digital activism (COVID-19 era)</a></li>
+              <li><a href="https://actionnetwork.org/groups/fridays-for-future-usa" rel="noopener" target="_blank">FFF USA on Action Network</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="org-card">
+          <h3>Global Witness</h3>
+          <p>Global Witness investigates corruption and environmental crime, using secure collaboration and evidence management platforms.</p>
+          <table class="tool-table">
+            <thead><tr><th>Tool</th><th>Purpose &amp; Use Case</th><th>URL</th></tr></thead>
+            <tbody>
+              <tr><td>Keybase</td><td>Encrypted team chat, file sharing, and identity verification.</td><td><a href="https://keybase.io" rel="noopener" target="_blank">keybase.io</a></td></tr>
+            </tbody>
+          </table>
+          <div class="further-reading">
+            <p>Further reading</p>
+            <ul>
+              <li><a href="https://www.globalwitness.org/en/campaigns/greenwashing/using-digital-methods-to-investigate-corporate-greenwashing" rel="noopener" target="_blank">Example of digital investigation methods (campaign case study)</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="org-card">
+          <h3>Sunrise Movement</h3>
+          <p>Sunrise is a US-based climate justice movement blending grassroots organising with digital innovation. It focuses on visual storytelling and robust infrastructure.</p>
+          <table class="tool-table">
+            <thead><tr><th>Tool</th><th>Purpose &amp; Use Case</th><th>URL</th></tr></thead>
+            <tbody>
+              <tr><td>Mobilize America</td><td>Event management and volunteer coordination.</td><td><a href="https://www.mobilize.us" rel="noopener" target="_blank">mobilize.us</a></td></tr>
+              <tr><td>Matrix</td><td>Decentralised, encrypted chat rooms.</td><td><a href="https://matrix.org" rel="noopener" target="_blank">matrix.org</a></td></tr>
+            </tbody>
+          </table>
+          <div class="further-reading">
+            <p>Further reading</p>
+            <ul>
+              <li><a href="https://www.oxy.edu/sites/default/files/assets/UEP/Comps/2020/sarah_lasoff_the_sunrise_movements_hybrid_organizing.pdf" rel="noopener" target="_blank">Academic paper on Sunrise Movement's hybrid organising</a></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="key-patterns">
+        <h2>Key patterns and lessons</h2>
+
+        <div class="info-card green-border">
+          <h3>What activist networks have in common</h3>
+          <ul>
+            <li><strong>Distributed responsibility</strong> — activist networks often distribute responsibility across local groups rather than relying on a single centralised platform.</li>
+            <li><strong>Privacy measures</strong> — end-to-end encryption and metadata minimisation guard sensitive conversations against surveillance.</li>
+            <li><strong>Separate channels</strong> — public outreach and internal coordination are typically kept on separate systems.</li>
+            <li><strong>Low-bandwidth tools</strong> — text-based tools remain vital to accommodate participants in areas with limited connectivity.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="phasing-out">
+        <h2>Gently phasing out problematic platforms</h2>
+        <p>
+          AIUK should seek to distinguish how various corporate platforms are used, and at what point people are sent to the community platform. The organisation should work to help its activists and educators understand the politics around technology and its impact on human rights.
+        </p>
+        <p>
+          Making the switch from common platforms feels impossible, but there is a growing community of people who work to resist techno-political influence and who understand this influence on society. Over time, AIUK has an opportunity to support this important work as well as streamline its own online engagement work.
+        </p>
+
+        <div class="info-card yellow-border">
+          <h3>A continuous redirection approach</h3>
+          <p>The key is a continuous, gentle redirection — helping activists and community members gradually become familiar with the community platform as an alternative space, rather than demanding an immediate switch away from tools they already use.</p>
+        </div>
+      </section>
+
+      <section id="civicrm">
+        <h2>Appendix: CiviCRM case studies</h2>
+        <p>
+          Although the choice of CRM is out of scope for WAO's work with AIUK, in the course of research we found that CiviCRM is a mature, well-respected, open source, and extensible solution. It has bulk email and SMS capabilities, and so is useful alongside Signal for organising.
+        </p>
+
+        <div class="org-card">
+          <h3>Amnesty International Vlaanderen</h3>
+          <p><strong>Focus:</strong> Human rights, fundraising, supporter engagement</p>
+          <p>Amnesty International Vlaanderen has used CiviCRM since 2011 to centralise donor, petition, and recruitment data. They developed a CiviCRM extension to automate the collection of data from street recruitment agencies, enabling automatic creation of contacts, recurring donations (SEPA mandates), and activities. This streamlined onboarding and reduced the time between donor signup and first payment.</p>
+        </div>
+
+        <div class="org-card">
+          <h3>Greenpeace Central and Eastern Europe (CEE)</h3>
+          <p><strong>Focus:</strong> Environmental activism, fundraising, data control</p>
+          <p>Greenpeace CEE migrated to CiviCRM in 2016, automating the processing of around 50,000 bank transactions annually, 89% of which are now handled automatically using the CiviBanking extension. This improved data control and allowed Greenpeace CEE to contribute code back to the CiviCRM project.</p>
+        </div>
+      </section>
+
+    </article>
+
+    <aside class="sidebar" aria-label="Page navigation">
+      <div class="sidebar-card">
+        <div class="sidebar-card-head">On this page</div>
+        <ul class="sidebar-toc">
+          <li><a href="#overview">About this document</a></li>
+          <li><a href="#digital-tools">Digital tools overview</a></li>
+          <li><a href="#examples">Examples from other orgs</a></li>
+          <li><a href="#key-patterns">Key patterns &amp; lessons</a></li>
+          <li><a href="#phasing-out">Phasing out problematic platforms</a></li>
+          <li><a href="#civicrm">Appendix: CiviCRM</a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sidebar-card-head">Document details</div>
+        <div class="sidebar-meta">
+          <p><strong>Phase</strong><br />Phase Five: Platform Selection &amp; Strategy</p>
+          <p><strong>Status</strong><br />✅ Referenced in final reports</p>
+          <p><strong>Audience</strong><br />Project team, AIUK stakeholders</p>
+          <p><strong>Related</strong><br /><a href="technical-platforms.html">Technical Platforms Analysis</a></p>
+          <p><strong>Source</strong><br /><a href="https://docs.google.com/document/d/1V0NhJw9X7au74P0pHjQNo1tBa-cNmxZgcSA8uFrOEiU/edit" rel="noopener" target="_blank">Open in Google Docs ↗</a></p>
+          <a href="index.html" class="back-link">← Back to full index</a>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+</main>
+
+<footer>
+  <img src="https://wiki.weareopen.coop/wao_logo_whitetr_1500.png" alt="WAO Cooperative" />
+  <div class="footer-bottom">
+    <span>AIUK Community Platform Project · Produced by <a href="https://weareopen.coop" rel="noopener">WAO Cooperative</a></span>
+  </div>
+</footer>
+
+</body>
+</html>

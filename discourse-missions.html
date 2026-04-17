@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Discourse Missions · AIUK Community Platform Project</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;600;700&family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --charcoal:   #2F495A;
+      --green:      #00C399;
+      --yellow:     #FFBC42;
+      --blue:       #16A8E2;
+      --red:        #FC594D;
+      --white:      #FFFFFF;
+      --off-white:  #F7F9FA;
+      --light-grey: #EDF1F4;
+      --mid-grey:   #8FA3B0;
+      --text:       #2F495A;
+      --font-head: 'Roboto Slab', Georgia, serif;
+      --font-body: 'Nunito', system-ui, sans-serif;
+      --radius: 12px;
+      --radius-sm: 6px;
+      --shadow: 0 4px 24px rgba(47,73,90,0.10);
+      --shadow-hover: 0 8px 36px rgba(47,73,90,0.18);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-body); color: var(--text); background: var(--off-white); line-height: 1.7; font-size: 16px; }
+
+    .skip-link { position: absolute; top: -40px; left: 16px; background: var(--green); color: var(--white); padding: 8px 14px; border-radius: var(--radius-sm); font-weight: 700; z-index: 9999; transition: top .2s; }
+    .skip-link:focus { top: 16px; }
+
+    nav { position: sticky; top: 0; z-index: 100; background: var(--charcoal); display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(16px, 5vw, 48px); height: 60px; box-shadow: 0 2px 12px rgba(0,0,0,0.2); }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .nav-logo img { height: 36px; }
+    .nav-links { display: flex; gap: 4px; list-style: none; flex-wrap: wrap; }
+    .nav-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.82rem; font-weight: 600; letter-spacing: 0.02em; padding: 6px 10px; border-radius: var(--radius-sm); transition: color .2s, background .2s; }
+    .nav-links a:hover { color: var(--white); background: rgba(255,255,255,0.12); }
+
+    .breadcrumb { background: var(--white); border-bottom: 1px solid var(--light-grey); padding: 10px clamp(16px, 5vw, 48px); font-size: 0.82rem; color: var(--mid-grey); display: flex; align-items: center; gap: 8px; }
+    .breadcrumb a { color: var(--mid-grey); text-decoration: none; font-weight: 600; }
+    .breadcrumb a:hover { color: var(--green); }
+    .breadcrumb span { color: var(--charcoal); font-weight: 700; }
+
+    .hero { background: var(--charcoal); padding: clamp(48px, 8vw, 80px) clamp(16px, 5vw, 48px) clamp(40px, 6vw, 64px); position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 50% 90% at 90% 20%, rgba(22,168,226,0.18) 0%, transparent 60%), radial-gradient(ellipse 40% 60% at 5% 90%, rgba(0,195,153,0.12) 0%, transparent 55%); pointer-events: none; }
+    .hero-inner { max-width: 760px; position: relative; }
+    .hero-tag { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.85); font-size: 0.75rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 14px; border-radius: 100px; margin-bottom: 18px; }
+    .hero-tag a { color: inherit; text-decoration: none; }
+    .hero-tag a:hover { text-decoration: underline; }
+    h1 { font-family: var(--font-head); font-size: clamp(1.8rem, 4.5vw, 3rem); font-weight: 700; color: var(--white); line-height: 1.2; margin-bottom: 16px; }
+    h1 em { font-style: normal; color: var(--green); }
+    .hero-subtitle { font-size: clamp(0.95rem, 1.8vw, 1.1rem); color: rgba(255,255,255,0.7); max-width: 580px; line-height: 1.65; }
+
+    .page-wrap { max-width: 1100px; margin: 0 auto; padding: clamp(32px, 5vw, 64px) clamp(16px, 5vw, 48px); display: grid; grid-template-columns: 1fr 280px; gap: 48px; align-items: start; }
+    @media (max-width: 780px) { .page-wrap { grid-template-columns: 1fr; } .sidebar { order: -1; } }
+
+    .content { min-width: 0; }
+    .content h2 { font-family: var(--font-head); font-size: clamp(1.3rem, 2.5vw, 1.7rem); font-weight: 600; color: var(--charcoal); margin: 40px 0 14px; padding-top: 40px; border-top: 2px solid var(--light-grey); }
+    .content h2:first-child { margin-top: 0; padding-top: 0; border-top: none; }
+    .content h3 { font-family: var(--font-head); font-size: 1.1rem; font-weight: 600; color: var(--charcoal); margin: 28px 0 10px; }
+    .content p { margin-bottom: 16px; color: #4a6070; font-size: 0.97rem; line-height: 1.75; }
+    .content p strong { color: var(--charcoal); font-weight: 700; }
+    .content ul { padding-left: 20px; margin-bottom: 16px; }
+    .content ul li { color: #4a6070; font-size: 0.97rem; line-height: 1.7; margin-bottom: 6px; }
+    .content ul li strong { color: var(--charcoal); }
+    .content ol { padding-left: 22px; margin-bottom: 16px; }
+    .content ol li { color: #4a6070; font-size: 0.97rem; line-height: 1.7; margin-bottom: 8px; }
+
+    .info-card { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius); padding: 24px 28px; margin: 20px 0; box-shadow: var(--shadow); }
+    .info-card.blue-border  { border-left: 4px solid var(--blue); }
+    .info-card.green-border { border-left: 4px solid var(--green); }
+    .info-card.yellow-border { border-left: 4px solid var(--yellow); }
+    .info-card.charcoal-border { border-left: 4px solid var(--charcoal); }
+    .info-card h3 { font-family: var(--font-head); font-size: 0.95rem; font-weight: 600; color: var(--charcoal); margin-bottom: 10px; }
+    .info-card p { margin-bottom: 0; font-size: 0.9rem; }
+    .info-card ul { padding-left: 18px; margin-top: 8px; }
+    .info-card ul li { font-size: 0.9rem; color: #4a6070; margin-bottom: 5px; line-height: 1.6; }
+    .info-card ul li strong { color: var(--charcoal); }
+
+    .doc-link-banner { background: var(--charcoal); border-radius: var(--radius); padding: 24px 28px; margin: 20px 0 32px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+    .doc-link-banner p { color: rgba(255,255,255,0.75); font-size: 0.9rem; margin: 0; }
+    .doc-link-banner a { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: var(--white); text-decoration: none; font-weight: 700; font-size: 0.88rem; padding: 10px 20px; border-radius: var(--radius-sm); white-space: nowrap; transition: background .2s; }
+    .doc-link-banner a:hover { background: #00a881; }
+
+    .mission-drop { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius); margin: 24px 0; box-shadow: var(--shadow); overflow: hidden; }
+    .mission-drop-head { background: var(--charcoal); padding: 14px 24px; display: flex; align-items: center; gap: 14px; }
+    .mission-drop-head .drop-num { background: var(--green); color: var(--white); font-size: 0.75rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px; border-radius: 100px; }
+    .mission-drop-head h3 { font-family: var(--font-head); font-size: 1rem; font-weight: 600; color: var(--white); margin: 0; }
+    .mission-drop-body { padding: 20px 24px; }
+    .mission-drop-body p { font-size: 0.9rem; color: #4a6070; margin-bottom: 12px; line-height: 1.6; }
+    .mission-drop-body ol { padding-left: 20px; }
+    .mission-drop-body ol li { font-size: 0.9rem; color: #4a6070; line-height: 1.65; margin-bottom: 10px; }
+    .mission-drop-body ol li strong { color: var(--charcoal); }
+
+    .phase-table { width: 100%; border-collapse: collapse; margin: 20px 0 28px; font-size: 0.88rem; background: var(--white); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+    .phase-table th { background: var(--charcoal); color: rgba(255,255,255,0.85); font-weight: 700; padding: 12px 16px; text-align: left; font-size: 0.8rem; letter-spacing: 0.04em; text-transform: uppercase; }
+    .phase-table td { padding: 11px 16px; border-bottom: 1px solid var(--light-grey); color: #4a6070; vertical-align: top; }
+    .phase-table tr:last-child td { border-bottom: none; }
+    .phase-table tr:hover td { background: rgba(0,195,153,0.04); }
+    .phase-table td strong { color: var(--charcoal); }
+    .phase-badge { display: inline-block; background: rgba(22,168,226,0.12); color: var(--blue); font-size: 0.75rem; font-weight: 700; padding: 2px 9px; border-radius: 100px; }
+
+    .sidebar { position: sticky; top: 80px; }
+    .sidebar-card { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); margin-bottom: 20px; }
+    .sidebar-card-head { background: var(--charcoal); padding: 14px 18px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.6); }
+    .sidebar-toc { list-style: none; padding: 8px 0; }
+    .sidebar-toc li a { display: block; padding: 9px 18px; color: #4a6070; font-size: 0.85rem; font-weight: 600; text-decoration: none; border-left: 3px solid transparent; transition: color .2s, border-color .2s, background .2s; }
+    .sidebar-toc li a:hover { color: var(--charcoal); border-color: var(--green); background: rgba(0,195,153,0.06); }
+    .sidebar-meta { padding: 16px 18px; }
+    .sidebar-meta p { font-size: 0.82rem; color: var(--mid-grey); margin-bottom: 8px; line-height: 1.5; }
+    .sidebar-meta p strong { color: var(--charcoal); }
+    .back-link { display: inline-flex; align-items: center; gap: 7px; background: var(--green); color: var(--white); text-decoration: none; font-size: 0.85rem; font-weight: 700; padding: 10px 18px; border-radius: var(--radius-sm); transition: background .2s; width: 100%; justify-content: center; margin-top: 4px; }
+    .back-link:hover { background: #00a881; }
+
+    footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.1); padding: clamp(28px,4vw,48px) clamp(16px,5vw,48px); display: flex; flex-wrap: wrap; gap: 24px; justify-content: space-between; align-items: center; }
+    footer img { height: 32px; opacity: 0.7; }
+    .footer-bottom { color: rgba(255,255,255,0.35); font-size: 0.78rem; }
+    .footer-bottom a { color: rgba(255,255,255,0.5); text-decoration: none; }
+    .footer-bottom a:hover { color: var(--green); }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    .hero-inner > * { animation: fadeUp 0.5s ease both; }
+    .hero-tag { animation-delay: 0.0s; }
+    h1 { animation-delay: 0.1s; }
+    .hero-subtitle { animation-delay: 0.2s; }
+  </style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<nav aria-label="Primary navigation">
+  <a href="index.html" class="nav-logo" aria-label="Back to project index">
+    <img src="https://wiki.weareopen.coop/wao_logo_whitetr_1500.png" alt="WAO Cooperative logo" />
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html#project-overview">Overview</a></li>
+    <li><a href="index.html#key-reports">Key Reports</a></li>
+    <li><a href="index.html#timeline">All Documents</a></li>
+    <li><a href="charter.html">Project Charter</a></li>
+  </ul>
+</nav>
+
+<div class="breadcrumb" aria-label="Breadcrumb">
+  <a href="index.html">← Project Index</a>
+  <span aria-hidden="true">/</span>
+  <span>Pilot Prep</span>
+  <span aria-hidden="true">/</span>
+  <span>Discourse Missions</span>
+</div>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">
+      <a href="index.html#timeline">← Pilot Prep</a>
+    </div>
+    <h1>Discourse <em>Missions</em></h1>
+    <p class="hero-subtitle">
+      A structured sequence of guided activities designed to help pilot participants explore the Amnesty Community platform — organised by phase, group, and mission drop.
+    </p>
+  </div>
+</header>
+
+<main id="main">
+  <div class="page-wrap">
+
+    <article class="content">
+
+      <section id="overview">
+        <h2>About this document</h2>
+        <p>
+          This document sets out the Discourse Missions used during the AIUK Community Platform Pilot. Missions are structured activities that guided participants through key features of the platform, grouped into four "Mission Drops" and delivered across different pilot phases to community leaders, general network members, and new activists.
+        </p>
+        <p>
+          Each mission drop was released to groups at staggered intervals, giving the team time to process feedback and make improvements. Participants were also encouraged to use the <strong>Site Feedback</strong> category on the platform for general comments and questions.
+        </p>
+
+        <div class="doc-link-banner">
+          <p>This document is held in Google Docs and is accessible to project team members.</p>
+          <a href="https://docs.google.com/document/d/1VyoD0TD8jESL0YG6rExsS8cRUMYBCd-GhNuS62QpSkU/edit" rel="noopener" target="_blank">Open in Google Docs ↗</a>
+        </div>
+      </section>
+
+      <section id="pilot-schedule">
+        <h2>Pilot schedule overview</h2>
+        <p>
+          The pilot ran across four phases, each targeting a different group of participants. Mission drops A–I were released in the first week, J–P in the second, Q–V in the third, and W–Z in the fourth. Each phase concluded with a feedback workshop and survey.
+        </p>
+
+        <table class="phase-table">
+          <thead>
+            <tr>
+              <th>Phase</th>
+              <th>Participants</th>
+              <th>Weeks</th>
+              <th>Feedback</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Phase 1</strong></td>
+              <td>Community Leaders (Category Moderators)</td>
+              <td>w/b 26 Jan – 16 Feb 2026</td>
+              <td>Site feedback category; Workshop &amp; Survey</td>
+            </tr>
+            <tr>
+              <td><strong>Phase 2</strong></td>
+              <td>General Network Members</td>
+              <td>w/b 23 Feb – 2 Mar 2026</td>
+              <td>Site feedback category; Workshop &amp; Survey</td>
+            </tr>
+            <tr>
+              <td><strong>Phase 3</strong></td>
+              <td>New Activists</td>
+              <td>w/b 9 Mar – 16 Mar 2026</td>
+              <td>Site feedback category; Workshop &amp; Survey</td>
+            </tr>
+            <tr>
+              <td><strong>Phase 4</strong></td>
+              <td>Extending the Pilot</td>
+              <td>w/b 23 Mar – 30 Mar 2026</td>
+              <td>Site feedback category; Workshop &amp; Survey</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="info-card green-border">
+          <h3>Category: Missions</h3>
+          <p>The Mission category and subcategories are configured to display topics in order (rather than by latest updates or popularity), ensuring participants encounter missions in the intended sequence.</p>
+        </div>
+      </section>
+
+      <section id="mission-drop-1">
+        <h2>Mission Drop #1 — Getting started</h2>
+        <p>
+          The first drop focused on essential onboarding tasks: completing the Welcome Banner, joining relevant networks and groups, making a first post, and personalising one's profile. These missions were designed to be low-stakes and confidence-building.
+        </p>
+
+        <div class="mission-drop">
+          <div class="mission-drop-head">
+            <span class="drop-num">Drop 1</span>
+            <h3>Missions 1–9: Orientation &amp; Profile Setup</h3>
+          </div>
+          <div class="mission-drop-body">
+            <ol>
+              <li><strong>Complete the Welcome Banner</strong> — Find and complete the quick-start steps on the home page banner, including introductions and accessing training.</li>
+              <li><strong>Join a Network or Local Group</strong> — Browse available Networks, use the Map feature to find your region, and join groups relevant to your role.</li>
+              <li><strong>Post your first update or question</strong> — Once you've joined a Network or group, make your first post. Suggested prompts are provided.</li>
+              <li><strong>Experiment with the text editor</strong> — Try formatting tools: bold, bullets, quotes, and headings.</li>
+              <li><strong>Use emojis to react to posts</strong> — Click the Heart icon on a post you appreciate to send a notification and build community culture.</li>
+              <li><strong>Explore your profile</strong> — Add a profile picture, location, bio, and adjust notification settings via the profile icon.</li>
+              <li><strong>Update your profile picture</strong> — Upload an image to help other members recognise you.</li>
+              <li><strong>Fill in your About Me section</strong> — Write a short bio including your Amnesty involvement and a fun fact.</li>
+              <li><strong>Adjust for readability</strong> — Explore Interface settings to adjust text size for your screen or device.</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <section id="mission-drop-2">
+        <h2>Mission Drop #2 — Engaging deeper</h2>
+        <p>
+          The second drop introduced more interactive features: replying with GIFs, starting discussion threads, tagging people, securing accounts with two-factor authentication, and managing notification noise.
+        </p>
+
+        <div class="mission-drop">
+          <div class="mission-drop-head">
+            <span class="drop-num">Drop 2</span>
+            <h3>Missions 10–15: Interaction &amp; Settings</h3>
+          </div>
+          <div class="mission-drop-body">
+            <ol start="10">
+              <li><strong>Post a reply with an animated GIF</strong> — Head to the Café Random category and post a GIF reply to test the interface in a low-pressure setting.</li>
+              <li><strong>Start a discussion thread</strong> — Begin a topic relevant to your AIUK work. For bonus points, mention someone using @ and explore categories and the Site Feedback area. Configure your sidebar categories.</li>
+              <li><strong>Update your profile banner</strong> — Upload a banner image to your profile for a personal touch.</li>
+              <li><strong>Secure your account</strong> — Enable Two-Factor Authentication (2FA) via Preferences → Security.</li>
+              <li><strong>Build your network</strong> — Visit a member whose posts you enjoy and click Follow to stay connected.</li>
+              <li><strong>Mute and Unmute threads</strong> — Use the Mute control to hide noisy categories or threads, and unmute them later.</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <section id="mission-drop-3">
+        <h2>Mission Drop #3 — Advanced features</h2>
+        <p>
+          Mission Drop #3 introduced calendar features, user card customisation, notification preferences, and homepage personalisation — helping participants make the platform work for their individual needs.
+        </p>
+
+        <div class="mission-drop">
+          <div class="mission-drop-head">
+            <span class="drop-num">Drop 3</span>
+            <h3>Missions 16–21: Personalisation &amp; Discovery</h3>
+          </div>
+          <div class="mission-drop-body">
+            <ol start="16">
+              <li><strong>Use your calendar</strong> — Locate the Calendar feature in the top menu, view upcoming events, RSVP, or create a test event.</li>
+              <li><strong>Customise your User Card</strong> — Upload a background image for the popup that appears when others click your avatar.</li>
+              <li><strong>Change your notifications</strong> — Visit Preferences → Emails to control digest frequency and keep your inbox manageable.</li>
+              <li><strong>Review the FAQ</strong> — Visit the FAQ section and suggest additions or improvements if you spot gaps.</li>
+              <li><strong>Experiment with a different Home Page</strong> — Set the default home page to Latest, Categories, or Top posts in Preferences.</li>
+              <li><strong>Customise your menu</strong> — Use the pencil icon above categories to rearrange your sidebar navigation.</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <section id="mission-drop-4">
+        <h2>Mission Drop #4 — Final activities</h2>
+        <p>
+          The final mission drop focused on advanced search, anonymous mode, badges, and — for moderators — issuing pro-social behaviour badges to recognise valued community contributions.
+        </p>
+
+        <div class="mission-drop">
+          <div class="mission-drop-head">
+            <span class="drop-num">Drop 4</span>
+            <h3>Missions 22–26: Mastery &amp; Recognition</h3>
+          </div>
+          <div class="mission-drop-body">
+            <ol start="22">
+              <li><strong>Adjust your notifications</strong> — Visit a category that interests you and change to "Watching" or "Tracking" to stay informed.</li>
+              <li><strong>Try the Advanced Search</strong> — Use the magnifying glass to search by date or user. Mastering search prevents duplicate questions.</li>
+              <li><strong>Experiment with Anonymous Mode</strong> — Switch to Anonymous Mode via your user menu to ask sensitive questions without linking them to your public profile. Remember to switch back!</li>
+              <li><strong>Earn badges for community recognition</strong> — Visit the Badges page, pick a badge to earn (e.g. "Editor" or "Nice Reply"), and try to achieve it.</li>
+              <li><strong>(For moderators) Issue pro-social behaviour badges</strong> — Recognise community members with badges including:
+                <ul>
+                  <li><strong>Social Butterfly</strong> — Created an event on a shared calendar</li>
+                  <li><strong>Resource Sharer</strong> — Amplifying content and engaging others</li>
+                  <li><strong>Bridge Builder</strong> — Tagging another group or communicating across groups</li>
+                  <li><strong>Harmony Keeper</strong> — Managing conflict in the community</li>
+                  <li><strong>Problem Reporter</strong> — Pointing out things that aren't quite right</li>
+                </ul>
+              </li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="info-card yellow-border">
+          <h3>Groups needed for mission release</h3>
+          <ul>
+            <li>Community Leaders (Pilot)</li>
+            <li>General Network Group (Pilot)</li>
+            <li>New Activist group (Pilot)</li>
+          </ul>
+          <p style="margin-top: 8px;">Missions were released per week alongside an Announcement to the relevant group. Each mission has its own link so participants can give feedback directly on the mission itself.</p>
+        </div>
+      </section>
+
+    </article>
+
+    <aside class="sidebar" aria-label="Page navigation">
+      <div class="sidebar-card">
+        <div class="sidebar-card-head">On this page</div>
+        <ul class="sidebar-toc">
+          <li><a href="#overview">About this document</a></li>
+          <li><a href="#pilot-schedule">Pilot schedule</a></li>
+          <li><a href="#mission-drop-1">Mission Drop #1</a></li>
+          <li><a href="#mission-drop-2">Mission Drop #2</a></li>
+          <li><a href="#mission-drop-3">Mission Drop #3</a></li>
+          <li><a href="#mission-drop-4">Mission Drop #4</a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sidebar-card-head">Document details</div>
+        <div class="sidebar-meta">
+          <p><strong>Phase</strong><br />Pilot Prep</p>
+          <p><strong>Group</strong><br />Pilot Testing</p>
+          <p><strong>Audience</strong><br />Pilot participants, moderators</p>
+          <p><strong>Status</strong><br />Completed</p>
+          <p><strong>Source</strong><br /><a href="https://docs.google.com/document/d/1VyoD0TD8jESL0YG6rExsS8cRUMYBCd-GhNuS62QpSkU/edit" rel="noopener" target="_blank">Open in Google Docs ↗</a></p>
+          <a href="index.html" class="back-link">← Back to full index</a>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+</main>
+
+<footer>
+  <img src="https://wiki.weareopen.coop/wao_logo_whitetr_1500.png" alt="WAO Cooperative" />
+  <div class="footer-bottom">
+    <span>AIUK Community Platform Project · Produced by <a href="https://weareopen.coop" rel="noopener">WAO Cooperative</a></span>
+  </div>
+</footer>
+
+</body>
+</html>
