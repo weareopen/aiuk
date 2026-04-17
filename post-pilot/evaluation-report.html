@@ -3,11 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AIUK Final Evaluation Report · AIUK Community Platform Project</title>
+  <title>Final Evaluation Report · AIUK Community Platform Project</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;600;700&family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../styles.css">
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../assets/favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
   <style>
     :root {
       --accent: #16A8E2;
@@ -15,18 +18,76 @@
       --accent-light: #107aa4; --accent-dark: #2ac2ff; --accent-hover: #0e6f96;
     }
 
-    .eval-areas { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 20px 0 28px; }
-    @media (max-width: 600px) { .eval-areas { grid-template-columns: 1fr; } }
-    .eval-card { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
-    .eval-card .eval-icon { font-size: 1.5rem; margin-bottom: 10px; }
-    .eval-card h4 { font-family: var(--font-head); font-size: 0.9rem; font-weight: 600; color: var(--charcoal); margin-bottom: 6px; }
-    .eval-card p { font-size: 0.83rem; color: #4a6070; margin: 0; line-height: 1.5; }
-    .timeline-strip { display: flex; gap: 0; margin: 20px 0 28px; overflow: hidden; border-radius: var(--radius); box-shadow: var(--shadow); }
-    .timeline-step { flex: 1; padding: 16px 18px; background: var(--white); border-right: 1px solid var(--light-grey); }
-    .timeline-step:last-child { border-right: none; }
-    .timeline-step .step-num { font-size: 1.2rem; font-weight: 800; color: var(--mid-grey); margin-bottom: 4px; }
-    .timeline-step h4 { font-size: 0.82rem; font-weight: 700; color: var(--charcoal); margin-bottom: 4px; }
-    .timeline-step p { font-size: 0.75rem; color: #4a6070; margin: 0; line-height: 1.45; }
+    .content ul { padding-left: 20px; margin-bottom: 16px; }
+    .content ol { padding-left: 20px; margin-bottom: 16px; }
+    .table-wrap { overflow-x: auto; margin: 20px 0 28px; border-radius: var(--radius); box-shadow: var(--shadow); }
+    table { width: 100%; border-collapse: collapse; background: var(--white); font-size: 0.88rem; }
+    thead { background: var(--charcoal); }
+    thead th { color: rgba(255,255,255,0.85); font-family: var(--font-body); font-weight: 700; font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 12px 16px; text-align: left; }
+    tbody tr { border-bottom: 1px solid var(--light-grey); }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:nth-child(even) { background: var(--off-white); }
+    tbody td { padding: 12px 16px; color: #4a6070; vertical-align: top; line-height: 1.55; }
+    tbody td strong { color: var(--charcoal); font-weight: 700; }
+
+    /* Quote / callout styles */
+    .user-quote { border-left: 4px solid var(--accent); background: rgba(var(--accent-rgb), 0.06); padding: 16px 20px; margin: 20px 0; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+    .user-quote p { font-size: 0.95rem; font-style: italic; color: var(--charcoal); margin: 0 0 6px; line-height: 1.6; }
+    .user-quote cite { font-size: 0.82rem; font-style: normal; font-weight: 700; color: var(--mid-grey); }
+    .conditional-go { background: rgba(0,195,153,0.1); border: 2px solid var(--green); border-radius: var(--radius); padding: 20px 24px; margin: 24px 0; }
+    .conditional-go .go-icon { font-size: 1.4rem; margin-right: 8px; }
+    .conditional-go p { font-size: 0.93rem; color: var(--charcoal); line-height: 1.65; margin: 0; }
+    .report-image { max-width: 100%; height: auto; border-radius: var(--radius-sm); margin: 16px 0; box-shadow: var(--shadow); }
+    .appendix-divider { border: none; height: 3px; background: linear-gradient(90deg, var(--accent), transparent); margin: 48px 0 32px; }
+
+    /* Appendix-specific styles (merged from evaluation-appendices.html) */
+    .hero-subtitle a { color: var(--accent-dark); text-decoration: none; font-weight: 600; }
+    .hero-subtitle a:hover { text-decoration: underline; }
+    .appendix-nav { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin: 20px 0 32px; }
+    @media (max-width: 860px) { .appendix-nav { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 520px) { .appendix-nav { grid-template-columns: 1fr 1fr; } }
+    .appendix-nav-item { background: var(--white); border: 1px solid var(--light-grey); border-top: 3px solid var(--blue); border-radius: var(--radius-sm); padding: 14px 12px; text-align: center; text-decoration: none; color: var(--charcoal); transition: box-shadow .2s, transform .2s; display: block; }
+    .appendix-nav-item:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); }
+    .appendix-nav-item .app-num { font-size: 0.7rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-light); display: block; margin-bottom: 4px; }
+    .appendix-nav-item .app-title { font-family: var(--font-head); font-size: 0.8rem; font-weight: 600; color: var(--charcoal); line-height: 1.35; display: block; }
+    .appendix-section { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius); margin: 24px 0; box-shadow: var(--shadow); overflow: hidden; }
+    .appendix-section-head { background: rgba(22,168,226,0.08); border-bottom: 1px solid rgba(22,168,226,0.2); padding: 18px 24px; display: flex; align-items: flex-start; gap: 16px; }
+    .appendix-badge { display: inline-flex; align-items: center; justify-content: center; background: #017daf; color: var(--white); font-family: var(--font-head); font-size: 0.75rem; font-weight: 700; width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0; }
+    .appendix-section-head-text h3 { font-family: var(--font-head); font-size: 1rem; font-weight: 600; color: var(--charcoal); margin: 0 0 3px; }
+    .appendix-section-head-text p { font-size: 0.82rem; color: var(--mid-grey); margin: 0; }
+    .appendix-section-body { padding: 20px 24px; }
+    .appendix-section-body p { font-size: 0.93rem; color: #4a6070; margin-bottom: 12px; line-height: 1.7; }
+    .appendix-section-body p:last-child { margin-bottom: 0; }
+    .checklist { list-style: none; padding: 0; margin: 12px 0 0; }
+    .checklist li { display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--light-grey); font-size: 0.9rem; color: #4a6070; line-height: 1.6; }
+    .checklist li:last-child { border-bottom: none; padding-bottom: 0; }
+    .checklist-box { width: 18px; height: 18px; border: 2px solid var(--mid-grey); border-radius: 4px; flex-shrink: 0; margin-top: 2px; background: var(--off-white); }
+    .checklist li strong { color: var(--charcoal); font-weight: 700; }
+    .checklist li a { color: var(--accent-light); text-decoration: none; font-weight: 600; }
+    .checklist li a:hover { text-decoration: underline; }
+    .checklist-group { margin: 18px 0; }
+    .checklist-group-label { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mid-grey); margin-bottom: 6px; padding-bottom: 6px; border-bottom: 1px solid var(--light-grey); }
+    .data-table { width: 100%; border-collapse: collapse; margin: 14px 0 20px; font-size: 0.88rem; }
+    .data-table th { background: var(--charcoal); color: rgba(255,255,255,0.85); font-family: var(--font-head); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; padding: 11px 14px; text-align: left; }
+    .data-table td { padding: 10px 14px; border-bottom: 1px solid var(--light-grey); color: #4a6070; vertical-align: top; }
+    .data-table td strong { color: var(--charcoal); font-weight: 700; }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:nth-child(even) td { background: rgba(22,168,226,0.03); }
+    .data-table a { color: var(--accent-light); text-decoration: none; font-weight: 600; font-size: 0.82rem; }
+    .data-table a:hover { text-decoration: underline; }
+    .companion-notice { background: rgba(22,168,226,0.06); border: 1px solid rgba(22,168,226,0.25); border-radius: var(--radius); padding: 16px 20px; display: flex; align-items: center; gap: 14px; margin: 0 0 24px; }
+    .companion-notice-icon { font-size: 1.3rem; flex-shrink: 0; }
+    .companion-notice p { font-size: 0.88rem; color: #4a6070; margin: 0; line-height: 1.55; }
+    .companion-notice a { color: var(--accent-light); font-weight: 700; text-decoration: none; }
+    .companion-notice a:hover { text-decoration: underline; }
+    .companion-link { display: inline-flex; align-items: center; gap: 7px; background: rgba(22,168,226,0.12); color: var(--blue); border: 1px solid rgba(22,168,226,0.3); text-decoration: none; font-size: 0.82rem; font-weight: 700; padding: 9px 18px; border-radius: var(--radius-sm); transition: background .2s; width: 100%; justify-content: center; margin-top: 8px; }
+    .companion-link:hover { background: rgba(22,168,226,0.2); }
+
+    /* Inline image + text layout for recommendation image pairs */
+    .rec-image-pair { display: flex; gap: 20px; align-items: flex-start; margin: 16px 0; }
+    .rec-image-pair img { max-width: 200px; flex-shrink: 0; border-radius: var(--radius-sm); box-shadow: var(--shadow); }
+    .rec-image-pair .rec-text { flex: 1; }
+    @media (max-width: 600px) { .rec-image-pair { flex-direction: column; } .rec-image-pair img { max-width: 100%; } }
   </style>
 </head>
 <body>
@@ -50,15 +111,17 @@
   <span aria-hidden="true">/</span>
   <span>Post-Pilot</span>
   <span aria-hidden="true">/</span>
-  <span>AIUK Final Evaluation Report</span>
+  <span>Final Evaluation Report</span>
 </div>
 
 <header class="hero">
   <div class="hero-inner">
-    <div class="anchor-badge">🔍 Anchor document</div>
-    <h1>AIUK Final<br /><em>Evaluation Report</em></h1>
+    <div class="hero-tag">
+      <a href="../index.html#timeline">← Post-Pilot Resources</a>
+    </div>
+    <h1>Amnesty Community —<br /><em>Final Evaluation Report</em></h1>
     <p class="hero-subtitle">
-      The summative evaluation of the full project — assessing what was achieved against the original goals, what the pilot revealed, and what comes next for the AIUK activist community platform.
+      An evaluation of the AIUK Community Platform after an eight-week pilot with 77 activists. Covers usability, engagement, safety, lessons learned, recommendations, and appendices.
     </p>
   </div>
 </header>
@@ -68,123 +131,1095 @@
 
     <article class="content">
 
-      <section id="overview">
-        <h2>About this report</h2>
+      <!-- ═══════════════════════════════════════
+           EXECUTIVE SUMMARY
+      ════════════════════════════════════════ -->
+      <section id="executive-summary">
+        <h2>Executive Summary</h2>
+
         <p>
-          The AIUK Final Evaluation Report is the second anchor document of the AIUK Community Platform project. It was produced at the conclusion of the pilot phase and provides a summative assessment of the full eighteen-month project — from the original goals set out in the Statement of Work through to the outcomes observed during the pilot.
-        </p>
-        <p>
-          Where the Technical Discovery Report and Recommendations set out <em>what to build and why</em>, this evaluation report answers the question: <strong>did it work, and what did we learn?</strong>
+          Amnesty International UK (AIUK) has a community of activists who care deeply and are fiercely committed to human rights and to AIUK. The welcoming, supportive tone of interactions during the pilot was praised repeatedly and provides a strong foundation for growth. However, without greater staff involvement, more deliberate attention to the design and governance of the community, and sustained efforts around online engagement, the Community Platform is unlikely to become a long-term success.
         </p>
 
-        <div class="info-card blue-border">
-          <h3>What this report is not</h3>
-          <p>This is an evaluation of the project, not the community. A pilot-phase community is still finding its footing — it would be unfair and inaccurate to evaluate the long-term potential of the activist community based on a short pilot. The report evaluates the process, the decisions made, and the early evidence from the pilot against the goals that were set.</p>
+        <p>
+          We regularly see organisations trying to solve social challenges such as "better engaging activists" primarily through new technologies like community platforms. From the start of this project, we have been clear with AIUK that technology alone cannot address entrenched cultural issues. We have noted that "Staff are part of the community," and that working openly could help narrow the gap between paid and unpaid contributors. Further, we have insisted that a "little tech project over there" would not sufficiently address the ambition of the organisation to galvanise the UK activist community in a way that shows measurable impact.
+        </p>
+
+        <p>
+          Our hope is that this final review of the Community Platform pilot prompts Amnesty's leadership and team members to give stronger backing to the DDaT team and the Community Manager, and to bring the necessary attention and effort to a project that has genuine transformative potential.
+        </p>
+
+        <img src="images/eval-report-img-02.png" alt="Illustration representing the AIUK community" class="report-image" />
+
+        <hr />
+
+        <p>
+          This report evaluates the current status of the new Amnesty International UK's (AIUK) Community Platform after an eight-week pilot with 77 activists across three cohorts: community leaders, network/group members, and new activists. The pilot ran from late January to late March 2026 and used the open source platform Discourse.
+        </p>
+
+        <p>Five data sources help us in assessing the success of the pilot:</p>
+        <ol>
+          <li>Pre-pilot System Usability Scale (SUS) testing with five community leaders</li>
+          <li>Survey from the end of the Community Leaders cohort</li>
+          <li>Platform analytics from the Discourse admin dashboard</li>
+          <li>Qualitative feedback gathered throughout the pilot</li>
+          <li>Final survey</li>
+        </ol>
+
+        <p>
+          The platform was rated as "excellent" with a high SUS score. Most Community Leaders were "somewhat satisfied" or better with the platform. In general, we found that Community Leaders want this to work but will need help getting comfortable.
+        </p>
+
+        <p>
+          The platform also scored well on safety (zero incidents, 100% of respondents feeling safe or respected) and community atmosphere (85% rating it "welcoming" or "very welcoming").
+        </p>
+
+        <p>
+          The Discourse admin dashboard showed that, while the ratio of daily active users to monthly active users (DAU/MAU) exceeded our initial target, daily engaged users and new contributor rates were lower than we were hoping. This may have, however, been due to setting unachievable targets for a new online community.
+        </p>
+
+        <p>
+          The community was positive about their initial experience of the platform, with more than three-quarters saying they were "satisfied" or "very satisfied". The Net Promoter Score is favourable, with over half of respondents being active "promoters". The most consistent feedback themes centred around the need for better onboarding and training, improved event calendar features, and concerns about the digital literacies of community members.
+        </p>
+
+        <div class="conditional-go">
+          <p><span class="go-icon">👍</span><strong>Conditional Go</strong> — Based on the <a href="readiness-assessment.html">post-pilot readiness assessment framework</a> we created before the Pilot began, we recommend a Conditional Go for wider launch. There are specific actions we would recommend including establishing a Product Lead, onboarding improvements, UX refinements (particularly event creation), and a phased rollout strategy.</p>
+        </div>
+
+        <div class="doc-link-banner">
+          <p>The full report and appendices are held in Google Docs and are accessible to project team members.</p>
+          <a href="https://docs.google.com/document/d/17ak8MXzKJpIMcZclM79E3OjqoL2q9m4CQ0rTHGAZlxI/edit" rel="noopener" target="_blank">Original on Google Drive (unavailable after May 2026)</a>
         </div>
       </section>
 
-      <section id="evaluation-approach">
-        <h2>Evaluation approach</h2>
+      <!-- ═══════════════════════════════════════
+           INTRODUCTION
+      ════════════════════════════════════════ -->
+      <section id="introduction">
+        <h2>Introduction</h2>
+
         <p>
-          The evaluation draws on multiple sources of evidence gathered across the project: the original goals and acceptance criteria from the Statement of Work, community metrics tracked during the pilot, feedback from pilot participants, and the project team's own reflective assessment.
+          Amnesty International UK (AIUK) set out to create a dedicated online community platform to support its network of activists, educators, and staff. The platform, built on Discourse, aims to replace fragmented communication channels (email lists, WhatsApp groups, social media) with a single, purpose-built space for discussion, resource sharing, event coordination, and community building. Our <a href="../phase-5/technical-discovery.html">Technical Discovery Report and Recommendations</a> further explains the ambition of the community and platform.
         </p>
 
-        <div class="timeline-strip" aria-label="Evaluation evidence sources">
-          <div class="timeline-step">
-            <div class="step-num">01</div>
-            <h4>Goals &amp; criteria</h4>
-            <p>Original SoW goals and the acceptance criteria agreed with AIUK at the start of the project.</p>
-          </div>
-          <div class="timeline-step">
-            <div class="step-num">02</div>
-            <h4>Pilot metrics</h4>
-            <p>Platform usage data and community metrics tracked against the KPI framework developed in Phase Four.</p>
-          </div>
-          <div class="timeline-step">
-            <div class="step-num">03</div>
-            <h4>Participant feedback</h4>
-            <p>Feedback gathered from pilot participants — activists, community managers, and AIUK staff — on their experience of the platform.</p>
-          </div>
-          <div class="timeline-step">
-            <div class="step-num">04</div>
-            <h4>Team reflection</h4>
-            <p>The WAO and AIUK team's own retrospective assessment of what worked and what they would do differently.</p>
-          </div>
-        </div>
-      </section>
-
-      <section id="what-it-evaluates">
-        <h2>What the report evaluates</h2>
         <p>
-          The evaluation covers the full scope of the project, not only the pilot. It assesses both the process (how the project was run) and the outcomes (what it produced).
+          This evaluation report assesses whether the platform is ready for wider launch. It looks at usability, engagement, safety, and technical performance against our pre-defined success criteria. We look at both quantitative metrics and qualitative feedback from pilot participants. We then make some final recommendations as we pass off the management and development of the Community Platform fully to the AIUK team.
         </p>
 
-        <div class="eval-areas">
-          <div class="eval-card">
-            <div class="eval-icon">🗺️</div>
-            <h4>Research and discovery</h4>
-            <p>Did the research phase give the project team the understanding it needed? Were the right people consulted? Did the findings hold up in practice?</p>
-          </div>
-          <div class="eval-card">
-            <div class="eval-icon">🧭</div>
-            <h4>Community strategy</h4>
-            <p>Did the personas, user journeys, and community design decisions reflect the reality of how activists used the platform during the pilot?</p>
-          </div>
-          <div class="eval-card">
-            <div class="eval-icon">⚙️</div>
-            <h4>Technology selection</h4>
-            <p>Did the recommended platform perform as expected? What worked well in practice, and what required adjustment or workarounds?</p>
-          </div>
-          <div class="eval-card">
-            <div class="eval-icon">🌱</div>
-            <h4>Pilot outcomes</h4>
-            <p>How did activists engage during the pilot? What does early adoption data tell us about the platform's potential for the wider community?</p>
-          </div>
-          <div class="eval-card">
-            <div class="eval-icon">🤝</div>
-            <h4>Ways of working</h4>
-            <p>How well did the heartbeat approach, the WAO/AIUK collaboration, and the project governance model work across eighteen months?</p>
-          </div>
-          <div class="eval-card">
-            <div class="eval-icon">📐</div>
-            <h4>Lessons learned</h4>
-            <p>What would the team do differently? What advice would they give to another organisation embarking on a similar project?</p>
-          </div>
-        </div>
+        <p>
+          Our understanding upon starting work on this project, and throughout, has been that you want to engage your 80,000-strong activist base with the Amnesty Community. The decisions and approach we have taken in this report is informed by this ambition.
+        </p>
+
+        <ol>
+          <li>
+            <strong>The platform needs a critical mass of users to fulfil its potential.</strong> Several respondents noted the platform would only become truly useful when more group members join. Some expressed frustration that their local group members were not yet engaged.
+          </li>
+          <li>
+            <strong>The pilot <em>itself</em> was valued by participants.</strong> Several respondents expressed appreciation for the collaborative, iterative approach and the responsiveness of the team. Maintaining openness and a fail forward attitude will help during the launch phase.
+          </li>
+          <li>
+            <strong>Digital literacy varies significantly across the AIUK community.</strong> The pilot included people ranging from extremely familiar to not at all familiar with online platforms. The pilot exposed a clear need to design onboarding and support materials for the least digitally confident users, not the average user. As one respondent put it:
+            <blockquote class="user-quote">
+              <p>"Don't assume anything about prior knowledge! I appreciate you are communicating to a very diverse audience with varying degrees of skill and experience."</p>
+              <cite>— Community Leader</cite>
+            </blockquote>
+          </li>
+        </ol>
       </section>
 
-      <section id="referenced-documents">
-        <h2>Documents referenced in this report</h2>
+      <!-- ═══════════════════════════════════════
+           PREPARATIONS
+      ════════════════════════════════════════ -->
+      <section id="preparations">
+        <h2>Preparations</h2>
+
         <p>
-          Like the Technical Discovery Report, this evaluation references a range of project documents — evidence for the assessments it makes. All documents marked ✅ in the project index are referenced in one or both of the anchor documents.
+          Because sign-off for Discourse hosting took longer than expected, we had less time than we would have liked to set up and configure the platform. Our thinking and prep work, however, helped us quickly implement a number of custom improvements for AIUK. We were then able to run a couple of tests before activists signed into the platform for the pilot.
+        </p>
+
+        <h3 id="platform-testing">Platform Testing</h3>
+
+        <p>
+          In January 2026 we recruited five representatives of the AIUK community to participate in testing of the new platform. Details of how the testing happened, including the script can be found here: <a href="../pilot-prep/testing-plan.html">Platform testing plan with users (Jan 2026)</a>.
+        </p>
+
+        <p>
+          One of the important things to test before the pilot was system usability. We used the industry standard 'System Usability Scale' for this, where scores from 68–80 count as above average; 80–90 reach "excellent" levels.
+        </p>
+
+        <p>
+          The Amnesty Community platform average of 83 exceeds the "standard" SUS benchmark of 68, placing the platform as excellent. See <a href="#appendix-1">Appendix 1</a> for more details.
+        </p>
+
+        <img src="images/eval-report-img-03.png" alt="SUS score chart showing average score of 83" class="report-image" />
+
+        <h3 id="accessibility-testing">Basic Accessibility Testing</h3>
+
+        <p>
+          Accessibility is fundamental to creating an inclusive digital experience for the Amnesty Community. It is both an ethical commitment and a practical requirement. We ran an initial accessibility check that was intentionally basic in scope.
+        </p>
+
+        <p>
+          We felt that this basic accessibility testing showed that we are in good shape for the initial pilot. We addressed a number of issues that would have been difficult to find without testing, and we've pointed out some areas for future improvements. Accessibility testing is an area that AIUK should further invest in.
+        </p>
+
+        <p>
+          A full overview of this testing can be found in the <a href="../pilot-prep/accessibility-testing.html">Accessibility Testing</a> document.
+        </p>
+      </section>
+
+      <!-- ═══════════════════════════════════════
+           PILOT
+      ════════════════════════════════════════ -->
+      <section id="pilot">
+        <h2>Pilot</h2>
+
+        <p>
+          The success of AIUK's activist community platform depends not on speed of launch, but on the quality of insights gathered and applied throughout the development process. We therefore ran an 8-week pilot with three groups of AIUK community users. Such a methodical approach delivers better outcomes for both the organisation and its activist community.
+        </p>
+
+        <p>
+          The pilot operated entirely within AIUK's new platform, with participants distributed across various geographical locations and network affiliations. Training sessions, workshops, and community interactions took place online, with recorded sessions to accommodate any issues around availability.
+        </p>
+
+        <p>The pilot was separated into three phases:</p>
+
+        <ol>
+          <li>In phase one, we gathered feedback from <strong>community leaders</strong> around the initial configuration and setup of the platform, as well as on the core features for community profiles, groups and networks.</li>
+          <li>In phase two, we invited <strong>network and group members</strong> to help us test community leadership tools and moderation capabilities with experienced activists. We wanted to look at how well the leadership and moderation tools work. We also continued to gather feedback on the structure and setup of the platform.</li>
+          <li>In the third phase, we invited <strong>new activists</strong> to test how well the community can use decentralised group management tools.</li>
+        </ol>
+
+        <p>
+          We set ambitious targets for the pilot so that we could assess whether or not the platform is ready for a phased launch. A detailed look at the activity, participation and community health metrics that make up our pilot targets can be found in <a href="#appendix-2">Appendix 2: Usage Reports</a>.
+        </p>
+
+        <p>
+          We have also collected quantitative and qualitative data from pilot participants. This serves as the basis for the next section, Lessons Learned. To see more about what users thought as well as a sentiment analysis, please see <a href="#appendix-3">Appendix 3: User Feedback</a> and <a href="#appendix-4">Appendix 4: Week One Data</a>.
+        </p>
+      </section>
+
+      <!-- ═══════════════════════════════════════
+           LESSONS LEARNED
+      ════════════════════════════════════════ -->
+      <section id="lessons-learned">
+        <h2>Lessons Learned</h2>
+
+        <p>
+          In this section we summarise the insights we gained from running the pilot with active AIUK community members. In the following Recommendations section, we use these lessons to unpack practical ways forward to help ensure the Community Platform's success.
+        </p>
+
+        <img src="images/eval-report-img-04.png" alt="Illustration for lessons learned section" class="report-image" />
+
+        <h3 id="platform-sound">Platform is sound, but the product needs support</h3>
+
+        <blockquote class="user-quote">
+          <p>"Although it takes a little getting used to, and some features, such as creating an event, are not really what I'd call intuitive, it's a good, ambitious platform with a lot of potential"</p>
+          <cite>— Community Leader</cite>
+        </blockquote>
+
+        <p>
+          The pilot showed that the platform scores highly on usability and safety, and is welcomed by activists, but that Amnesty's organisational culture, staffing, and processes now need to develop in step with the technology for it to succeed.
         </p>
 
         <div class="info-card green-border">
-          <h3>Key referenced documents</h3>
+          <h3>Recommendations: Team and Roles</h3>
           <ul>
-            <li><strong>Platform testing plan with users (Jan 2026)</strong> — the structured testing process carried out ahead of the pilot launch</li>
-            <li><strong>Accessibility Testing</strong> — assessment of the platform's accessibility against WCAG standards</li>
-            <li><strong>Post-pilot Readiness Assessment Framework</strong> — used as a lens for assessing whether the pilot demonstrated readiness to scale</li>
-            <li><strong>Community Metrics</strong> — the KPI framework that provided the measurement basis for the evaluation</li>
-            <li><strong>User Journey</strong> — used to assess whether the platform actually supported the journeys designed in Phase Four</li>
+            <li>Establish a Product Lead to support the Community Manager, shape the product roadmap, set priorities for feature development</li>
+            <li>Find a UX Designer to help improve the accessibility and usability of the platform</li>
+            <li>Facilitate cross-team group to support the platform</li>
+          </ul>
+        </div>
+
+        <h3 id="focus-usability">Focus should be put on usability before integrations</h3>
+
+        <blockquote class="user-quote">
+          <p>"I see it as the future of the organisation."</p>
+          <cite>— General Network Member</cite>
+        </blockquote>
+
+        <p>
+          Before focusing budget and staff's time and energy on new integrations, usability of the current feature set should be improved. In particular, the pilot showed that activists are eager for a more sophisticated community event calendar, a feature set that was <a href="../phase-5/technical-discovery.html">not part of the original scope</a>.
+        </p>
+
+        <div class="info-card green-border">
+          <h3>Recommendations: UX</h3>
+          <ul>
+            <li>Fork and develop the Calendar and Events plugin</li>
+            <li>Create a more visual homepage and cleaner navigation</li>
+            <li>Improve the search functionality by turning on AI-assisted search</li>
+          </ul>
+        </div>
+
+        <h3 id="engagement-content">Engagement and content go hand in hand</h3>
+
+        <blockquote class="user-quote">
+          <p>"My intro post was liked and I got a badge!"</p>
+          <cite>— New Activist</cite>
+        </blockquote>
+
+        <p>
+          While active users tend to return regularly, overall engagement remains limited because many activists' peers and local group members are not yet on the platform, and the platform is not yet positioned as a central place to get things done.
+        </p>
+
+        <div class="info-card green-border">
+          <h3>Recommendations: Content</h3>
+          <ul>
+            <li>Iterate the Onboarding and Training offerings</li>
+            <li>Show how the platform can be useful</li>
+            <li>Continue to think through Labels, tags and categories</li>
+          </ul>
+        </div>
+
+        <h3 id="slow-steady-integrations">Slow and steady integrations</h3>
+
+        <blockquote class="user-quote">
+          <p>"It has effectively still been through email comms — just email notifications relating to the portal rather than directly."</p>
+          <cite>— General Network Member</cite>
+        </blockquote>
+
+        <p>
+          The Community Platform should be positioned as the place where the community comes together. This means ensuring that other technologies in the ecosystem are linking to the platform and pulling announcements and public discussions from it.
+        </p>
+
+        <div class="info-card green-border">
+          <h3>Recommendations: Integration and Ecosystem</h3>
+          <ul>
+            <li>Surface key updates on the website</li>
+            <li>Implement SSO</li>
+            <li>Protect privacy while integrating the new CRM</li>
+          </ul>
+        </div>
+
+        <h3 id="goodwill">Goodwill is a key asset</h3>
+
+        <blockquote class="user-quote">
+          <p>"I'll continue to use it because the platform has been provided for us, by people who have thought about and put huge effort into getting it right, and despite my reservations (which may be due to my lack of experience), I want to make it work."</p>
+          <cite>— Community Leader</cite>
+        </blockquote>
+
+        <p>
+          People were pleased to be involved in the pilot process. Many respondents expressed appreciation for the pilot process and a desire to "make it work", which is an important resource to draw on during the next phases of rollout and change.
+        </p>
+
+        <div class="info-card green-border">
+          <h3>Recommendations: Community involvement</h3>
+          <ul>
+            <li>Invite engaged activists to be moderators</li>
+            <li>Institute a peer 'buddy' system</li>
+            <li>Work openly</li>
           </ul>
         </div>
       </section>
 
-      <section id="looking-forward">
-        <h2>Looking forward</h2>
+      <!-- ═══════════════════════════════════════
+           RECOMMENDATIONS
+      ════════════════════════════════════════ -->
+      <section id="recommendations">
+        <h2>Recommendations</h2>
+
+        <h3 id="team-roles">Team &amp; Roles</h3>
+
+        <blockquote class="user-quote">
+          <p>"I have been wanting such a platform for many years and believe it can be very useful in sustaining and building Amnesty's network of activists. I have concerns that uptake amongst others will be slow, and who decides and implements the changes in structure flagged up in the pilot."</p>
+          <cite>— General Network Member</cite>
+        </blockquote>
+
+        <h4 id="establish-product-lead">Establish a Product Lead</h4>
+
         <p>
-          The evaluation report is not only a retrospective — it also sets direction for what comes next. Based on what the pilot revealed, the report includes recommendations for the next phase of the platform's life: how to grow participation, what to address in the configuration, and how AIUK might sustain and develop the community over time.
-        </p>
-        <p>
-          These recommendations connect directly to the post-pilot planning documents — the <strong>Integration Roadmap</strong> and the <strong>Community Management Plan</strong> — which translate the evaluation's findings into practical next steps.
+          The Community Platform needs a dedicated Product Lead to support the Community Manager. Both roles are important: one has a technical mindset to manage the product, the other focuses on relationship building and community health.
         </p>
 
-        <div class="info-card yellow-border">
-          <h3>Companion document</h3>
-          <p>This report should be read alongside the <a href="../phase-5/technical-discovery.html">Technical Discovery Report and Recommendations</a>, which sets out the strategic and technical basis that this evaluation assesses. Together they form the complete record of evidence-based decision-making across the project.</p>
+        <p><strong>Product Lead responsibilities:</strong></p>
+        <ul>
+          <li>Shape the product roadmap and set priorities for feature development</li>
+          <li>Decide which bugs to fix and which trade-offs to accept</li>
+          <li>Find community specific plugins and components</li>
+        </ul>
+
+        <p><strong>Community Manager responsibilities:</strong></p>
+        <ul>
+          <li>Create relationships with community members and encourage participation</li>
+          <li>Communicate updates and listen to community feedback</li>
+          <li>Organise trainings, events, discussions, and outreach</li>
+        </ul>
+
+        <div class="rec-image-pair">
+          <img src="images/eval-report-img-05.png" alt="Illustration showing product lead and community manager roles working together" />
+          <div class="rec-text">
+            <p>These roles have different skillsets and work in tandem to create a space where activists can allow the platform to fade into the background as their work comes into the foreground. Given the different mindsets and focuses, we've written <a href="#appendix-5">Appendix 5</a> to help a future Product Lead take over the platform responsibilities that are out of scope for a Community Manager.</p>
+          </div>
         </div>
+
+        <h4 id="find-ux-designer">Find a UX Designer</h4>
+
+        <p>
+          Utilising the design framework created for the website has helped the platform look and feel like part of the organisation. However, there are missing design rules as the community platform is inherently more interactive than the website. Additionally, the refreshed brand guidelines gave little flexibility to creating engaging interactive content for the community. An interactive interface has accessibility requirements that are not covered in the branding.
+        </p>
+
+        <p>
+          Having a UX designer working together with the rest of the platform team would ensure that someone with the specific design skills and competencies that are needed for a platform like this one is on hand to continuously improve the accessibility and usability of the platform.
+        </p>
+
+        <h4 id="cross-team-group">Facilitate cross-team group to support the platform</h4>
+
+        <p>
+          As we detailed in <a href="../phase-4/processes-workflows.html">Processes and Workflows</a>, a number of team members need to work together to make the Community Platform a success. Sustaining the platform will require coordinated contributions from DDaT, activism, campaigns, and other teams so that there is a steady flow of relevant content, events, and staff presence on the platform.
+        </p>
+
+        <p>
+          Community members are trying to learn, coordinate, share, connect and stay informed, the platform can help with that, but only if there is content in it and people on it.
+        </p>
+
+        <h3 id="ux">UX</h3>
+
+        <blockquote class="user-quote">
+          <p>"I had to try clicking on a few magnifying glasses, before spotting the 'correct' one on the Categories page. I was trying to do a search from within one of the categories and it wasn't offering me the option to perform an advanced search, presumably because I had already started to narrow this search down"</p>
+          <cite>— Community Leader</cite>
+        </blockquote>
+
+        <img src="images/eval-report-img-06.png" alt="Illustration for UX recommendations section" class="report-image" />
+
+        <h4 id="fork-calendar">Fork and develop the Calendar and Events plugin</h4>
+
+        <p>
+          Creating and managing events was consistently described as unintuitive, hard to find, and overly complex, making it the single most urgent UX problem to address before wider launch. Suggestions included adding a more prominent button, simplifying the workflow, and providing clear step-by-step guidance. The calendar feature also posed challenges, with respondents unclear about how to add events and how the calendar interacted with other platform features.
+        </p>
+
+        <p>
+          We've included more detail in <a href="#appendix-5">Appendix 5</a>. Once a Product Lead understands the issues with this plugin, we recommend talking to Communiteq about the possibility and cost of "forking" the Calendar and Events plugin and customising it for AIUK's needs.
+        </p>
+
+        <h4 id="visual-homepage">Create a more visual homepage and cleaner navigation</h4>
+
+        <p>
+          The platform needs clearer signposting to key areas such as regions and networks, better use of headings and breadcrumbs, and a more informative landing page so that less confident users can see where to go and what to do. Navigation and wayfinding was tricky for less experienced users. Some participants reported not being sure where they were on the platform, who they were communicating with, or how to target posts to specific groups (for example, Wales-only groups).
+        </p>
+
+        <p>
+          A more visual platform would be appropriate and is feasible throughout the platform, but it requires more design, development, and investment. For example, Categories and Subcategories can have a featured image, which we've included within each category. How would the landing page feel if those images were integrated into the homepage template? In addition, we had initially planned for the map to be featured directly on the home page, but ran out of time and budget to make that happen.
+        </p>
+
+        <h4 id="improve-search">Improve the search functionality</h4>
+
+        <p>
+          Search was rated as only okay by many users (45%), which suggests that search can likely be more useful. No specific issues were described in the qualitative feedback, but the moderate ratings indicate room for enhancement. Investigate whether Discourse's search configuration can be optimised, and consider adding guided search or filtering options.
+        </p>
+
+        <p>
+          We expect that people want an integrated search across the Community Platform, the Website and the Knowledge Hub and have included this in Appendix 5: Product Handover Notes.
+        </p>
+
+        <h3 id="content">Content</h3>
+
+        <p>
+          Based on feedback during the pilot, we made numerous changes to the content and functionality of the platform. For example, many of the issues raised during the Pilot have either been actioned or are currently being discussed by the community.
+        </p>
+
+        <blockquote class="user-quote">
+          <p>"In these challenging times it is more important than ever that we stand together to oppose the divisive rhetoric and the anti- human rights factions. This new community platform has the potential for us to easily share connections, resources, ideas and events."</p>
+          <cite>— Local Group Leader</cite>
+        </blockquote>
+
+        <img src="images/eval-report-img-07.png" alt="Illustration for content recommendations section" class="report-image" />
+
+        <h4 id="iterate-onboarding">Iterate the Onboarding and Training offerings</h4>
+
+        <p>
+          Reflections on "Getting started" flows were mixed. Some found onboarding and training easy while others struggled with pace, terminology, and assumed prior knowledge. This highlights the need to design onboarding and training for the least digitally confident. Participants repeatedly asked for step-by-step guides, more screenshots, slower training, and even printed materials, suggesting that future training should emphasise repetition, simple language, and "start from zero" examples.
+        </p>
+
+        <p>
+          New users should encounter a simple welcome experience that explains what the platform is for, shows common tasks through examples, and guides them through their first steps with visual, step-by-step support. Much of this content exists, but it needs to be surfaced better.
+        </p>
+
+        <p>
+          The Training category showed that using Discourse features like replies can help moderators and staff manage training and onboarding content with shareable links. Multiple strategies for content organisation exist. As an example, see our experiments in the Training category:
+        </p>
+        <ul>
+          <li>Admin / Mod training using shareable linking technique: <a href="https://community.amnesty.org.uk/t/site-wide-elements-and-settings/834" rel="noopener" target="_blank">community.amnesty.org.uk/t/site-wide-elements-and-settings/834</a>
+            <ul>
+              <li>Basic training using topics instead of replies: <a href="https://community.amnesty.org.uk/c/onboarding/basics/50" rel="noopener" target="_blank">community.amnesty.org.uk/c/onboarding/basics/50</a></li>
+            </ul>
+          </li>
+        </ul>
+
+        <h4 id="show-usefulness">Show how the platform can be useful</h4>
+
+        <p>
+          The more content and interaction happening on the platform, the easier it will be for staff and community members to imagine what the platform is capable of. Discourse is widely extendable and can help coordinate both people and collaborative work. Encourage moderators to split topics and threads to better organise content and work to surface insightful and meaningful content from community members. Spend time facilitating the community and help them create things like case studies, static pages, best practice wikis and engaging, visual threads.
+        </p>
+
+        <h4 id="labels-tags">Continue to think through Labels, tags and categories</h4>
+
+        <p>
+          Some participants found it hard to know where they were and where to post, and some questioned labels such as Chair, Secretary, Treasurer, indicating that information architecture, naming, and wayfinding need to be better aligned with how activists actually work.
+        </p>
+
+        <p>
+          There is a risk that too many tags and an over-complicated category structure will make the platform harder to use, so tags, groups and categories should be based around real, repeated use cases. An overly complex tagging system could undermine the platform's usability.
+        </p>
+
+        <h3 id="integrations-ecosystem">Integrations and Ecosystem</h3>
+
+        <blockquote class="user-quote">
+          <p>"If all our activists were happy to use it, it might be a good way to communicate, but I know that many people in our group won't want to use it, so I'll still have to send emails with newsletters, events, bulletins etc. So instead of streamlining my work, it might increase it [...]"</p>
+          <cite>— Category Moderator</cite>
+        </blockquote>
+
+        <img src="images/eval-report-img-08.png" alt="Illustration for integrations and ecosystem section" class="report-image" />
+
+        <h4 id="surface-updates">Surface key updates on the Website</h4>
+
+        <p>
+          Improving the connection between the website and the Community platform will help signal that the platform is a core part of Amnesty's activist infrastructure rather than a side project. Soon after the pilot, it would be good to serve announcements from the community platform on the AIUK website. Given it is new, both staff and activists need to be encouraged and reminded to post on the community platform rather than the AIUK website.
+        </p>
+
+        <h4 id="implement-sso">Implement Single sign-on</h4>
+
+        <p>
+          Implementing single sign-on across the website, Knowledge Hub, and Community Platform, at least for staff, would make it easier to move between tools and would help the platform feel integrated into AIUK's wider digital environment.
+        </p>
+
+        <p>
+          In our technical report, we suggested that the community platform implement single sign-on from the public launch phase and, if possible, during the Pilot phase. We explained that it was dependent upon collaborating with the other teams working within the digital transformation project (e.g. Website, Knowledge Hub, IT team). <a href="../phase-5/technical-discovery.html">Technically speaking</a>, this shouldn't be a large project as we selected a platform that allows for SSO. However, our current understanding is that other teams have not uncovered a need for SSO.
+        </p>
+
+        <p>
+          Providing single sign-on between the different parts of the ecosystem is a convenience that may be afforded to staff members in the short-term and expanded to other community members when projects like the CRM and the Supporter Portal start gaining traction.
+        </p>
+
+        <h4 id="protect-privacy-crm">Protect privacy while integrating the new CRM</h4>
+
+        <p>
+          AIUK has selected Salesforce as the new CRM to be implemented throughout 2026 and into 2027. As part of the CRM project, careful consideration should be given to what kinds of information are synced between the community platform and the CRM. Linking these two tools needs careful design so that any association between pseudonyms and real identities is secure, consent-based, and aligned with AIUK's human rights obligations. The data flows across the ecosystem need, however, careful thought and planning, as well as <a href="../pilot-prep/data-privacy.html">a dedicated adherence to data privacy</a>.
+        </p>
+
+        <h3 id="community-involvement">Community involvement</h3>
+
+        <blockquote class="user-quote">
+          <p>"Having space for the Central England Network has been helpful seeing what other groups are doing has been insightful"</p>
+          <cite>— Community Leader</cite>
+        </blockquote>
+
+        <img src="images/eval-report-img-09.png" alt="Illustration for community involvement section" class="report-image" />
+
+        <h4 id="invite-moderators">Invite engaged activists to be moderators</h4>
+
+        <p>
+          There are a number of activists who are enthusiastic about the new platform and wish to see it succeed. People responded that they were happy to be asked to lead during the pilot. Continue to expand the moderator pool and give long-serving AIUK activists special trust levels, badges and attention.
+        </p>
+
+        <p>
+          Our <a href="community-management.html">community management plan</a> serves as an operational handbook on how to scale and improve. Continue to invite engaged people into this project and iterate the product. Ensure that contributor pathways are well documented and that AIUK changes methods and behaviours to collaborate directly with community members.
+        </p>
+
+        <h4 id="buddy-system">Institute a peer 'buddy' system</h4>
+
+        <p>
+          Given the variation of digital literacies and confidence amongst the community as well as the goal of increasing collaboration, we recommend setting up a peer 'buddy' system. Several participants responded that they were worried about the technical ability of some of their colleagues. As people join the platform, they might be paired with a Community Leader who is already familiar with the platform and the categories within it.
+        </p>
+
+        <h4 id="work-openly">Work openly</h4>
+
+        <img src="images/eval-report-img-10.png" alt="Illustration representing working openly" class="report-image" />
+
+        <p>
+          We've written extensively over the years on the benefits of working openly. Ultimately, it is about cultural change. A change in <em>attitude</em> as much as a change in processes. During the pilot, we sought to work directly with activists though our access was limited. We recommend making a shift towards working more openly and transparently, with activists, with contractors and with one another. It is a strategic move that can significantly enhance AIUK's agility, innovation, and engagement.
+        </p>
       </section>
+
+      <!-- ═══════════════════════════════════════
+           RISK & SCALABILITY
+      ════════════════════════════════════════ -->
+      <section id="risk-scalability">
+        <h2>Risk &amp; Scalability</h2>
+
+        <blockquote class="user-quote">
+          <p>"I want it to continue as a safe space, so am prepared to do my bit to help"</p>
+          <cite>— Community Leader</cite>
+        </blockquote>
+
+        <p>
+          Based on the pilot findings, we pulled together the following risks to pay attention to as you roll out the platform to a wider audience:
+        </p>
+
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th scope="col">Risk type</th>
+                <th scope="col">Description</th>
+                <th scope="col">Mitigation</th>
+                <th scope="col">Risk level</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Adoption</strong></td>
+                <td>A lot of people who answered the survey expressed concern that their peers wouldn't join and actively use the platform.</td>
+                <td>Continue with thoughtful and phased rollouts. Improve onboarding support, training and community coordination help. Identify and empower community mentors.</td>
+                <td><strong>High</strong></td>
+              </tr>
+              <tr>
+                <td><strong>Digital Exclusion</strong></td>
+                <td>There was a significant variation in levels of digital literacy skills amongst the participants in the Pilot. Some described it as intuitive, whereas others considered it overwhelming and unfamiliar.</td>
+                <td>Provide tiered training materials. AIUK should not assume prior platform knowledge. Use a peer support 'buddy' system to help those who are less confident.</td>
+                <td><strong>Medium</strong></td>
+              </tr>
+              <tr>
+                <td><strong>Volunteer Burnout</strong></td>
+                <td>One respondent actually wrote that they were worried about losing sleep over the platform, saying that it might mean more of a workload rather than less.</td>
+                <td>Help people understand that the platform can be used to complement other channels and help demonstrate easier ways to do cumbersome things.</td>
+                <td><strong>Medium</strong></td>
+              </tr>
+              <tr>
+                <td><strong>Channel Fragmentation</strong></td>
+                <td>As email and WhatsApp is so entrenched amongst AIUK activists, community leaders may need to maintain parallel communications channels to the platform until it achieves critical mass.</td>
+                <td>Provide guidance and provide a way for groups to share good practice around migrating activists to the platform. Create examples and plans to help move more communication onto the Amnesty Community.</td>
+                <td><strong>Medium</strong></td>
+              </tr>
+              <tr>
+                <td><strong>Moderation Scalability</strong></td>
+                <td>Moderation needs were minimal during the pilot due to small numbers and a self-selecting, motivated group. At scale, moderation demands will increase.</td>
+                <td>Pathways to category and site-wide moderation need to be explicit and training should include clear escalation rules.</td>
+                <td><strong>Low-Medium</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>
+          There is a difference between scaling technically and scaling socially. Processes, procedures and cultural alignment need to be core to the future phases of the rollout.
+        </p>
+
+        <p>
+          The pilot operated with 77 users. Scaling to AIUK's full community will require attention to several areas. There may be future technical scalability considerations such as server capacity, the hosting arrangement, or plugin or customisation implications needed for a larger user base.
+        </p>
+
+        <p>
+          With 6 moderators for 77 users, the pilot had a relatively high ratio of moderators to users. At scale, AIUK will need to recruit and train additional moderators, or develop more robust automated moderation tools.
+        </p>
+
+        <p>
+          The personalised, small-group training that was used during the pilot will not scale easily. AIUK should continue to develop self-service onboarding resources (video tutorials, written guides, FAQs) and host periodic live training sessions. Encouraging community members to run their own trainings and providing them with resources to do so will also help with scalability.
+        </p>
+
+        <p>
+          The engagement metrics should continue to be tracked post-launch, with the targets reviewed and recalibrated based on benchmarks from comparable Discourse-based communities.
+        </p>
+      </section>
+
+      <!-- ═══════════════════════════════════════
+           OUR ASSESSMENT
+      ════════════════════════════════════════ -->
+      <section id="our-assessment">
+        <h2>Our Assessment</h2>
+
+        <p>
+          Here we are applying the Go/No-Go Decision Matrix from the <a href="readiness-assessment.html">Post-pilot Readiness Assessment Framework</a>. Our review of the data shows why we feel justified suggesting a <strong>Conditional Go</strong> for wider launch:
+        </p>
+
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th scope="col">Domain</th>
+                <th scope="col">Success Criteria</th>
+                <th scope="col">Result</th>
+                <th scope="col">Assessment</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Usability</strong></td>
+                <td>SUS ≥68</td>
+                <td>SUS 83 (pre-pilot)</td>
+                <td>✅ Met</td>
+              </tr>
+              <tr>
+                <td><strong>Usability</strong></td>
+                <td>75% task completion, ≥4/5 mobile rating</td>
+                <td>Feature ratings broadly positive; device rating 75% Good/Excellent</td>
+                <td>✅ Broadly Met</td>
+              </tr>
+              <tr>
+                <td><strong>Engagement</strong></td>
+                <td>DAU/MAU ≥15%</td>
+                <td>17.95%</td>
+                <td>✅ Met</td>
+              </tr>
+              <tr>
+                <td><strong>Engagement</strong></td>
+                <td>50% topics with replies</td>
+                <td>28% (72% unanswered)</td>
+                <td>⚠️ Not Met (For context: many posts in the community are designed to be broadcast)</td>
+              </tr>
+              <tr>
+                <td><strong>Engagement</strong></td>
+                <td>≤8hr response time</td>
+                <td>Widely achieved</td>
+                <td>✅ Met</td>
+              </tr>
+              <tr>
+                <td><strong>Safety</strong></td>
+                <td>≤72hr flag resolution</td>
+                <td>Not required</td>
+                <td>✅ Met</td>
+              </tr>
+              <tr>
+                <td><strong>Safety</strong></td>
+                <td>&gt;4/5 safety rating</td>
+                <td>100% felt safe/respected</td>
+                <td>✅ Met</td>
+              </tr>
+              <tr>
+                <td><strong>Safety</strong></td>
+                <td>Zero unresolved incidents</td>
+                <td>Zero</td>
+                <td>✅ Met</td>
+              </tr>
+              <tr>
+                <td><strong>Technical</strong></td>
+                <td>WCAG AA critical issues = 0</td>
+                <td>Basic testing passed</td>
+                <td>✅ Met (basic level)</td>
+              </tr>
+              <tr>
+                <td><strong>Technical</strong></td>
+                <td>99.5% uptime</td>
+                <td>No downtime reported</td>
+                <td>✅ Met</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>
+          At the very least, the conditions for launch should include finding a Product Lead, implementation of the UX priorities identified above and an expansion of the content, especially to help improve onboarding and training. The launch should follow a phased rollout strategy with intensive support.
+        </p>
+      </section>
+
+      <!-- ═══════════════════════════════════════
+           CONCLUSION
+      ════════════════════════════════════════ -->
+      <section id="conclusion">
+        <h2>Conclusion</h2>
+
+        <p>
+          The eight-week pilot of the Amnesty Community platform has demonstrated that the platform is fundamentally sound, safe, and welcomed by its users. The pre-pilot SUS score of 83 places usability well above the industry benchmark, the community atmosphere has been consistently praised, and safety outcomes have been met.
+        </p>
+
+        <p>
+          The pilot also revealed areas for improvement. We have used this report to identify friction points, usability issues, and technical challenges gathered through analytics and user feedback.
+        </p>
+
+        <p>
+          A Product Lead should take over to guide the UX improvements. Onboarding must be redesigned to accommodate users with no prior experience of online community platforms. Engagement rates, while understandable for a new platform with a small user base, will need active attention through community management, content seeding, and outreach.
+        </p>
+
+        <p>
+          Indeed, as we've indicated throughout this project and this report, this project has only just begun and will need the support of more people on the AIUK team.
+        </p>
+
+        <img src="images/eval-report-img-11.png" alt="Conclusion illustration" class="report-image" />
+      </section>
+
+      <!-- ═══════════════════════════════════════
+           ACKNOWLEDGEMENTS
+      ════════════════════════════════════════ -->
+      <section id="acknowledgements">
+        <h2>Acknowledgements</h2>
+
+        <h3 id="thank-you">Thank you</h3>
+
+        <p>
+          Illustrations in this document are CC-BY-ND Bryan Mathers for WAO.
+        </p>
+
+        <p>
+          We are grateful to the Community Leaders and activists who took part in the pilot. We hope this report and other project documents will be shared openly with the community. We are also grateful to Elly Crump and Abi Odell for their collaboration and guidance. A special thank you to Andrea Buccioni as well.
+        </p>
+
+        <h3 id="how-we-used-ai">How we used AI</h3>
+
+        <img src="images/eval-report-img-12.png" alt="Illustration relating to AI use transparency" class="report-image" />
+
+        <p>
+          As the authors of the Friends of the Earth UK report <a href="https://policy.friendsoftheearth.uk/reports/harnessing-ai-environmental-justice" rel="noopener" target="_blank">Harnessing AI for environmental justice</a>, we believe in the practice of transparency around the use of AI.
+        </p>
+
+        <p>
+          During the production of this report, we used several AI frontier models including Gemini, Claude, and Perplexity. We also used local models including qwen3.5, Llama 3.2 and Deepseek R1. During our use of AI we obfuscated details with privacy aware methodologies to ensure identification details were separated from qualitative data. We used local downloads, or knowledge stacks, to interrogate the data so that we could reflect it back to AIUK in this report. We also used AI to restructure our messy notes document into something readable, which we then restructured again, and for small and annoying formatting enhancements. Some initial phrasing was generated, but we took time to edit, rewrite and generally overhaul whatever AI initially output.
+        </p>
+
+        <h3 id="future-contacts">Future contacts</h3>
+
+        <p>
+          The AIUK Community Platform project was <a href="http://web.archive.org/web/20260304115420/https://blog.weareopen.coop/we-are-closing/" rel="noopener" target="_blank">one of the final projects</a> for We Are Open Co-op. We are pleased to have had the opportunity to work with you and are delighted to end this bit of work with our future contacts:
+        </p>
+        <ul>
+          <li>Laura Hilliger can be contacted at <a href="mailto:hello@laurahilliger.com">hello@laurahilliger.com</a></li>
+          <li>Doug Belshaw can be contacted at <a href="mailto:hello@dynamicskillset.com">hello@dynamicskillset.com</a></li>
+          <li>John Bevan can be contacted at <a href="mailto:hello@johnbevan.com">hello@johnbevan.com</a></li>
+        </ul>
+      </section>
+
+      <!-- ═══════════════════════════════════════
+           APPENDICES (merged from evaluation-appendices.html)
+      ════════════════════════════════════════ -->
+      <hr class="appendix-divider" />
+
+      <section id="appendices">
+        <h2>Appendices</h2>
+
+        <div class="companion-notice">
+          <div class="companion-notice-icon">📋</div>
+          <p>These appendices accompany the Final Evaluation Report above. The report contains the narrative findings; this section holds the supporting data and technical handover notes. The two should be read together.</p>
+        </div>
+
+        <p>
+          This appendix set was produced at the close of the Amnesty Community pilot, hosted at <a href="https://community.amnesty.org.uk/" rel="noopener" target="_blank">community.amnesty.org.uk</a>. The platform is built on <strong>Discourse</strong>, hosted by Communiteq via Discoursehosting. The appendices document what was measured, what users said, and what remains to be done.
+        </p>
+
+        <div class="doc-link-banner">
+          <p>The full appendices document is held in Google Docs and is accessible to project team members.</p>
+          <a href="https://docs.google.com/document/d/1tDWXePviEe5LBE_70cB7u43oU5QkKNXxnyMkn8O43oM/edit" rel="noopener" target="_blank">Original on Google Drive (unavailable after May 2026)</a>
+        </div>
+
+        <p>There are five appendices in total. Appendices 1–4 capture quantitative and qualitative data from the pilot period. Appendix 5 — the Product Handover Notes — is the most immediately actionable, containing a detailed checklist of outstanding technical work for the Discourse platform.</p>
+
+        <div class="appendix-nav" role="navigation" aria-label="Jump to appendix">
+          <a href="#appendix-1" class="appendix-nav-item">
+            <span class="app-num">Appendix 1</span>
+            <span class="app-title">SUS Scores</span>
+          </a>
+          <a href="#appendix-2" class="appendix-nav-item">
+            <span class="app-num">Appendix 2</span>
+            <span class="app-title">Usage &amp; Analytics</span>
+          </a>
+          <a href="#appendix-3" class="appendix-nav-item">
+            <span class="app-num">Appendix 3</span>
+            <span class="app-title">User Feedback Survey</span>
+          </a>
+          <a href="#appendix-4" class="appendix-nav-item">
+            <span class="app-num">Appendix 4</span>
+            <span class="app-title">Week-One Pilot Data</span>
+          </a>
+          <a href="#appendix-5" class="appendix-nav-item">
+            <span class="app-num">Appendix 5</span>
+            <span class="app-title">Product Handover Notes</span>
+          </a>
+        </div>
+
+        <section id="appendices-1-4">
+          <h3>Appendices 1–4: Pilot Measurement Data</h3>
+          <p>
+            The first four appendices provide the quantitative and qualitative evidence base for the evaluation. They are primarily intended for readers of the Final Evaluation Report who want to examine the underlying data supporting the report's findings.
+          </p>
+
+          <div class="appendix-section" id="appendix-1">
+            <div class="appendix-section-head">
+              <div class="appendix-badge">1</div>
+              <div class="appendix-section-head-text">
+                <h3>System Usability Scale (SUS) Scores</h3>
+                <p>Standardised usability scoring from pilot participants</p>
+              </div>
+            </div>
+            <div class="appendix-section-body">
+              <p>
+                The System Usability Scale is an industry-standard 10-item questionnaire that produces a composite usability score between 0 and 100. Participants in the Amnesty Community pilot completed a SUS survey to give the team a standardised measure of how usable the Discourse platform felt to actual users.
+              </p>
+              <p>
+                SUS scores provide a consistent benchmark that can be compared against other digital products and against future iterations of the platform. A score above 68 is generally considered above average; scores above 80 indicate strong usability. The full results are recorded in this appendix.
+              </p>
+              <div class="info-card blue-border">
+                <h3>Why SUS?</h3>
+                <p>The SUS questionnaire is technology-agnostic and quick to administer, making it well suited to community platform evaluation where participant time is limited. It is widely used in civic technology and third-sector digital projects.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="appendix-section" id="appendix-2">
+            <div class="appendix-section-head">
+              <div class="appendix-badge">2</div>
+              <div class="appendix-section-head-text">
+                <h3>Usage and Analytics Metrics</h3>
+                <p>Platform engagement data across the pilot period</p>
+              </div>
+            </div>
+            <div class="appendix-section-body">
+              <p>
+                This appendix records platform usage data gathered during the pilot. Metrics cover site visits, active users, post volume, topic creation, and other engagement indicators drawn from Discourse's built-in analytics and any supplementary tracking tools in use.
+              </p>
+              <p>
+                The data provides a factual picture of how much the platform was used during the pilot and where activity was concentrated — which categories, which time periods, and which user cohorts were most active. This informs the evaluation's findings on adoption and engagement.
+              </p>
+            </div>
+          </div>
+
+          <div class="appendix-section" id="appendix-3">
+            <div class="appendix-section-head">
+              <div class="appendix-badge">3</div>
+              <div class="appendix-section-head-text">
+                <h3>User Feedback Survey Results</h3>
+                <p>Qualitative and structured feedback from pilot participants</p>
+              </div>
+            </div>
+            <div class="appendix-section-body">
+              <p>
+                A structured feedback survey was distributed to pilot participants to capture their experiences of the platform. The survey gathered both quantitative ratings and open-text responses, giving the evaluation team a picture of what users valued, what frustrated them, and what they would change.
+              </p>
+              <p>
+                This appendix contains the full survey results. Key themes from the open-text responses are summarised in the Final Evaluation Report above; the raw data is recorded here for reference.
+              </p>
+              <div class="info-card green-border">
+                <h3>Connecting data to action</h3>
+                <p>Several items in the Appendix 5 product checklist were directly informed by the feedback survey — particularly around the calendar/event plugin experience and the navigation and homepage design.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="appendix-section" id="appendix-4">
+            <div class="appendix-section-head">
+              <div class="appendix-badge">4</div>
+              <div class="appendix-section-head-text">
+                <h3>Week-One Pilot Data</h3>
+                <p>Early adoption metrics from the platform's first week</p>
+              </div>
+            </div>
+            <div class="appendix-section-body">
+              <p>
+                The first week of a community platform launch is a distinctive moment — early adopter behaviour, onboarding friction, and initial engagement patterns are often markedly different from steady-state activity. This appendix records the specific data gathered during week one of the pilot to capture that early-stage picture.
+              </p>
+              <p>
+                Week-one data is useful for understanding the effectiveness of the launch approach, the ease of the onboarding flow, and which features or content areas drew users in first. It provides a baseline against which later engagement data (Appendix 2) can be compared.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section id="appendix-5-section">
+          <h3>Appendix 5: Product Handover Notes</h3>
+          <p>
+            The Product Handover Notes are the most actionable output in this appendix set. They document outstanding technical items for the <a href="https://community.amnesty.org.uk/" rel="noopener" target="_blank">community.amnesty.org.uk</a> Discourse platform that were identified during the pilot but not completed before handover. These items now fall to the AIUK Product Lead and platform partners to resolve.
+          </p>
+
+          <div class="info-card yellow-border">
+            <h3>Who this section is for</h3>
+            <ul>
+              <li><strong>AIUK Product Lead</strong> — owns prioritisation and the feature request process</li>
+              <li><strong>Communiteq</strong> — Discourse hosting partner, responsible for component bugs and staging</li>
+              <li><strong>Torchbox (TBX)</strong> — CMS provider, needed for the search integration workstream</li>
+            </ul>
+          </div>
+
+          <div class="appendix-section" id="appendix-5">
+            <div class="appendix-section-head">
+              <div class="appendix-badge">5</div>
+              <div class="appendix-section-head-text">
+                <h3>Product Handover Notes</h3>
+                <p>Outstanding technical items for the Discourse platform at community.amnesty.org.uk</p>
+              </div>
+            </div>
+            <div class="appendix-section-body">
+
+              <h3 id="platform-environments">Platform Environments</h3>
+              <p>The Amnesty Community platform operates across two live environments, with a dedicated support channel for issue tracking:</p>
+
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Environment</th>
+                    <th scope="col">URL</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Production</strong></td>
+                    <td><a href="https://community.amnesty.org.uk/" rel="noopener" target="_blank">community.amnesty.org.uk</a></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Staging</strong></td>
+                    <td><a href="https://amnestyukstaging.discoursehosting.net/" rel="noopener" target="_blank">amnestyukstaging.discoursehosting.net</a></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Communiteq Support</strong></td>
+                    <td><a href="https://support.communiteq.com/c/amnestyuk/38" rel="noopener" target="_blank">support.communiteq.com/c/amnestyuk/38</a></td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <h3 id="checklist">Outstanding Items Checklist</h3>
+              <p>The items below were identified during the pilot as needing attention post-handover. They are grouped by area. None were completed before the end of the pilot period (March 2025).</p>
+
+              <div class="checklist-group">
+                <div class="checklist-group-label">Feature &amp; Process Gaps</div>
+                <ul class="checklist">
+                  <li>
+                    <div class="checklist-box" aria-hidden="true"></div>
+                    <div>
+                      <strong>Feature Request Process</strong> — No formal process exists for community members or AIUK colleagues to submit feature requests. The Product Lead needs to establish this. Without a structured process, ad hoc plugin and component installation risks platform bloat and user confusion.
+                    </div>
+                  </li>
+                  <li>
+                    <div class="checklist-box" aria-hidden="true"></div>
+                    <div>
+                      <strong>User Stories</strong> — A range of user stories were prepared during the pilot but not actioned. These should be reviewed and prioritised by the Product Lead. See: <a href="../phase-5/user-stories-persona-spectrums.html">User Stories — Community Persona Spectrums</a>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="checklist-group">
+                <div class="checklist-group-label">Calendar &amp; Event Plugin</div>
+                <ul class="checklist">
+                  <li>
+                    <div class="checklist-box" aria-hidden="true"></div>
+                    <div>
+                      <strong>Full requirements research</strong> — Event functionality needs a thorough requirements review before further development work is commissioned.
+                    </div>
+                  </li>
+                  <li>
+                    <div class="checklist-box" aria-hidden="true"></div>
+                    <div>
+                      <strong>Mobile UX fix</strong> — In mobile view, events currently display as a grid layout. They should display as a schedule/list view to be readable on small screens.
+                    </div>
+                  </li>
+                  <li>
+                    <div class="checklist-box" aria-hidden="true"></div>
+                    <div>
+                      <strong>"Create Event" button visibility</strong> — Event creation is currently buried inside the Options menu when composing a new post, and is trust-level dependent. The recommendation is to add a visible "Create Event" button directly on the Calendar view and in the Navigation Menu.
+                    </div>
+                  </li>
+                  <li>
+                    <div class="checklist-box" aria-hidden="true"></div>
+                    <div>
+                      <strong>Accessibility review</strong> — Mobile UX and accessibility issues with the Calendar/Event plugin need addressing before the plugin is considered production-ready.
+                    </div>
+                  </li>
+                  <li>
+                    <div class="checklist-box" aria-hidden="true"></div>
+                    <div>
+                      <strong>Wider event tool audit</strong> — <a href="https://trello.com/c/m4CZaZFD" rel="noopener" target="_blank">Multiple event tools</a> are in use across the organisation. These need rationalising to avoid duplication and confusion for activists.
+                    </div>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="checklist-group">
+                <div class="checklist-group-label">Homepage / Front Page</div>
+                <ul class="checklist">
+                  <li>
+                    <div class="checklist-box" aria-hidden="true"></div>
+                    <div>
+                      <strong>Map on front page</strong> — A map component was originally planned for the homepage but was not implemented. Adding it requires custom templating and development work because the front page is generated by the Category Groups component, which limits what can be added without custom templates.
+                    </div>
+                  </li>
+                  <li>
+                    <div class="checklist-box" aria-hidden="true"></div>
+                    <div>
+                      <strong>Homepage redesign</strong> — A full homepage redesign using a custom template is recommended to make the landing page more graphic and welcoming for new and returning members.
+                    </div>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="checklist-group">
+                <div class="checklist-group-label">Updates &amp; Bugs</div>
+                <ul class="checklist">
+                  <li>
+                    <div class="checklist-box" aria-hidden="true"></div>
+                    <div>
+                      <strong>Component testing on staging</strong> — Several components need to be tested on the staging server before being promoted to production. This should be a standing process rule going forward.
+                    </div>
+                  </li>
+                  <li>
+                    <div class="checklist-box" aria-hidden="true"></div>
+                    <div>
+                      <strong>Category Groups component update breaks custom styles</strong> — An update to the Category Groups component breaks custom styles applied to the platform. Issue logged at: <a href="https://support.communiteq.com/t/category-groups-component-update-breaks-custom-styles/1287" rel="noopener" target="_blank">Communiteq support thread #1287</a>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="checklist-box" aria-hidden="true"></div>
+                    <div>
+                      <strong>Quick Profile Links bug</strong> — The Quick Profile Links component (used to help users find their own profiles) has a known bug. AIUK needs to decide whether to prioritise a fix. Bug logged at: <a href="https://support.communiteq.com/t/email-notifications-bug/1288" rel="noopener" target="_blank">Communiteq support thread #1288</a>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="checklist-group">
+                <div class="checklist-group-label">Search Integration</div>
+                <ul class="checklist">
+                  <li>
+                    <div class="checklist-box" aria-hidden="true"></div>
+                    <div>
+                      <strong>Cross-platform search</strong> — Users should be able to search external Amnesty platforms (Knowledge Hub, main website) from within the Community Platform. Importantly, Community Platform content should <em>not</em> be surfaced via the Knowledge Hub or Website — the flow is one-way inbound.
+                    </div>
+                  </li>
+                  <li>
+                    <div class="checklist-box" aria-hidden="true"></div>
+                    <div>
+                      <strong>Search plugin decision required</strong> — Two options have been identified:
+                      <ul style="padding-left:18px; margin-top:6px;">
+                        <li style="margin-bottom:4px;"><a href="https://meta.discourse.org/t/discourse-algolia-search/73517" rel="noopener" target="_blank">Discourse Algolia Search plugin</a></li>
+                        <li><a href="https://meta.discourse.org/t/elasticsearch-and-discourse/322014" rel="noopener" target="_blank">Elasticsearch integration</a> — Torchbox's CMS already uses Elasticsearch, which may simplify this path</li>
+                      </ul>
+                      <p style="margin-top:8px; margin-bottom:0;">A decision requires collaboration between <strong>Torchbox (TBX)</strong> and <strong>Communiteq</strong> to agree on approach and technical ownership.</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+
+            </div>
+          </div>
+
+          <h3 id="key-third-parties">Key Third Parties</h3>
+          <p>Resolving the outstanding items above will require engagement with the following organisations:</p>
+
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th scope="col">Party</th>
+                <th scope="col">Role</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Communiteq</strong></td>
+                <td>Discourse hosting provider. Primary support contact for platform bugs, component issues, and staging environment. Support channel: <a href="https://support.communiteq.com/c/amnestyuk/38" rel="noopener" target="_blank">support.communiteq.com/c/amnestyuk/38</a></td>
+              </tr>
+              <tr>
+                <td><strong>Torchbox (TBX)</strong></td>
+                <td>CMS provider for Amnesty UK's main web properties. Uses Elasticsearch in their CMS stack. Collaboration required to agree on search integration approach.</td>
+              </tr>
+              <tr>
+                <td><strong>AIUK Product Lead</strong></td>
+                <td>Internal owner. Responsible for establishing the feature request process, prioritising outstanding checklist items, and co-ordinating with Communiteq and Torchbox on technical decisions.</td>
+              </tr>
+            </tbody>
+          </table>
+
+        </section>
+
+        <section id="appendix-reading">
+          <h3>Reading this alongside the Evaluation Report</h3>
+          <p>
+            These appendices are reference material. The narrative interpretation of what the pilot achieved — including usability findings, adoption rates, community sentiment, and recommendations — is contained in the Final Evaluation Report above.
+          </p>
+          <div class="info-card blue-border">
+            <h3>Suggested reading order</h3>
+            <ul>
+              <li><strong>Start with the Final Evaluation Report</strong> (above) for the headline findings, context, and strategic recommendations.</li>
+              <li><strong>Return to Appendices 1–4</strong> if you want to examine the underlying data behind specific findings in the report.</li>
+              <li><strong>Use Appendix 5</strong> (this section) as a working document — the checklist items should be triaged and assigned by the AIUK Product Lead as part of the post-pilot handover.</li>
+            </ul>
+          </div>
+        </section>
+
+      </section><!-- /appendices -->
 
     </article>
 
@@ -192,11 +1227,37 @@
       <div class="sidebar-card">
         <div class="sidebar-card-head">On this page</div>
         <ul class="sidebar-toc">
-          <li><a href="#overview">About this report</a></li>
-          <li><a href="#evaluation-approach">Evaluation approach</a></li>
-          <li><a href="#what-it-evaluates">What it evaluates</a></li>
-          <li><a href="#referenced-documents">Referenced documents</a></li>
-          <li><a href="#looking-forward">Looking forward</a></li>
+          <li><a href="#executive-summary">Executive Summary</a></li>
+          <li><a href="#introduction">Introduction</a></li>
+          <li><a href="#preparations">Preparations</a></li>
+          <li class="sub"><a href="#platform-testing">Platform Testing</a></li>
+          <li class="sub"><a href="#accessibility-testing">Accessibility Testing</a></li>
+          <li><a href="#pilot">Pilot</a></li>
+          <li><a href="#lessons-learned">Lessons Learned</a></li>
+          <li class="sub"><a href="#platform-sound">Platform is sound</a></li>
+          <li class="sub"><a href="#focus-usability">Focus on usability</a></li>
+          <li class="sub"><a href="#engagement-content">Engagement &amp; content</a></li>
+          <li class="sub"><a href="#slow-steady-integrations">Slow &amp; steady integrations</a></li>
+          <li class="sub"><a href="#goodwill">Goodwill is a key asset</a></li>
+          <li><a href="#recommendations">Recommendations</a></li>
+          <li class="sub"><a href="#team-roles">Team &amp; Roles</a></li>
+          <li class="sub"><a href="#ux">UX</a></li>
+          <li class="sub"><a href="#content">Content</a></li>
+          <li class="sub"><a href="#integrations-ecosystem">Integrations &amp; Ecosystem</a></li>
+          <li class="sub"><a href="#community-involvement">Community involvement</a></li>
+          <li><a href="#risk-scalability">Risk &amp; Scalability</a></li>
+          <li><a href="#our-assessment">Our Assessment</a></li>
+          <li><a href="#conclusion">Conclusion</a></li>
+          <li><a href="#acknowledgements">Acknowledgements</a></li>
+          <li><a href="#appendices">Appendices</a></li>
+          <li class="sub"><a href="#appendix-1">1. SUS Scores</a></li>
+          <li class="sub"><a href="#appendix-2">2. Usage &amp; Analytics</a></li>
+          <li class="sub"><a href="#appendix-3">3. User Feedback Survey</a></li>
+          <li class="sub"><a href="#appendix-4">4. Week-One Pilot Data</a></li>
+          <li class="sub"><a href="#appendix-5-section">5. Product Handover Notes</a></li>
+          <li class="sub"><a href="#platform-environments">Platform Environments</a></li>
+          <li class="sub"><a href="#checklist">Outstanding Items</a></li>
+          <li class="sub"><a href="#key-third-parties">Key Third Parties</a></li>
         </ul>
       </div>
 
@@ -204,9 +1265,12 @@
         <div class="sidebar-card-head">Document details</div>
         <div class="sidebar-meta">
           <p><strong>Phase</strong><br />Post-Pilot</p>
-          <p><strong>Status</strong><br />Anchor document · Completed</p>
-          <p><strong>Audience</strong><br />AIUK leadership, DDaT team, project committee</p>
-          <p><strong>Companion</strong><br /><a href="../phase-5/technical-discovery.html">Technical Discovery Report &amp; Recommendations</a></p>
+          <p><strong>Group</strong><br />Post-Pilot Resources</p>
+          <p><strong>Audience</strong><br />AIUK leadership, DDaT team, Community Manager</p>
+          <p><strong>Status</strong><br />Final (v0.9)</p>
+          <p><strong>Platform</strong><br /><a href="https://community.amnesty.org.uk/" rel="noopener" target="_blank">community.amnesty.org.uk</a></p>
+          <p><strong>Source</strong><br /><a href="https://docs.google.com/document/d/17ak8MXzKJpIMcZclM79E3OjqoL2q9m4CQ0rTHGAZlxI/edit" rel="noopener" target="_blank">Original on Google Drive (unavailable after May 2026)</a></p>
+          <a href="evaluation-appendices.html" class="companion-link">→ Standalone Appendices page</a>
           <a href="../index.html" class="back-link">← Back to full index</a>
         </div>
       </div>
