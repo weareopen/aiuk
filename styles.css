@@ -159,6 +159,10 @@ h1 em { font-style: normal; color: var(--accent-dark); }
 .content p strong { color: var(--charcoal); font-weight: 700; }
 .content a { color: var(--accent-light); font-weight: 600; text-decoration: none; border-bottom: 1.5px solid rgba(var(--accent-rgb),0.3); transition: border-color .2s; }
 .content a:hover { border-color: var(--accent-light); }
+.content a.download-btn,
+.content a.back-link,
+.content .doc-link-banner a { color: var(--white); border-bottom: none; }
+.content a.back-link { color: var(--accent-light); }
 .content ul, .content ol { margin: 0 0 18px 22px; color: #4a6070; font-size: 0.95rem; line-height: 1.75; }
 .content li { margin-bottom: 6px; }
 .content li strong { color: var(--charcoal); }
@@ -301,6 +305,7 @@ footer a:hover { text-decoration: underline; }
 .slide-gallery img {
   width: 100%; border-radius: var(--radius);
   border: 1px solid var(--light-grey); box-shadow: var(--shadow);
+  cursor: pointer;
 }
 .slide-nav {
   display: flex; gap: 12px; align-items: center; justify-content: center;
@@ -313,11 +318,49 @@ footer a:hover { text-decoration: underline; }
   cursor: pointer; transition: background 0.2s;
 }
 .slide-nav button:hover { background: var(--accent-light); color: var(--white); }
+.slide-nav button:hover:disabled { background: var(--charcoal); }
 .slide-nav button:disabled { opacity: 0.4; cursor: default; }
 .slide-counter {
   font-size: 0.85rem; font-weight: 700; color: var(--charcoal);
   min-width: 80px; text-align: center;
 }
+
+/* ── Fullscreen Lightbox ── */
+.lightbox {
+  display: none; position: fixed; inset: 0; z-index: 9999;
+  background: rgba(0,0,0,0.92); flex-direction: column;
+  align-items: center; justify-content: center;
+}
+.lightbox.open { display: flex; }
+.lightbox img {
+  max-width: 94vw; max-height: 82vh; object-fit: contain;
+  border-radius: var(--radius); box-shadow: 0 0 60px rgba(0,0,0,0.5);
+}
+.lightbox-chrome {
+  display: flex; gap: 16px; align-items: center;
+  justify-content: center; padding: 18px 0 12px;
+}
+.lightbox-chrome button {
+  background: rgba(255,255,255,0.15); color: var(--white); border: none;
+  padding: 10px 22px; border-radius: var(--radius-sm);
+  font-family: var(--font-body); font-weight: 700; font-size: 0.88rem;
+  cursor: pointer; transition: background 0.2s;
+}
+.lightbox-chrome button:hover { background: rgba(255,255,255,0.3); }
+.lightbox-chrome button:disabled { opacity: 0.3; cursor: default; }
+.lightbox-chrome button:hover:disabled { background: rgba(255,255,255,0.15); }
+.lightbox-counter {
+  font-size: 0.88rem; font-weight: 700; color: rgba(255,255,255,0.7);
+  min-width: 80px; text-align: center;
+}
+.lightbox-close {
+  position: absolute; top: 16px; right: 20px;
+  background: rgba(255,255,255,0.15); color: var(--white); border: none;
+  width: 44px; height: 44px; border-radius: 50%;
+  font-size: 1.3rem; cursor: pointer; transition: background 0.2s;
+  display: flex; align-items: center; justify-content: center;
+}
+.lightbox-close:hover { background: rgba(255,255,255,0.3); }
 
 /* ── Animation ── */
 @keyframes fadeUp {

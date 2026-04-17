@@ -149,24 +149,83 @@
 </footer>
 
 <script>
-  const total = 26;
-  let current = 1;
-  const img = document.getElementById('slide-img');
-  const counter = document.getElementById('slide-counter');
-  const prevBtn = document.getElementById('prev-btn');
-  const nextBtn = document.getElementById('next-btn');
-  function pad(n) { return String(n).padStart(2, '0'); }
-  function show(n) {
-    current = n;
-    img.src = 'slides/recognition-ecosystem-' + pad(n) + '.png';
-    img.alt = 'Slide ' + n + ' of ' + total;
-    counter.textContent = n + ' / ' + total;
-    prevBtn.disabled = n === 1;
-    nextBtn.disabled = n === total;
+const total = 26;
+let current = 1;
+const img = document.getElementById('slide-img');
+const counter = document.getElementById('slide-counter');
+const prevBtn = document.getElementById('prev-btn');
+const nextBtn = document.getElementById('next-btn');
+const fsBtn = document.getElementById('fs-btn');
+
+/* Lightbox elements */
+const lb = document.getElementById('lightbox');
+const lbImg = document.getElementById('lb-img');
+const lbCounter = document.getElementById('lb-counter');
+const lbPrev = document.getElementById('lb-prev');
+const lbNext = document.getElementById('lb-next');
+const lbClose = document.getElementById('lb-close');
+
+function pad(n) { return String(n).padStart(2, '0'); }
+function slideSrc(n) { return 'slides/recognition-ecosystem-' + pad(n) + '.png'; }
+
+function show(n) {
+  current = n;
+  img.src = slideSrc(n);
+  img.alt = 'Slide ' + n + ' of ' + total;
+  counter.textContent = n + ' / ' + total;
+  prevBtn.disabled = n === 1;
+  nextBtn.disabled = n === total;
+  if (lb.classList.contains('open')) lbShow(n);
+}
+
+/* Lightbox */
+function lbShow(n) {
+  lbImg.src = slideSrc(n);
+  lbImg.alt = 'Slide ' + n + ' of ' + total;
+  lbCounter.textContent = n + ' / ' + total;
+  lbPrev.disabled = n === 1;
+  lbNext.disabled = n === total;
+}
+function openLightbox() {
+  lb.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  lbShow(current);
+  lb.focus();
+}
+function closeLightbox() {
+  lb.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+prevBtn.addEventListener('click', function() { if (current > 1) show(current - 1); });
+nextBtn.addEventListener('click', function() { if (current < total) show(current + 1); });
+fsBtn.addEventListener('click', openLightbox);
+img.addEventListener('click', openLightbox);
+
+lbPrev.addEventListener('click', function() { if (current > 1) show(current - 1); });
+lbNext.addEventListener('click', function() { if (current < total) show(current + 1); });
+lbClose.addEventListener('click', closeLightbox);
+lb.addEventListener('click', function(e) { if (e.target === lb) closeLightbox(); });
+
+document.addEventListener('keydown', function(e) {
+  if (lb.classList.contains('open')) {
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft' && current > 1) show(current - 1);
+    if (e.key === 'ArrowRight' && current < total) show(current + 1);
   }
-  prevBtn.addEventListener('click', function() { if (current > 1) show(current - 1); });
-  nextBtn.addEventListener('click', function() { if (current < total) show(current + 1); });
+});
 </script>
 
+
+<!-- Fullscreen lightbox -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Fullscreen slide viewer">
+  <button class="lightbox-close" id="lb-close" aria-label="Close fullscreen">&times;</button>
+  <img id="lb-img" src="" alt="" />
+  <div class="lightbox-chrome">
+    <button id="lb-prev" aria-label="Previous slide">&#8592; Previous</button>
+    <span class="lightbox-counter" id="lb-counter" aria-live="polite"></span>
+    <button id="lb-next" aria-label="Next slide">Next &#8594;</button>
+  </div>
+</div>
 </body>
 </html>
