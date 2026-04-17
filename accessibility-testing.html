@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Accessibility Testing · AIUK Community Platform Project</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;600;700&family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --charcoal:   #2F495A;
+      --green:      #00C399;
+      --yellow:     #FFBC42;
+      --blue:       #16A8E2;
+      --red:        #FC594D;
+      --white:      #FFFFFF;
+      --off-white:  #F7F9FA;
+      --light-grey: #EDF1F4;
+      --mid-grey:   #8FA3B0;
+      --text:       #2F495A;
+      --font-head: 'Roboto Slab', Georgia, serif;
+      --font-body: 'Nunito', system-ui, sans-serif;
+      --radius: 12px;
+      --radius-sm: 6px;
+      --shadow: 0 4px 24px rgba(47,73,90,0.10);
+      --shadow-hover: 0 8px 36px rgba(47,73,90,0.18);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-body); color: var(--text); background: var(--off-white); line-height: 1.7; font-size: 16px; }
+
+    .skip-link { position: absolute; top: -40px; left: 16px; background: var(--green); color: var(--white); padding: 8px 14px; border-radius: var(--radius-sm); font-weight: 700; z-index: 9999; transition: top .2s; }
+    .skip-link:focus { top: 16px; }
+
+    nav { position: sticky; top: 0; z-index: 100; background: var(--charcoal); display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(16px, 5vw, 48px); height: 60px; box-shadow: 0 2px 12px rgba(0,0,0,0.2); }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .nav-logo img { height: 36px; }
+    .nav-links { display: flex; gap: 4px; list-style: none; flex-wrap: wrap; }
+    .nav-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.82rem; font-weight: 600; letter-spacing: 0.02em; padding: 6px 10px; border-radius: var(--radius-sm); transition: color .2s, background .2s; }
+    .nav-links a:hover { color: var(--white); background: rgba(255,255,255,0.12); }
+
+    .breadcrumb { background: var(--white); border-bottom: 1px solid var(--light-grey); padding: 10px clamp(16px, 5vw, 48px); font-size: 0.82rem; color: var(--mid-grey); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .breadcrumb a { color: var(--mid-grey); text-decoration: none; font-weight: 600; }
+    .breadcrumb a:hover { color: var(--green); }
+    .breadcrumb span { color: var(--charcoal); font-weight: 700; }
+
+    .hero { background: var(--charcoal); padding: clamp(48px, 8vw, 80px) clamp(16px, 5vw, 48px) clamp(40px, 6vw, 64px); position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 50% 90% at 90% 20%, rgba(22,168,226,0.18) 0%, transparent 60%), radial-gradient(ellipse 40% 60% at 5% 90%, rgba(0,195,153,0.12) 0%, transparent 55%); pointer-events: none; }
+    .hero-inner { max-width: 760px; position: relative; }
+    .hero-tag { display: inline-flex; align-items: center; gap: 8px; background: rgba(47,73,90,0.18); border: 1px solid rgba(47,73,90,0.4); color: var(--charcoal); font-size: 0.75rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 14px; border-radius: 100px; margin-bottom: 18px; }
+    .hero-tag a { color: inherit; text-decoration: none; }
+    .hero-tag a:hover { text-decoration: underline; }
+    h1 { font-family: var(--font-head); font-size: clamp(1.8rem, 4.5vw, 3rem); font-weight: 700; color: var(--white); line-height: 1.2; margin-bottom: 16px; }
+    h1 em { font-style: normal; color: var(--green); }
+    .hero-subtitle { font-size: clamp(0.95rem, 1.8vw, 1.1rem); color: rgba(255,255,255,0.7); max-width: 580px; line-height: 1.65; }
+
+    .page-wrap { max-width: 1100px; margin: 0 auto; padding: clamp(32px, 5vw, 64px) clamp(16px, 5vw, 48px); display: grid; grid-template-columns: 1fr 280px; gap: 48px; align-items: start; }
+    @media (max-width: 780px) { .page-wrap { grid-template-columns: 1fr; } .sidebar { order: -1; } }
+
+    .content { min-width: 0; }
+    .content h2 { font-family: var(--font-head); font-size: clamp(1.3rem, 2.5vw, 1.7rem); font-weight: 600; color: var(--charcoal); margin: 40px 0 14px; padding-top: 40px; border-top: 2px solid var(--light-grey); }
+    .content h2:first-child { margin-top: 0; padding-top: 0; border-top: none; }
+    .content h3 { font-family: var(--font-head); font-size: clamp(1.05rem, 1.8vw, 1.25rem); font-weight: 600; color: var(--charcoal); margin: 28px 0 10px; }
+    .content h4 { font-family: var(--font-head); font-size: 0.97rem; font-weight: 600; color: var(--charcoal); margin: 20px 0 8px; }
+    .content p { margin-bottom: 16px; color: #4a6070; font-size: 0.97rem; line-height: 1.75; }
+    .content p strong { color: var(--charcoal); font-weight: 700; }
+    .content ul { padding-left: 20px; margin-bottom: 16px; }
+    .content ul li { font-size: 0.95rem; color: #4a6070; margin-bottom: 6px; line-height: 1.7; }
+    .content ul li strong { color: var(--charcoal); }
+    .content ol { padding-left: 20px; margin-bottom: 16px; }
+    .content ol li { font-size: 0.95rem; color: #4a6070; margin-bottom: 6px; line-height: 1.7; }
+    .content ol li strong { color: var(--charcoal); }
+    .content a { color: var(--blue); text-decoration: none; }
+    .content a:hover { text-decoration: underline; }
+
+    .info-card { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius); padding: 24px 28px; margin: 20px 0; box-shadow: var(--shadow); }
+    .info-card.blue-border  { border-left: 4px solid var(--blue); }
+    .info-card.green-border { border-left: 4px solid var(--green); }
+    .info-card.yellow-border { border-left: 4px solid var(--yellow); }
+    .info-card.red-border  { border-left: 4px solid var(--red); }
+    .info-card h3 { font-family: var(--font-head); font-size: 0.95rem; font-weight: 600; color: var(--charcoal); margin-bottom: 10px; }
+    .info-card p { margin-bottom: 0; font-size: 0.9rem; }
+    .info-card p + p { margin-top: 8px; }
+    .info-card ul { padding-left: 18px; margin-top: 8px; margin-bottom: 0; }
+    .info-card ul li { font-size: 0.9rem; color: #4a6070; margin-bottom: 5px; line-height: 1.6; }
+    .info-card ul li strong { color: var(--charcoal); }
+    .info-card ol { padding-left: 18px; margin-top: 8px; margin-bottom: 0; }
+    .info-card ol li { font-size: 0.9rem; color: #4a6070; margin-bottom: 5px; line-height: 1.6; }
+
+    .doc-link-banner { background: var(--charcoal); border-radius: var(--radius); padding: 24px 28px; margin: 20px 0 32px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+    .doc-link-banner p { color: rgba(255,255,255,0.75); font-size: 0.9rem; margin: 0; }
+    .doc-link-banner a { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: var(--white); text-decoration: none; font-weight: 700; font-size: 0.88rem; padding: 10px 20px; border-radius: var(--radius-sm); white-space: nowrap; transition: background .2s; }
+    .doc-link-banner a:hover { background: #00a881; }
+
+    .three-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 20px 0 28px; }
+    @media (max-width: 640px) { .three-cols { grid-template-columns: 1fr; } }
+    .col-card { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+    .col-card .col-icon { font-size: 1.6rem; margin-bottom: 10px; }
+    .col-card h4 { font-family: var(--font-head); font-size: 0.9rem; font-weight: 600; color: var(--charcoal); margin-bottom: 8px; }
+    .col-card p { font-size: 0.83rem; color: #4a6070; margin: 0; line-height: 1.55; }
+
+    /* Table styles */
+    .content table { width: 100%; border-collapse: collapse; margin: 20px 0 28px; font-size: 0.9rem; background: var(--white); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+    .content table thead { background: var(--charcoal); }
+    .content table thead th { color: var(--white); font-family: var(--font-head); font-size: 0.82rem; font-weight: 600; letter-spacing: 0.05em; padding: 12px 16px; text-align: left; }
+    .content table tbody tr { border-bottom: 1px solid var(--light-grey); }
+    .content table tbody tr:last-child { border-bottom: none; }
+    .content table tbody td { padding: 12px 16px; color: #4a6070; vertical-align: top; line-height: 1.6; }
+    .content table tbody td strong { color: var(--charcoal); }
+    .content table tbody tr:hover { background: rgba(0,195,153,0.04); }
+
+    /* Result badge */
+    .result-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 0.82rem; font-weight: 700; padding: 4px 12px; border-radius: 100px; }
+    .result-badge.pass { background: rgba(0,195,153,0.12); color: #007a5e; border: 1px solid rgba(0,195,153,0.35); }
+    .result-badge.partial { background: rgba(255,188,66,0.12); color: #8a6200; border: 1px solid rgba(255,188,66,0.45); }
+    .result-badge.fail { background: rgba(252,89,77,0.1); color: #c0392b; border: 1px solid rgba(252,89,77,0.3); }
+
+    /* Score highlight */
+    .score-highlight { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius); padding: 20px 24px; margin: 20px 0; display: flex; align-items: center; gap: 20px; box-shadow: var(--shadow); }
+    .score-number { font-family: var(--font-head); font-size: 2.4rem; font-weight: 700; color: var(--green); line-height: 1; }
+    .score-label { font-size: 0.9rem; color: #4a6070; line-height: 1.5; }
+    .score-label strong { display: block; color: var(--charcoal); font-size: 1rem; margin-bottom: 2px; }
+
+    /* Video link card */
+    .video-card { background: var(--charcoal); border-radius: var(--radius); padding: 20px 24px; margin: 20px 0; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; box-shadow: var(--shadow); }
+    .video-card p { color: rgba(255,255,255,0.8); font-size: 0.9rem; margin: 0; flex: 1; }
+    .video-card a { display: inline-flex; align-items: center; gap: 8px; background: var(--blue); color: var(--white); text-decoration: none; font-weight: 700; font-size: 0.88rem; padding: 10px 18px; border-radius: var(--radius-sm); white-space: nowrap; transition: background .2s; }
+    .video-card a:hover { background: #0d8ab8; }
+
+    .section-label { font-family: var(--font-body); font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: var(--mid-grey); margin: 32px 0 8px; padding-top: 4px; }
+
+    .sidebar { position: sticky; top: 80px; }
+    .sidebar-card { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); margin-bottom: 20px; }
+    .sidebar-card-head { background: var(--charcoal); padding: 14px 18px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.6); }
+    .sidebar-toc { list-style: none; padding: 8px 0; }
+    .sidebar-toc li a { display: block; padding: 9px 18px; color: #4a6070; font-size: 0.85rem; font-weight: 600; text-decoration: none; border-left: 3px solid transparent; transition: color .2s, border-color .2s, background .2s; }
+    .sidebar-toc li a:hover { color: var(--charcoal); border-color: var(--green); background: rgba(0,195,153,0.06); }
+    .sidebar-toc li.sub a { padding-left: 30px; font-size: 0.8rem; font-weight: 500; }
+    .sidebar-meta { padding: 16px 18px; }
+    .sidebar-meta p { font-size: 0.82rem; color: var(--mid-grey); margin-bottom: 8px; line-height: 1.5; }
+    .sidebar-meta p strong { color: var(--charcoal); }
+    .back-link { display: inline-flex; align-items: center; gap: 7px; background: var(--green); color: var(--white); text-decoration: none; font-size: 0.85rem; font-weight: 700; padding: 10px 18px; border-radius: var(--radius-sm); transition: background .2s; width: 100%; justify-content: center; margin-top: 4px; }
+    .back-link:hover { background: #00a881; }
+
+    footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.1); padding: clamp(28px,4vw,48px) clamp(16px,5vw,48px); display: flex; flex-wrap: wrap; gap: 24px; justify-content: space-between; align-items: center; }
+    footer img { height: 32px; opacity: 0.7; }
+    .footer-bottom { color: rgba(255,255,255,0.35); font-size: 0.78rem; }
+    .footer-bottom a { color: rgba(255,255,255,0.5); text-decoration: none; }
+    .footer-bottom a:hover { color: var(--green); }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    .hero-inner > * { animation: fadeUp 0.5s ease both; }
+    .hero-tag { animation-delay: 0.0s; }
+    h1 { animation-delay: 0.1s; }
+    .hero-subtitle { animation-delay: 0.2s; }
+  </style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<nav aria-label="Primary navigation">
+  <a href="index.html" class="nav-logo" aria-label="Back to project index">
+    <img src="https://wiki.weareopen.coop/wao_logo_whitetr_1500.png" alt="WAO Cooperative logo" />
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html#project-overview">Overview</a></li>
+    <li><a href="index.html#key-reports">Key Reports</a></li>
+    <li><a href="index.html#timeline">All Documents</a></li>
+    <li><a href="charter.html">Project Charter</a></li>
+  </ul>
+</nav>
+
+<div class="breadcrumb" aria-label="Breadcrumb">
+  <a href="index.html">← Project Index</a>
+  <span aria-hidden="true">/</span>
+  <a href="index.html#timeline">Pilot Prep</a>
+  <span aria-hidden="true">/</span>
+  <span>Accessibility Testing</span>
+</div>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">
+      <a href="index.html#timeline">← Pilot Prep</a>
+    </div>
+    <h1>Accessibility<br/><em>Testing</em></h1>
+    <p class="hero-subtitle">
+      A basic accessibility audit of the Amnesty Community platform — covering automated checks, manual review, screen reader and keyboard navigation testing, and theme colour contrast improvements — confirming the platform is in good shape ahead of the pilot.
+    </p>
+  </div>
+</header>
+
+<main id="main">
+  <div class="page-wrap">
+
+    <article class="content">
+
+      <section id="introduction">
+        <h2>Introduction</h2>
+
+        <p>
+          Accessibility is fundamental to creating an inclusive digital experience for the Amnesty Community. It is both an ethical commitment and a practical requirement.
+        </p>
+        <p>
+          This accessibility check is intentionally basic in scope. We used the Accessibility tools built into the Firefox web browser along with the <a href="https://www.ibm.com/able/toolkit/" rel="noopener" target="_blank">IBM Equal Access Toolkit</a>. These both use established accessibility standards aligned with WCAG 2.2 (A / AA).
+        </p>
+
+        <div class="doc-link-banner">
+          <p>This document is held in Google Docs and is accessible to project team members.</p>
+          <a href="https://docs.google.com/document/d/1hpLET6mpMwXAj3D1eogy1jR8InxoQN3CuzAtGwWwCPE/edit" rel="noopener" target="_blank">Open in Google Docs ↗</a>
+        </div>
+
+        <div class="info-card yellow-border">
+          <h3>Limitations of automated testing</h3>
+          <p>There are things that cannot be caught by automated tools:</p>
+          <ol>
+            <li><strong>Context and usability</strong> – automated tools cannot determine whether alt text is meaningful or whether the navigation flows logically (e.g. alt="picture1234.jpg" would pass automated tests but does not actually provide any useful information to screen reader users)</li>
+            <li><strong>Complex interactions</strong> – users with motor impairments might find dropdown menus, modal dialogues, and form behaviours problematic, but these would not be flagged by automated detection.</li>
+            <li><strong>Content clarity</strong> – community members using assistive technologies often resize content, and automated tools cannot assess whether this works properly without increasing line length – or whether error messages are clear.</li>
+          </ol>
+        </div>
+
+        <div class="score-highlight">
+          <div class="score-number">88%+</div>
+          <div class="score-label">
+            <strong>Lowest score during basic testing</strong>
+            Scores in the high 80s or above on a 0–100 scale are generally considered highly accessible. 90+ is considered strong and broadly compliant with all major web accessibility guidelines. Our lowest score during this basic testing was 88%, showing that we are already highly accessible.
+          </div>
+        </div>
+
+        <p>
+          Some tests returned outputs we are unable to influence. For example, some HTML elements require <a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Roles" rel="noopener" target="_blank">ARIA roles</a> for full accessibility. Not only would this require changes in the Discourse software itself, ARIA roles can serve to degrade accessibility in complex software. There may be a good reason why the Discourse software does not implement ARIA roles. Such improvements may need to be dealt with programmatically, likely within the core software, or through custom development to come later.
+        </p>
+
+        <p>
+          During the Pilot, we will learn directly from community members with accessibility needs. Their real-world experience using the Amnesty Community will reveal gaps that automated tools cannot detect and will inform decisions about more comprehensive testing after the pilot concludes.
+        </p>
+
+        <p>
+          Amnesty can then invest in fully-featured accessibility services and tools based on evidence from this initial phase and user feedback.
+        </p>
+      </section>
+
+      <section id="what-we-tested">
+        <h2>What we tested</h2>
+
+        <p>
+          We decided to test the following pages as a representative sample:
+        </p>
+
+        <div class="three-cols">
+          <div class="col-card">
+            <div class="col-icon">🏠</div>
+            <h4>Home</h4>
+            <p>The main landing page of the Amnesty Community platform.</p>
+          </div>
+          <div class="col-card">
+            <div class="col-icon">📂</div>
+            <h4>Category</h4>
+            <p>Category listing pages used to organise community content.</p>
+          </div>
+          <div class="col-card">
+            <div class="col-icon">💬</div>
+            <h4>Topic</h4>
+            <p>Individual discussion topic pages with threaded replies.</p>
+          </div>
+        </div>
+        <div class="three-cols">
+          <div class="col-card">
+            <div class="col-icon">👤</div>
+            <h4>Profile</h4>
+            <p>User profile pages showing member information and activity.</p>
+          </div>
+          <div class="col-card">
+            <div class="col-icon">👥</div>
+            <h4>Group</h4>
+            <p>Group pages for collective spaces within the community.</p>
+          </div>
+          <div class="col-card" style="background: var(--off-white); border-style: dashed;">
+            <div class="col-icon">♿</div>
+            <h4>Shared components</h4>
+            <p>As Discourse uses common components throughout the site, some accessibility issues were present in multiple places.</p>
+          </div>
+        </div>
+
+        <h3>Main issues found</h3>
+        <p>
+          The following sections detail each issue identified during testing, along with the action taken and the resulting outcome.
+        </p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Issue</th>
+              <th>Action taken</th>
+              <th>Result</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>1</strong></td>
+              <td>Footer contrast too low</td>
+              <td>Matched colour to primary grey (#1a1a1a) from updated Amnesty style guide (Torchbox)</td>
+              <td><span class="result-badge pass">✅ Pass (automated)</span></td>
+            </tr>
+            <tr>
+              <td><strong>2</strong></td>
+              <td>Logo missing text alternative</td>
+              <td>Confirmed the Amnesty logo has a text alternative for screen readers; error resolved</td>
+              <td><span class="result-badge pass">✅ Pass (manual)</span></td>
+            </tr>
+            <tr>
+              <td><strong>3</strong></td>
+              <td>Links opening in new tab/window without notification</td>
+              <td>Modified link targets so that links do not open in a new tab or window</td>
+              <td><span class="result-badge pass">✅ Pass (automated)</span></td>
+            </tr>
+            <tr>
+              <td><strong>4</strong></td>
+              <td>Search box contrast too low</td>
+              <td>Improved icon contrast so users can see where to click; the 'Search' word colour could not be changed</td>
+              <td><span class="result-badge pass">✅ Pass (manual)</span></td>
+            </tr>
+            <tr>
+              <td><strong>5</strong></td>
+              <td>Contrast on column headers and other elements too low</td>
+              <td>Improved contrast by darkening the grey</td>
+              <td><span class="result-badge pass">✅ Pass (automated)</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="issue-1-footer">
+        <h2>Issue 1: Footer</h2>
+
+        <p>
+          The contrast of the footer was too low. On reviewing the Amnesty style guide created by Torchbox, we noted that it has received an update, so we matched the colour to primary grey (<strong>#1a1a1a</strong>).
+        </p>
+
+        <div class="info-card green-border">
+          <h3>Result</h3>
+          <p><span class="result-badge pass">✅ Passes automated accessibility check</span></p>
+        </div>
+      </section>
+
+      <section id="issue-2-logo">
+        <h2>Issue 2: Logo</h2>
+
+        <p>
+          We discovered that the Amnesty logo does, in fact, have a text alternative for screen readers, therefore this error is fixed.
+        </p>
+
+        <div class="info-card green-border">
+          <h3>Result</h3>
+          <p><span class="result-badge pass">✅ Passes manual accessibility check</span></p>
+        </div>
+      </section>
+
+      <section id="issue-3-links">
+        <h2>Issue 3: Links</h2>
+
+        <p>
+          Links should either not open in a new tab or window, or the user should be visually notified that this should happen. We have modified targets so that links do not open in a new tab or window.
+        </p>
+
+        <div class="info-card green-border">
+          <h3>Result</h3>
+          <p><span class="result-badge pass">✅ Passes automated accessibility check</span></p>
+        </div>
+      </section>
+
+      <section id="issue-4-search">
+        <h2>Issue 4: Search box</h2>
+
+        <p>
+          The contrast of the search box was too low. Although we have not been able to change the colour of the 'Search' word, we have improved the icon contrast so that users can see where to click.
+        </p>
+
+        <div class="info-card green-border">
+          <h3>Result</h3>
+          <p><span class="result-badge pass">✅ Passes manual accessibility check</span></p>
+        </div>
+      </section>
+
+      <section id="issue-5-contrast">
+        <h2>Issue 5: Contrast on various elements</h2>
+
+        <p>
+          The contrast of column headers and other elements was too low, so we improved the contrast by darkening the grey.
+        </p>
+
+        <div class="info-card green-border">
+          <h3>Result</h3>
+          <p><span class="result-badge pass">✅ Passes automated accessibility check</span></p>
+        </div>
+      </section>
+
+      <section id="screenreader-keyboard">
+        <h2>Screen reader &amp; keyboard navigation</h2>
+
+        <div class="video-card">
+          <p>A brief demonstration of the ability to use a screen reader and keyboard navigation on the Amnesty Community platform.</p>
+          <a href="https://www.loom.com/share/d5c126e978184bea9b3d4dbe9f034733" rel="noopener" target="_blank">▶ Watch Video (Loom)</a>
+        </div>
+
+        <p>
+          The above video provides a brief demonstration of the ability to use a screen reader and keyboard navigation on the Amnesty Community.
+        </p>
+
+        <div class="info-card blue-border">
+          <h3>Tabbing order</h3>
+          <p>
+            The tabbing order test shows the order in which users pressing 'Tab' on a keyboard will be able to access elements. Testing confirmed that the hierarchy is working appropriately — keyboard navigation moves through the page in a logical sequence that reflects the visual structure.
+          </p>
+        </div>
+      </section>
+
+      <section id="themes">
+        <h2>Themes</h2>
+
+        <p>
+          Over the past months, we have applied Torchbox design elements to the AIUK Discourse install by creating a custom theme, with custom styling, and two colour palettes (a light palette and a dark one). During accessibility testing, we found that calculated colour values did not provide enough contrast. We <a href="https://support.communiteq.com/t/p1-aiuk-theme-review-and-mobile-styles/1217/11" rel="noopener" target="_blank">asked our hosting partner Communiteq</a> to add more colour options to the Admin interface, so that we would have more nuanced control over the displayed colours.
+        </p>
+
+        <p>
+          This allowed us to quickly and easily address multiple accessibility issues.
+        </p>
+
+        <h3 id="light-theme">Light theme</h3>
+
+        <div class="info-card yellow-border">
+          <h3>Light theme contrast issue</h3>
+          <p>
+            The contrast of grey elements on the light theme was <strong>3.95:1</strong>, which is slightly below the <strong>4.5:1</strong> required to meet WCAG standards. We have fixed this using Amnesty's colour palette and choosing greys with more contrast.
+          </p>
+        </div>
+
+        <div class="info-card blue-border">
+          <h3>Contrast loss simulation</h3>
+          <p>
+            The "contrast loss" simulation shows what the platform might look like for a user with low vision. This simulation was used to inform our colour adjustments and ensure improvements would be meaningful for users with visual impairments.
+          </p>
+        </div>
+
+        <h3 id="dark-theme">Dark theme</h3>
+
+        <div class="info-card yellow-border">
+          <h3>Dark theme contrast issue</h3>
+          <p>
+            The dark theme had a lower contrast ratio of <strong>2.73:1</strong>, which is below WCAG requirements. We have adjusted colours to bring both themes into compliance.
+          </p>
+        </div>
+      </section>
+
+      <section id="conclusion">
+        <h2>Conclusion</h2>
+
+        <p>
+          We feel that this basic accessibility testing showed that we are in good shape for the initial pilot. We have addressed a number of issues that would have been difficult to find without testing, and we have pointed out some areas for future improvements. As mentioned above, accessibility testing is an area that AIUK may wish to further invest in as the digital transformation project moves forward.
+        </p>
+
+        <div class="info-card green-border">
+          <h3>Summary of outcomes</h3>
+          <ul>
+            <li><strong>All five identified issues have been resolved</strong> — each passed either automated or manual accessibility checks after remediation</li>
+            <li><strong>Lowest automated score was 88%</strong> — above the threshold generally considered highly accessible</li>
+            <li><strong>Screen reader and keyboard navigation confirmed working</strong> — tabbing order follows a logical hierarchy</li>
+            <li><strong>Both light and dark themes improved</strong> — colour contrast updated to meet WCAG 4.5:1 requirements</li>
+            <li><strong>Future investment recommended</strong> — comprehensive accessibility services and tools should be considered based on evidence from the pilot and user feedback</li>
+          </ul>
+        </div>
+
+        <div class="info-card blue-border">
+          <h3>Next steps after the pilot</h3>
+          <p>
+            During the Pilot, we will learn directly from community members with accessibility needs. Their real-world experience using the Amnesty Community will reveal gaps that automated tools cannot detect and will inform decisions about more comprehensive testing after the pilot concludes.
+          </p>
+          <p>
+            Amnesty can then invest in fully-featured accessibility services and tools based on evidence from this initial phase and user feedback.
+          </p>
+        </div>
+      </section>
+
+    </article>
+
+    <aside class="sidebar" aria-label="Page navigation">
+      <div class="sidebar-card">
+        <div class="sidebar-card-head">On this page</div>
+        <ul class="sidebar-toc">
+          <li><a href="#introduction">Introduction</a></li>
+          <li><a href="#what-we-tested">What we tested</a></li>
+          <li class="sub"><a href="#issue-1-footer">Issue 1: Footer</a></li>
+          <li class="sub"><a href="#issue-2-logo">Issue 2: Logo</a></li>
+          <li class="sub"><a href="#issue-3-links">Issue 3: Links</a></li>
+          <li class="sub"><a href="#issue-4-search">Issue 4: Search box</a></li>
+          <li class="sub"><a href="#issue-5-contrast">Issue 5: Contrast</a></li>
+          <li><a href="#screenreader-keyboard">Screen reader &amp; keyboard</a></li>
+          <li><a href="#themes">Themes</a></li>
+          <li class="sub"><a href="#light-theme">Light theme</a></li>
+          <li class="sub"><a href="#dark-theme">Dark theme</a></li>
+          <li><a href="#conclusion">Conclusion</a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sidebar-card-head">Document details</div>
+        <div class="sidebar-meta">
+          <p><strong>Phase</strong><br />Pilot Prep</p>
+          <p><strong>Group</strong><br />Testing</p>
+          <p><strong>Tools used</strong><br />Firefox Accessibility Tools, IBM Equal Access Toolkit</p>
+          <p><strong>Standards</strong><br />WCAG 2.2 (A / AA)</p>
+          <p><strong>Status</strong><br />Completed</p>
+          <p><strong>Source</strong><br /><a href="https://docs.google.com/document/d/1hpLET6mpMwXAj3D1eogy1jR8InxoQN3CuzAtGwWwCPE/edit" rel="noopener" target="_blank">Open in Google Docs ↗</a></p>
+          <a href="index.html#timeline" class="back-link">← Pilot Prep</a>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+</main>
+
+<footer>
+  <img src="https://wiki.weareopen.coop/wao_logo_whitetr_1500.png" alt="WAO Cooperative" />
+  <div class="footer-bottom">
+    <span>AIUK Community Platform Project · Produced by <a href="https://weareopen.coop" rel="noopener">WAO Cooperative</a></span>
+  </div>
+</footer>
+
+</body>
+</html>

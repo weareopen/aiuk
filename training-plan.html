@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Training Plan · AIUK Community Platform Project</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;600;700&family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --charcoal:   #2F495A;
+      --green:      #00C399;
+      --yellow:     #FFBC42;
+      --blue:       #16A8E2;
+      --red:        #FC594D;
+      --white:      #FFFFFF;
+      --off-white:  #F7F9FA;
+      --light-grey: #EDF1F4;
+      --mid-grey:   #8FA3B0;
+      --text:       #2F495A;
+      --font-head: 'Roboto Slab', Georgia, serif;
+      --font-body: 'Nunito', system-ui, sans-serif;
+      --radius: 12px;
+      --radius-sm: 6px;
+      --shadow: 0 4px 24px rgba(47,73,90,0.10);
+      --shadow-hover: 0 8px 36px rgba(47,73,90,0.18);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-body); color: var(--text); background: var(--off-white); line-height: 1.7; font-size: 16px; }
+
+    .skip-link { position: absolute; top: -40px; left: 16px; background: var(--green); color: var(--white); padding: 8px 14px; border-radius: var(--radius-sm); font-weight: 700; z-index: 9999; transition: top .2s; }
+    .skip-link:focus { top: 16px; }
+
+    nav { position: sticky; top: 0; z-index: 100; background: var(--charcoal); display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(16px, 5vw, 48px); height: 60px; box-shadow: 0 2px 12px rgba(0,0,0,0.2); }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .nav-logo img { height: 36px; }
+    .nav-links { display: flex; gap: 4px; list-style: none; flex-wrap: wrap; }
+    .nav-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.82rem; font-weight: 600; letter-spacing: 0.02em; padding: 6px 10px; border-radius: var(--radius-sm); transition: color .2s, background .2s; }
+    .nav-links a:hover { color: var(--white); background: rgba(255,255,255,0.12); }
+
+    .breadcrumb { background: var(--white); border-bottom: 1px solid var(--light-grey); padding: 10px clamp(16px, 5vw, 48px); font-size: 0.82rem; color: var(--mid-grey); display: flex; align-items: center; gap: 8px; }
+    .breadcrumb a { color: var(--mid-grey); text-decoration: none; font-weight: 600; }
+    .breadcrumb a:hover { color: var(--green); }
+    .breadcrumb span { color: var(--charcoal); font-weight: 700; }
+
+    .hero { background: var(--charcoal); padding: clamp(48px, 8vw, 80px) clamp(16px, 5vw, 48px) clamp(40px, 6vw, 64px); position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 50% 90% at 90% 20%, rgba(22,168,226,0.18) 0%, transparent 60%), radial-gradient(ellipse 40% 60% at 5% 90%, rgba(0,195,153,0.12) 0%, transparent 55%); pointer-events: none; }
+    .hero-inner { max-width: 760px; position: relative; }
+    .hero-tag { display: inline-flex; align-items: center; gap: 8px; background: rgba(47,73,90,0.18); border: 1px solid rgba(47,73,90,0.4); color: var(--charcoal); font-size: 0.75rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 14px; border-radius: 100px; margin-bottom: 18px; }
+    .hero-tag a { color: inherit; text-decoration: none; }
+    .hero-tag a:hover { text-decoration: underline; }
+    h1 { font-family: var(--font-head); font-size: clamp(1.8rem, 4.5vw, 3rem); font-weight: 700; color: var(--white); line-height: 1.2; margin-bottom: 16px; }
+    h1 em { font-style: normal; color: var(--green); }
+    .hero-subtitle { font-size: clamp(0.95rem, 1.8vw, 1.1rem); color: rgba(255,255,255,0.7); max-width: 580px; line-height: 1.65; }
+
+    .page-wrap { max-width: 1100px; margin: 0 auto; padding: clamp(32px, 5vw, 64px) clamp(16px, 5vw, 48px); display: grid; grid-template-columns: 1fr 280px; gap: 48px; align-items: start; }
+    @media (max-width: 780px) { .page-wrap { grid-template-columns: 1fr; } .sidebar { order: -1; } }
+
+    .content { min-width: 0; }
+    .content h2 { font-family: var(--font-head); font-size: clamp(1.3rem, 2.5vw, 1.7rem); font-weight: 600; color: var(--charcoal); margin: 40px 0 14px; padding-top: 40px; border-top: 2px solid var(--light-grey); }
+    .content h2:first-child { margin-top: 0; padding-top: 0; border-top: none; }
+    .content h3 { font-family: var(--font-head); font-size: clamp(1.05rem, 2vw, 1.25rem); font-weight: 600; color: var(--charcoal); margin: 28px 0 10px; }
+    .content p { margin-bottom: 16px; color: #4a6070; font-size: 0.97rem; line-height: 1.75; }
+    .content p strong { color: var(--charcoal); font-weight: 700; }
+    .content ul { padding-left: 20px; margin-bottom: 16px; }
+    .content ul li { color: #4a6070; font-size: 0.97rem; line-height: 1.7; margin-bottom: 5px; }
+    .content ul li strong { color: var(--charcoal); }
+    .content ul ul { margin-top: 4px; margin-bottom: 4px; }
+
+    .info-card { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius); padding: 24px 28px; margin: 20px 0; box-shadow: var(--shadow); }
+    .info-card.blue-border  { border-left: 4px solid var(--blue); }
+    .info-card.green-border { border-left: 4px solid var(--green); }
+    .info-card.yellow-border { border-left: 4px solid var(--yellow); }
+    .info-card.red-border  { border-left: 4px solid var(--red); }
+    .info-card.charcoal-border { border-left: 4px solid var(--charcoal); }
+    .info-card h3 { font-family: var(--font-head); font-size: 0.95rem; font-weight: 600; color: var(--charcoal); margin-bottom: 10px; margin-top: 0; }
+    .info-card p { margin-bottom: 0; font-size: 0.9rem; }
+    .info-card ul { padding-left: 18px; margin-top: 8px; margin-bottom: 0; }
+    .info-card ul li { font-size: 0.9rem; color: #4a6070; margin-bottom: 5px; line-height: 1.6; }
+    .info-card ul li strong { color: var(--charcoal); }
+    .info-card ul ul { margin-top: 4px; margin-bottom: 4px; }
+
+    .doc-link-banner { background: var(--charcoal); border-radius: var(--radius); padding: 24px 28px; margin: 20px 0 32px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+    .doc-link-banner p { color: rgba(255,255,255,0.75); font-size: 0.9rem; margin: 0; }
+    .doc-link-banner a { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: var(--white); text-decoration: none; font-weight: 700; font-size: 0.88rem; padding: 10px 20px; border-radius: var(--radius-sm); white-space: nowrap; transition: background .2s; }
+    .doc-link-banner a:hover { background: #00a881; }
+
+    .three-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 20px 0 28px; }
+    @media (max-width: 640px) { .three-cols { grid-template-columns: 1fr; } }
+    .col-card { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+    .col-card .col-icon { font-size: 1.6rem; margin-bottom: 10px; }
+    .col-card h4 { font-family: var(--font-head); font-size: 0.9rem; font-weight: 600; color: var(--charcoal); margin-bottom: 8px; }
+    .col-card p { font-size: 0.83rem; color: #4a6070; margin: 0; line-height: 1.55; }
+
+    /* Schedule / overview table */
+    .table-wrap { overflow-x: auto; margin: 20px 0 28px; border-radius: var(--radius); box-shadow: var(--shadow); }
+    table { width: 100%; border-collapse: collapse; background: var(--white); font-size: 0.88rem; }
+    thead th { background: var(--charcoal); color: rgba(255,255,255,0.85); font-family: var(--font-head); font-weight: 600; padding: 12px 16px; text-align: left; font-size: 0.82rem; letter-spacing: 0.03em; }
+    tbody tr:nth-child(even) { background: var(--off-white); }
+    tbody td { padding: 11px 16px; color: #4a6070; vertical-align: top; border-bottom: 1px solid var(--light-grey); line-height: 1.5; }
+    tbody td strong { color: var(--charcoal); }
+    tbody tr:last-child td { border-bottom: none; }
+
+    /* Phase badge */
+    .phase-badge { display: inline-block; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 9px; border-radius: 100px; }
+    .phase-badge.phase-0 { background: rgba(143,163,176,0.18); color: var(--mid-grey); }
+    .phase-badge.phase-1 { background: rgba(0,195,153,0.14); color: #009e7b; }
+    .phase-badge.phase-2 { background: rgba(22,168,226,0.14); color: #0e85ba; }
+    .phase-badge.phase-3 { background: rgba(255,188,66,0.18); color: #b07a00; }
+    .phase-badge.phase-4 { background: rgba(252,89,77,0.14); color: #c0352a; }
+
+    /* Audience tick table */
+    .tick-table { width: 100%; border-collapse: collapse; background: var(--white); font-size: 0.88rem; border-radius: var(--radius); overflow: hidden; }
+    .tick-table th { background: var(--charcoal); color: rgba(255,255,255,0.85); font-family: var(--font-head); font-weight: 600; padding: 10px 14px; text-align: center; font-size: 0.8rem; letter-spacing: 0.03em; }
+    .tick-table th:first-child { text-align: left; }
+    .tick-table td { padding: 10px 14px; border-bottom: 1px solid var(--light-grey); text-align: center; color: #4a6070; }
+    .tick-table td:first-child { text-align: left; font-weight: 600; color: var(--charcoal); }
+    .tick-table tr:last-child td { border-bottom: none; }
+    .tick-table tr:nth-child(even) td { background: var(--off-white); }
+
+    /* Permissions table */
+    .perm-table { width: 100%; border-collapse: collapse; background: var(--white); font-size: 0.88rem; border-radius: var(--radius); overflow: hidden; }
+    .perm-table th { background: var(--charcoal); color: rgba(255,255,255,0.85); font-family: var(--font-head); font-weight: 600; padding: 10px 14px; text-align: left; font-size: 0.8rem; letter-spacing: 0.03em; }
+    .perm-table td { padding: 10px 14px; border-bottom: 1px solid var(--light-grey); color: #4a6070; vertical-align: middle; }
+    .perm-table tr:nth-child(even) td { background: var(--off-white); }
+    .perm-table tr:last-child td { border-bottom: none; }
+    .perm-table td:first-child { font-weight: 600; color: var(--charcoal); }
+
+    .sidebar { position: sticky; top: 80px; }
+    .sidebar-card { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); margin-bottom: 20px; }
+    .sidebar-card-head { background: var(--charcoal); padding: 14px 18px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.6); }
+    .sidebar-toc { list-style: none; padding: 8px 0; }
+    .sidebar-toc li a { display: block; padding: 9px 18px; color: #4a6070; font-size: 0.85rem; font-weight: 600; text-decoration: none; border-left: 3px solid transparent; transition: color .2s, border-color .2s, background .2s; }
+    .sidebar-toc li a:hover { color: var(--charcoal); border-color: var(--green); background: rgba(0,195,153,0.06); }
+    .sidebar-meta { padding: 16px 18px; }
+    .sidebar-meta p { font-size: 0.82rem; color: var(--mid-grey); margin-bottom: 8px; line-height: 1.5; }
+    .sidebar-meta p strong { color: var(--charcoal); }
+    .back-link { display: inline-flex; align-items: center; gap: 7px; background: var(--green); color: var(--white); text-decoration: none; font-size: 0.85rem; font-weight: 700; padding: 10px 18px; border-radius: var(--radius-sm); transition: background .2s; width: 100%; justify-content: center; margin-top: 4px; }
+    .back-link:hover { background: #00a881; }
+
+    footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.1); padding: clamp(28px,4vw,48px) clamp(16px,5vw,48px); display: flex; flex-wrap: wrap; gap: 24px; justify-content: space-between; align-items: center; }
+    footer img { height: 32px; opacity: 0.7; }
+    .footer-bottom { color: rgba(255,255,255,0.35); font-size: 0.78rem; }
+    .footer-bottom a { color: rgba(255,255,255,0.5); text-decoration: none; }
+    .footer-bottom a:hover { color: var(--green); }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    .hero-inner > * { animation: fadeUp 0.5s ease both; }
+    .hero-tag { animation-delay: 0.0s; }
+    h1 { animation-delay: 0.1s; }
+    .hero-subtitle { animation-delay: 0.2s; }
+  </style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<nav aria-label="Primary navigation">
+  <a href="index.html" class="nav-logo" aria-label="Back to project index">
+    <img src="https://wiki.weareopen.coop/wao_logo_whitetr_1500.png" alt="WAO Cooperative logo" />
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html#project-overview">Overview</a></li>
+    <li><a href="index.html#key-reports">Key Reports</a></li>
+    <li><a href="index.html#timeline">All Documents</a></li>
+    <li><a href="charter.html">Project Charter</a></li>
+  </ul>
+</nav>
+
+<div class="breadcrumb" aria-label="Breadcrumb">
+  <a href="index.html">← Project Index</a>
+  <span aria-hidden="true">/</span>
+  <span>Pilot Prep</span>
+  <span aria-hidden="true">/</span>
+  <span>Training Plan</span>
+</div>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">
+      <a href="index.html#timeline">← Pilot Prep</a>
+    </div>
+    <h1>Training<br/><em>Plan</em></h1>
+    <p class="hero-subtitle">
+      A scalable training and onboarding plan for AIUK activists and educators — covering platform testing, information sessions, hands-on training content, and onboarding resources for the Community Platform pilot.
+    </p>
+  </div>
+</header>
+
+<main id="main">
+  <div class="page-wrap">
+
+    <article class="content">
+
+      <section id="overview">
+        <h2>About this document</h2>
+        <p>
+          This document outlines the plans and content for onboarding and training for the Community Platform project. The structure of the pilot training set-up and content is designed with the future launch in mind. Training content will be tested and iterated to create evergreen training content for the public launch.
+        </p>
+        <p>
+          The plan covers three broad phases: platform testing on the staging server, information and training sessions on the production server, and the pilot itself — running in four blocks between February and April 2026.
+        </p>
+
+        <div class="doc-link-banner">
+          <p>This document is held in Google Docs and is accessible to project team members.</p>
+          <a href="https://docs.google.com/document/d/1HNnX_aY16WvkD_yHl06C_xsR8Au3ABD1LvYAnLhNAD4/edit" rel="noopener" target="_blank">Open in Google Docs ↗</a>
+        </div>
+
+        <div class="three-cols">
+          <div class="col-card">
+            <div class="col-icon">🧪</div>
+            <h4>Platform Testing</h4>
+            <p>Five community members test the staging server in November 2025 to catch UX issues before the pilot begins.</p>
+          </div>
+          <div class="col-card">
+            <div class="col-icon">🎓</div>
+            <h4>Training Sessions</h4>
+            <p>Online information and hands-on training sessions for community leaders and staff in January/February 2026.</p>
+          </div>
+          <div class="col-card">
+            <div class="col-icon">🚀</div>
+            <h4>Pilot Phases</h4>
+            <p>Four mission-based pilot blocks running February to April 2026, each ending with a feedback workshop.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="introduction">
+        <h2>Introduction</h2>
+        <p>
+          We intend to use the live Community platform for the pre-pilot training so that participants can experience how the platform works. Whilst users will be able to see the entire platform, we will advise them that training activities take place inside the Onboarding and Training category. We'll let them know that they are, of course, welcome to comment on other things they see within the platform, but should be aware that we are actively building the plane they are flying in.
+        </p>
+        <p>
+          Using the live platform for the training also allows us to save some actions, such as profile creation. We will create a training user group associated with the Onboarding and Training category, so that we can control permissions in the same way we are controlling them in the pilot.
+        </p>
+        <p>
+          We will also need to advise trainees that we will restrict access after the training and over the holidays, as we likely won't have moderation capabilities at that time.
+        </p>
+        <p>
+          Finally, we will train community leaders and staff together to develop camaraderie with and between future leaders in the platform.
+        </p>
+      </section>
+
+      <section id="high-level-schedule">
+        <h2>High-level schedule</h2>
+        <p>The three main activities and their timings are set out below:</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Activity</th>
+                <th>Reason</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Platform Testing</strong><br/><span style="font-size:0.82rem;color:var(--mid-grey);">staging server</span></td>
+                <td>Five platform testing participants will catch 80% of UX issues, so long as we get a diverse cross-section of intended community members.</td>
+                <td>November 2025</td>
+              </tr>
+              <tr>
+                <td><strong>Information &amp; Training Sessions</strong><br/><span style="font-size:0.82rem;color:var(--mid-grey);">production server</span></td>
+                <td>Community members need to know what the pilot will entail and experiment with the various features of Discourse.</td>
+                <td>January 2026</td>
+              </tr>
+              <tr>
+                <td><strong>Pilot</strong><br/><span style="font-size:0.82rem;color:var(--mid-grey);">production server</span></td>
+                <td>Seeing how users interact with each other will help inform how we open up and scale the platform.</td>
+                <td>February – April 2026</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="platform-testing">
+        <h2>Platform testing sessions</h2>
+        <p>
+          We will recruit five community members to perform user testing in January. These should be a cross-section of responsibilities and demographics. The aim is to catch any confusion around onboarding and navigation.
+        </p>
+        <p>
+          As described in our original User Research and Testing guide, we will organise testing around <strong>'missions'</strong> — realistic scenarios and tasks that reflect the everyday activities of AIUK community members.
+        </p>
+
+        <div class="info-card blue-border">
+          <h3>Testing timeline</h3>
+          <ul>
+            <li><strong>w/b January 5th</strong> — inviting participants</li>
+            <li><strong>w/b January 12th</strong> — conducting user testing</li>
+            <li><strong>w/b January 19th</strong> — tweaking and iterating based on findings</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="session-schedule">
+        <h2>Training and information session schedule</h2>
+        <p>
+          The pilot phases will take place in four blocks between February and April 2026. Each block begins with an information and training session and ends with a feedback workshop. Participants will be invited to all of the sessions in the phases available to them, and we will also create content that participants can access outside of the training sessions.
+        </p>
+        <p>
+          The table below shows all sessions across all phases. Groups are: <strong>Category Moderators</strong>, <strong>General Network Members</strong> (network members, local group members, teachers and general staff), and <strong>New Activists</strong>.
+        </p>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Phase</th>
+                <th>Session</th>
+                <th>Date</th>
+                <th>Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="phase-badge phase-0">Phase 0</span></td>
+                <td><strong>Platform Testing</strong></td>
+                <td>w/b 5 Jan · 12 Jan · 19 Jan</td>
+                <td>N/A (own time)</td>
+              </tr>
+              <tr>
+                <td><span class="phase-badge phase-1">Phase 1</span></td>
+                <td><strong>Information &amp; training session</strong></td>
+                <td>Monday 26th January 2026</td>
+                <td>17:30–19:00</td>
+              </tr>
+              <tr>
+                <td><span class="phase-badge phase-1">Phase 1</span></td>
+                <td><strong>Category moderation training</strong></td>
+                <td>Wednesday 28th January 2026</td>
+                <td>17:30–19:00</td>
+              </tr>
+              <tr>
+                <td><span class="phase-badge phase-1">Phase 1</span></td>
+                <td><strong>Missions</strong></td>
+                <td>Monday 26th Jan – Sunday 15th Feb 2026</td>
+                <td>Completed in own time</td>
+              </tr>
+              <tr>
+                <td><span class="phase-badge phase-1">Phase 1</span></td>
+                <td><strong>Feedback workshop</strong></td>
+                <td>Thursday 19th February 2026</td>
+                <td>17:30–19:00</td>
+              </tr>
+              <tr>
+                <td><span class="phase-badge phase-2">Phase 2</span></td>
+                <td><strong>Information &amp; training session</strong> <em style="font-size:0.82rem;color:var(--mid-grey);">(optional refresher)</em></td>
+                <td>Monday 23rd February 2026</td>
+                <td>17:30–19:00</td>
+              </tr>
+              <tr>
+                <td><span class="phase-badge phase-2">Phase 2</span></td>
+                <td><strong>Missions</strong></td>
+                <td>Monday 23rd Feb – Sunday 8th March 2026</td>
+                <td>Completed in own time</td>
+              </tr>
+              <tr>
+                <td><span class="phase-badge phase-2">Phase 2</span></td>
+                <td><strong>Feedback workshop (option 1)</strong></td>
+                <td>Tuesday 3rd March 2026</td>
+                <td>17:30–19:00</td>
+              </tr>
+              <tr>
+                <td><span class="phase-badge phase-2">Phase 2</span></td>
+                <td><strong>Feedback workshop (option 2)</strong></td>
+                <td>Thursday 5th March 2026</td>
+                <td>17:30–19:00</td>
+              </tr>
+              <tr>
+                <td><span class="phase-badge phase-3">Phase 3</span></td>
+                <td><strong>Information &amp; training session</strong> <em style="font-size:0.82rem;color:var(--mid-grey);">(optional refresher)</em></td>
+                <td>Monday 9th March 2026</td>
+                <td>17:30–19:00</td>
+              </tr>
+              <tr>
+                <td><span class="phase-badge phase-3">Phase 3</span></td>
+                <td><strong>Missions</strong></td>
+                <td>Monday 9th – Sunday 22nd March 2026</td>
+                <td>Completed in own time</td>
+              </tr>
+              <tr>
+                <td><span class="phase-badge phase-3">Phase 3</span></td>
+                <td><strong>Feedback workshop (option 1)</strong></td>
+                <td>Tuesday 17th March 2026</td>
+                <td>17:30–19:00</td>
+              </tr>
+              <tr>
+                <td><span class="phase-badge phase-3">Phase 3</span></td>
+                <td><strong>Feedback workshop (option 2)</strong></td>
+                <td>Thursday 19th March 2026</td>
+                <td>17:30–19:00</td>
+              </tr>
+              <tr>
+                <td><span class="phase-badge phase-4">Phase 4</span></td>
+                <td><strong>Missions</strong></td>
+                <td>Monday 23rd March – Sunday 5th April 2026</td>
+                <td>Completed in own time</td>
+              </tr>
+              <tr>
+                <td><span class="phase-badge phase-4">Phase 4</span></td>
+                <td><strong>Feedback workshop (option 1)</strong></td>
+                <td>Tuesday 31st March 2026</td>
+                <td>17:30–19:00</td>
+              </tr>
+              <tr>
+                <td><span class="phase-badge phase-4">Phase 4</span></td>
+                <td><strong>Feedback workshop (option 2)</strong></td>
+                <td>Thursday 2nd April 2026</td>
+                <td>17:30–19:00</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="information-training">
+        <h2>Information and training sessions (TL0/1)</h2>
+        <p>
+          These sessions at the start of each pilot phase will serve as both an information session and a hands-on training. They will cover the aims of the AIUK Community Platform, research carried out, an overview of the Discourse platform, and details of the pilot.
+        </p>
+
+        <h3>Information component</h3>
+
+        <div class="info-card green-border">
+          <h3>Purpose</h3>
+          <p>The AIUK Community Platform provides a dedicated online space for activists to connect, collaborate on campaigns, access resources, and drive human rights impact through grassroots organising.</p>
+        </div>
+
+        <div class="info-card blue-border">
+          <h3>Audience</h3>
+          <p>The platform is intended for AIUK community members, which include activists, educators, and staff members. The initial launch will focus on adults above the age of 18, with the intention of including teen activists. This depends on the successful launch and adoption of the platform, as well as working with legal around the ramifications of the UK Online Safety Act.</p>
+        </div>
+
+        <div class="info-card yellow-border">
+          <h3>Research</h3>
+          <p>Over the last few months, we have carried out research, discovered what our community wants and needs, and performed technical platform reviews. We have now selected an open-source platform called Discourse to become the home of our community. Early next year, we will run a pilot on this platform, and we are glad that you have agreed to participate.</p>
+        </div>
+
+        <div class="info-card charcoal-border">
+          <h3>Structure of the pilot</h3>
+          <ul>
+            <li><strong>Platform testing</strong> — Intended to ensure that the initial set-up for the information settings makes sense to a cross-section of community members (November 2025).</li>
+            <li><strong>Information and training sessions</strong> — Online meetings for community leaders and staff to inform them of the capabilities of the platform, and to give them hands-on experience of the platform's functionality (January/February 2026).</li>
+            <li><strong>Pilot phases</strong> — Mission-based opportunities to explore the platform and give feedback on features, functionality, and set-up through feedback forms and workshops (February–April 2026).</li>
+          </ul>
+        </div>
+
+        <div class="info-card green-border">
+          <h3>Location</h3>
+          <p>The sessions will take place online using AIUK's Microsoft Teams infrastructure. We will record sessions and also pre-record instructional videos to be embedded on the community platform itself.</p>
+        </div>
+
+        <h3>Training component</h3>
+        <p>
+          The session will take users through the common functions and features of the community platform that are available to everyone. It will be a hands-on training that gives brief overviews and then asks users to try things for themselves. Participants will be guided to find more complex help on functionality within Discourse documentation.
+        </p>
+
+        <div class="info-card blue-border">
+          <h3>Content outline — Interface</h3>
+          <ul>
+            <li>Basic terminology (Topics vs Posts, Categories vs Tags)</li>
+            <li>Topic creation and posting
+              <ul>
+                <li>Basic formatting and emoji support</li>
+                <li>Creating polls and rich content</li>
+                <li>Rich media embedding (links auto-expand for YouTube, Wikipedia, etc.)</li>
+                <li>Replying
+                  <ul>
+                    <li>Understanding @mentions and notifications</li>
+                  </ul>
+                </li>
+                <li>Likes</li>
+              </ul>
+            </li>
+            <li>Search (basic and advanced search techniques and filters)</li>
+            <li>Accessibility
+              <ul>
+                <li>Dark mode</li>
+                <li>Keyboard navigation</li>
+                <li>Screen reader compatibility</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+        <div class="info-card green-border">
+          <h3>Content outline — Me as user</h3>
+          <ul>
+            <li>Onboarding</li>
+            <li>Profile
+              <ul>
+                <li>Email preferences and digest settings</li>
+                <li>Privacy settings basics</li>
+                <li>Customising notification levels per category and tag</li>
+                <li>Using the activity summary and notification bell</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+        <div class="info-card yellow-border">
+          <h3>Content outline — Dealing with others</h3>
+          <ul>
+            <li>Muting</li>
+            <li>Moderation (how it works)
+              <ul>
+                <li>Basic flagging system</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="on-demand">
+        <h2>On-demand resources (TL2/3)</h2>
+        <p>
+          The more advanced features available to most users without specific roles and responsibilities will be accessible through on-demand resources in the help section. This will include videos and documentation from the official Discourse.org site.
+        </p>
+
+        <div class="info-card blue-border">
+          <h3>Interface</h3>
+          <ul>
+            <li>Creating Tags</li>
+          </ul>
+        </div>
+
+        <div class="info-card green-border">
+          <h3>Me as user</h3>
+          <ul>
+            <li>Editing Topics</li>
+            <li>Creating wiki posts</li>
+            <li>Anonymous Posting</li>
+          </ul>
+        </div>
+
+        <div class="info-card yellow-border">
+          <h3>Dealing with others</h3>
+          <ul>
+            <li>Community self-moderation principles</li>
+            <li>Understanding the progression from new user to community leader
+              <ul>
+                <li>Setting examples through constructive participation</li>
+                <li>Helping with basic mentoring of new users</li>
+              </ul>
+            </li>
+            <li>Ignoring users</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="category-moderation">
+        <h2>Category moderation training (TL4+)</h2>
+        <p>
+          The training session for Community Leaders (e.g. those with category moderator permissions) will cover both features and functionality available to category moderators. For the pilot, the site-wide moderation function will be covered by the Admin roles.
+        </p>
+
+        <div class="info-card blue-border">
+          <h3>Interface — Category moderators</h3>
+          <ul>
+            <li>Announcements</li>
+            <li>Staff Categories</li>
+            <li>See and use Whispers</li>
+            <li>Private messaging (requires TL4)</li>
+          </ul>
+        </div>
+
+        <div class="info-card green-border">
+          <h3>Me as user — Category moderators</h3>
+          <ul>
+            <li>Editing all posts</li>
+            <li>Recategorising topics</li>
+            <li>Delete other users' posts</li>
+            <li>Profile shield icon</li>
+            <li>Topic management (Split and Merge Topics)</li>
+          </ul>
+        </div>
+
+        <div class="info-card yellow-border">
+          <h3>Dealing with others — Category moderators</h3>
+          <ul>
+            <li>Group Management
+              <ul>
+                <li>Each thematic network (and possibly local group) should have its own induction video on its group page explaining the objectives and set-up of the group.</li>
+                <li>Reporting and escalation procedures</li>
+              </ul>
+            </li>
+            <li>Category Management
+              <ul>
+                <li>Pinning content</li>
+              </ul>
+            </li>
+            <li>Email digest management for users</li>
+            <li>Chat functionality</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="admin-training">
+        <h2>Admin training session</h2>
+
+        <div class="info-card red-border">
+          <h3>⚠ Important note on admin access</h3>
+          <p>We highly recommend not giving administrator access to many people. Administrators have the ability to see (and impersonate) users and their personal information, as well as the ability to set all settings on the platform. This power can be massively destructive, as an Admin can essentially break the site for users. <strong>We recommend training new admins on a staging server.</strong></p>
+        </div>
+
+        <p>
+          There is an open question about whether bespoke admin training should be produced in-house. One view is that we should direct admins to the Discourse training series produced by Jono Bacon — a thorough multi-part guide covering all admin capabilities:
+        </p>
+        <ul>
+          <li><a href="https://blog.discourse.org/2022/02/getting-started-with-discourse-by-jono-bacon-part-1/" rel="noopener" target="_blank">Getting Started with Discourse — Part 1</a></li>
+          <li><a href="https://blog.discourse.org/2022/02/getting-started-with-discourse-by-jono-bacon-part-2/" rel="noopener" target="_blank">Getting Started with Discourse — Part 2</a></li>
+          <li><a href="https://blog.discourse.org/2022/02/getting-started-with-discourse-by-jono-bacon-part-3/" rel="noopener" target="_blank">Getting Started with Discourse — Part 3</a></li>
+        </ul>
+        <p>
+          An alternative view is that we should also go through the most commonly-used tools in a live session alongside these resources.
+        </p>
+
+        <p>The admin training session will cover:</p>
+
+        <div class="info-card blue-border">
+          <h3>Interface — Admins</h3>
+          <ul>
+            <li>Dashboard</li>
+            <li>Plugin management</li>
+          </ul>
+        </div>
+
+        <div class="info-card green-border">
+          <h3>Me as user — Admins</h3>
+          <ul>
+            <li>Backups</li>
+            <li>Upgrades</li>
+            <li>Site maintenance</li>
+            <li>Understanding community health metrics</li>
+          </ul>
+        </div>
+
+        <div class="info-card yellow-border">
+          <h3>Dealing with others — Admins</h3>
+          <ul>
+            <li>Site and security settings</li>
+            <li>Categories and permissions</li>
+            <li>Moderate direct messages</li>
+            <li>Manage user groups</li>
+            <li>Impersonate users (troubleshooting/support)</li>
+            <li>Delete/anonymise user accounts</li>
+            <li>Badge system management and custom badges</li>
+            <li>Anonymous mode configuration and oversight
+              <ul>
+                <li>Understanding when admins can trace anonymous posts</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="site-moderators">
+        <h2>Site-wide moderators</h2>
+        <p>
+          For the pilot, site-wide moderation will be handled by a small group (discussed 23/10 — for the pilot this will be Doug, Abi and one other team member).
+        </p>
+
+        <div class="info-card blue-border">
+          <h3>Interface — Site-wide moderators</h3>
+          <ul>
+            <li>Manage Tags and Tag Groups</li>
+            <li>Close any Poll</li>
+            <li>Revisions</li>
+          </ul>
+        </div>
+
+        <div class="info-card green-border">
+          <h3>Me as user — Site-wide moderators</h3>
+          <ul>
+            <li>Understanding the flag queue and resolution process</li>
+          </ul>
+        </div>
+
+        <div class="info-card yellow-border">
+          <h3>Dealing with others — Site-wide moderators</h3>
+          <ul>
+            <li>Understanding trust levels and badges system</li>
+            <li>Manage users
+              <ul>
+                <li>User trust level management and manual promotions</li>
+              </ul>
+            </li>
+            <li>Grant Badges</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="permissions-table">
+        <h2>Permissions overview</h2>
+        <p>The table below summarises review queue access and moderation scope across different user types.</p>
+
+        <div class="table-wrap">
+          <table class="perm-table">
+            <thead>
+              <tr>
+                <th>User type</th>
+                <th>Review queue access</th>
+                <th>Groups menu visibility</th>
+                <th>Review queue scope</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Anonymous / TL0–3</td>
+                <td>❌ No access</td>
+                <td>✅ Yes (if enabled)</td>
+                <td>N/A</td>
+              </tr>
+              <tr>
+                <td>Trust Level 4</td>
+                <td>❌ No access by default</td>
+                <td>✅ Yes (if enabled)</td>
+                <td>N/A</td>
+              </tr>
+              <tr>
+                <td>Category Moderator</td>
+                <td>✅ Yes</td>
+                <td>✅ Yes (if enabled)</td>
+                <td>Only their assigned categories</td>
+              </tr>
+              <tr>
+                <td>Full Moderator</td>
+                <td>✅ Yes</td>
+                <td>✅ Yes (if enabled)</td>
+                <td>All categories</td>
+              </tr>
+              <tr>
+                <td>Administrator</td>
+                <td>✅ Yes</td>
+                <td>✅ Yes</td>
+                <td>All categories</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="onboarding-content">
+        <h2>Onboarding content</h2>
+        <p>
+          Content for the training sessions should live within the Onboarding and Training category on the community platform. Within that category, we envision four subcategories:
+        </p>
+        <ul>
+          <li><strong>All the basics</strong> — open subcategory</li>
+          <li><strong>Going further</strong> — semi-private subcategory, only TL2+ can view</li>
+          <li><strong>Advanced</strong> — semi-private subcategory, only TL4, Category Moderators and above can view</li>
+          <li><strong>Site-wide Moderators and Admins</strong></li>
+        </ul>
+        <p>
+          We are creating bespoke training sessions for the AIUK community and content for them. However, we also intend to reference documentation and how-to materials created by the meta Discourse community. This is important for longevity, as the AIUK community Discourse install will upgrade as the meta community develops.
+        </p>
+      </section>
+
+      <section id="welcome-banner">
+        <h2>Welcome banner content (site-wide)</h2>
+        <p>
+          The welcome banner in Discourse is a customisable banner that allows the user to dismiss it at any time. This banner is shown by default to new users and can be modified through the "Welcome Banner" topic in the Staff category.
+        </p>
+
+        <div class="info-card green-border">
+          <h3>Proposed welcome banner text</h3>
+          <p><strong>Welcome to the community!</strong></p>
+          <ul>
+            <li>Start in the Onboarding and Training category</li>
+            <li>Have a question? Ask in the Help category</li>
+            <li>Have a look at the Groups you can join</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="pinned-topics">
+        <h2>Pinned topics — Onboarding &amp; Training category</h2>
+        <p>
+          When joining the online community, every member has the opportunity to go through an induction both to the platform and to community initiatives run by the AIUK team and other community leaders. In the Onboarding &amp; Training category, which is prominently displayed when users arrive at the platform, community members can access the following pinned content.
+        </p>
+
+        <div class="info-card green-border">
+          <h3>Pinned topic: Get Started in the AIUK Community!</h3>
+          <p>Content to be created for this post:</p>
+          <ul>
+            <li><strong>Induction video</strong>
+              <ul>
+                <li>The induction should cover the basics of how to use the online community and what to expect — highlighting things such as the code of conduct, moderation, and how to join groups.</li>
+                <li>This should be in a video no longer than 3 minutes long, which also has options for transcript, BSL signing and subtitles, as well as using simple, accessible language.</li>
+                <li>The induction video should <strong>not</strong> cover what Amnesty UK is or the structure of the charity. Instead, this information should be signposted in the induction, so members know where to go to find out more.</li>
+              </ul>
+            </li>
+            <li><strong>Explore your profile</strong>
+              <ul>
+                <li>Click on the person icon in the top right corner of the screen and select the "Profile" button on the side menu, then select "Preferences". Here you'll be able to add a profile picture, tell us where in the world you're based, add information about yourself, and modify notification settings.</li>
+                <li>Members to be encouraged to list their interests and expertise, filling out their profile to help them figure out what groups and forum pages to sign up to.</li>
+              </ul>
+            </li>
+            <li><strong>Say hello!</strong>
+              <ul>
+                <li>Members should then be given an opportunity to book in a 1:1 with the community manager or a community organiser, OR book in a monthly/weekly induction training call with the community manager. (Needs to be fleshed out.)</li>
+                <li>Members to be encouraged to list their interests and expertise, taking part in the interest quiz (to be created) to help them figure out what groups and forum pages to sign up to.</li>
+                <li>Members to be encouraged to make a welcome post on a welcome space answering prompt questions such as: What motivates you? What issues matter most to you?</li>
+                <li>Each thematic network (and possibly local group) should have its own induction video on its group page explaining the objectives and set-up of the group.</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+        <div class="info-card blue-border">
+          <h3>Pinned topic: Meet a moderator</h3>
+          <p><em>Content to be created by AIUK.</em></p>
+          <ul>
+            <li>Members should then be given an opportunity to book in a 1:1 with the community manager or a community organiser, OR book in a monthly/weekly induction training call with the community manager. (Needs to be fleshed out.)</li>
+          </ul>
+        </div>
+      </section>
+
+    </article>
+
+    <aside class="sidebar" aria-label="Page navigation">
+      <div class="sidebar-card">
+        <div class="sidebar-card-head">On this page</div>
+        <ul class="sidebar-toc">
+          <li><a href="#overview">About this document</a></li>
+          <li><a href="#introduction">Introduction</a></li>
+          <li><a href="#high-level-schedule">High-level schedule</a></li>
+          <li><a href="#platform-testing">Platform testing sessions</a></li>
+          <li><a href="#session-schedule">Session schedule</a></li>
+          <li><a href="#information-training">Information &amp; training (TL0/1)</a></li>
+          <li><a href="#on-demand">On-demand resources (TL2/3)</a></li>
+          <li><a href="#category-moderation">Category moderation (TL4+)</a></li>
+          <li><a href="#admin-training">Admin training</a></li>
+          <li><a href="#site-moderators">Site-wide moderators</a></li>
+          <li><a href="#permissions-table">Permissions overview</a></li>
+          <li><a href="#onboarding-content">Onboarding content</a></li>
+          <li><a href="#welcome-banner">Welcome banner</a></li>
+          <li><a href="#pinned-topics">Pinned topics</a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sidebar-card-head">Document details</div>
+        <div class="sidebar-meta">
+          <p><strong>Phase</strong><br />Pilot Prep</p>
+          <p><strong>Group</strong><br />Content</p>
+          <p><strong>Status</strong><br />In progress</p>
+          <p><strong>Source</strong><br /><a href="https://docs.google.com/document/d/1HNnX_aY16WvkD_yHl06C_xsR8Au3ABD1LvYAnLhNAD4/edit" rel="noopener" target="_blank">Open in Google Docs ↗</a></p>
+          <a href="index.html#timeline" class="back-link">← Pilot Prep</a>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+</main>
+
+<footer>
+  <img src="https://wiki.weareopen.coop/wao_logo_whitetr_1500.png" alt="WAO Cooperative" />
+  <div class="footer-bottom">
+    <span>AIUK Community Platform Project · Produced by <a href="https://weareopen.coop" rel="noopener">WAO Cooperative</a></span>
+  </div>
+</footer>
+
+</body>
+</html>
