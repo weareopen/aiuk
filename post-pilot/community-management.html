@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Community Management Plan · AIUK Community Platform Project</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;600;700&family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --charcoal:   #2F495A;
+      --green:      #00C399;
+      --yellow:     #FFBC42;
+      --blue:       #16A8E2;
+      --red:        #FC594D;
+      --white:      #FFFFFF;
+      --off-white:  #F7F9FA;
+      --light-grey: #EDF1F4;
+      --mid-grey:   #8FA3B0;
+      --text:       #2F495A;
+      --font-head: 'Roboto Slab', Georgia, serif;
+      --font-body: 'Nunito', system-ui, sans-serif;
+      --radius: 12px;
+      --radius-sm: 6px;
+      --shadow: 0 4px 24px rgba(47,73,90,0.10);
+      --shadow-hover: 0 8px 36px rgba(47,73,90,0.18);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-body); color: var(--text); background: var(--off-white); line-height: 1.7; font-size: 16px; }
+
+    .skip-link { position: absolute; top: -40px; left: 16px; background: var(--green); color: var(--white); padding: 8px 14px; border-radius: var(--radius-sm); font-weight: 700; z-index: 9999; transition: top .2s; }
+    .skip-link:focus { top: 16px; }
+
+    nav { position: sticky; top: 0; z-index: 100; background: var(--charcoal); display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(16px, 5vw, 48px); height: 60px; box-shadow: 0 2px 12px rgba(0,0,0,0.2); }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .nav-logo img { height: 36px; }
+    .nav-links { display: flex; gap: 4px; list-style: none; flex-wrap: wrap; }
+    .nav-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.82rem; font-weight: 600; letter-spacing: 0.02em; padding: 6px 10px; border-radius: var(--radius-sm); transition: color .2s, background .2s; }
+    .nav-links a:hover { color: var(--white); background: rgba(255,255,255,0.12); }
+
+    .breadcrumb { background: var(--white); border-bottom: 1px solid var(--light-grey); padding: 10px clamp(16px, 5vw, 48px); font-size: 0.82rem; color: var(--mid-grey); display: flex; align-items: center; gap: 8px; }
+    .breadcrumb a { color: var(--mid-grey); text-decoration: none; font-weight: 600; }
+    .breadcrumb a:hover { color: var(--green); }
+    .breadcrumb span { color: var(--charcoal); font-weight: 700; }
+
+    .hero { background: var(--charcoal); padding: clamp(48px, 8vw, 80px) clamp(16px, 5vw, 48px) clamp(40px, 6vw, 64px); position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 50% 90% at 90% 20%, rgba(22,168,226,0.18) 0%, transparent 60%), radial-gradient(ellipse 40% 60% at 5% 90%, rgba(0,195,153,0.12) 0%, transparent 55%); pointer-events: none; }
+    .hero-inner { max-width: 760px; position: relative; }
+    .hero-tag { display: inline-flex; align-items: center; gap: 8px; background: rgba(22,168,226,0.18); border: 1px solid rgba(22,168,226,0.4); color: var(--blue); font-size: 0.75rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 14px; border-radius: 100px; margin-bottom: 18px; }
+    .hero-tag a { color: inherit; text-decoration: none; }
+    .hero-tag a:hover { text-decoration: underline; }
+    h1 { font-family: var(--font-head); font-size: clamp(1.8rem, 4.5vw, 3rem); font-weight: 700; color: var(--white); line-height: 1.2; margin-bottom: 16px; }
+    h1 em { font-style: normal; color: var(--green); }
+    .hero-subtitle { font-size: clamp(0.95rem, 1.8vw, 1.1rem); color: rgba(255,255,255,0.7); max-width: 580px; line-height: 1.65; }
+
+    .page-wrap { max-width: 1100px; margin: 0 auto; padding: clamp(32px, 5vw, 64px) clamp(16px, 5vw, 48px); display: grid; grid-template-columns: 1fr 280px; gap: 48px; align-items: start; }
+    @media (max-width: 780px) { .page-wrap { grid-template-columns: 1fr; } .sidebar { order: -1; } }
+
+    .content { min-width: 0; }
+    .content h2 { font-family: var(--font-head); font-size: clamp(1.3rem, 2.5vw, 1.7rem); font-weight: 600; color: var(--charcoal); margin: 40px 0 14px; padding-top: 40px; border-top: 2px solid var(--light-grey); }
+    .content h2:first-child { margin-top: 0; padding-top: 0; border-top: none; }
+    .content h3 { font-family: var(--font-head); font-size: 1.05rem; font-weight: 600; color: var(--charcoal); margin: 28px 0 10px; }
+    .content h4 { font-family: var(--font-body); font-size: 0.95rem; font-weight: 800; color: var(--charcoal); margin: 20px 0 8px; text-transform: uppercase; letter-spacing: 0.04em; }
+    .content p { margin-bottom: 16px; color: #4a6070; font-size: 0.97rem; line-height: 1.75; }
+    .content p strong { color: var(--charcoal); font-weight: 700; }
+    .content ul { padding-left: 20px; margin-bottom: 16px; }
+    .content ul li { color: #4a6070; font-size: 0.95rem; margin-bottom: 6px; line-height: 1.65; }
+    .content ul li strong { color: var(--charcoal); font-weight: 700; }
+    .content ol { padding-left: 20px; margin-bottom: 16px; }
+    .content ol li { color: #4a6070; font-size: 0.95rem; margin-bottom: 6px; line-height: 1.65; }
+
+    .info-card { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius); padding: 24px 28px; margin: 20px 0; box-shadow: var(--shadow); }
+    .info-card.blue-border  { border-left: 4px solid var(--blue); }
+    .info-card.green-border { border-left: 4px solid var(--green); }
+    .info-card.yellow-border { border-left: 4px solid var(--yellow); }
+    .info-card.red-border  { border-left: 4px solid var(--red); }
+    .info-card h3 { font-family: var(--font-head); font-size: 0.95rem; font-weight: 600; color: var(--charcoal); margin-bottom: 10px; }
+    .info-card p { margin-bottom: 8px; font-size: 0.9rem; }
+    .info-card p:last-child { margin-bottom: 0; }
+    .info-card ul { padding-left: 18px; margin-top: 8px; margin-bottom: 0; }
+    .info-card ul li { font-size: 0.9rem; color: #4a6070; margin-bottom: 5px; line-height: 1.6; }
+    .info-card ul li strong { color: var(--charcoal); }
+
+    .doc-link-banner { background: var(--charcoal); border-radius: var(--radius); padding: 24px 28px; margin: 20px 0 32px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+    .doc-link-banner p { color: rgba(255,255,255,0.75); font-size: 0.9rem; margin: 0; }
+    .doc-link-banner a { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: var(--white); text-decoration: none; font-weight: 700; font-size: 0.88rem; padding: 10px 20px; border-radius: var(--radius-sm); white-space: nowrap; transition: background .2s; }
+    .doc-link-banner a:hover { background: #00a881; }
+
+    .three-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 20px 0 28px; }
+    @media (max-width: 640px) { .three-cols { grid-template-columns: 1fr; } }
+    .col-card { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+    .col-card .col-icon { font-size: 1.6rem; margin-bottom: 10px; }
+    .col-card h4 { font-family: var(--font-head); font-size: 0.9rem; font-weight: 600; color: var(--charcoal); margin-bottom: 8px; text-transform: none; letter-spacing: 0; }
+    .col-card p { font-size: 0.83rem; color: #4a6070; margin: 0; line-height: 1.55; }
+
+    /* Tables */
+    .table-wrap { overflow-x: auto; margin: 20px 0 28px; border-radius: var(--radius); box-shadow: var(--shadow); }
+    table { width: 100%; border-collapse: collapse; background: var(--white); font-size: 0.88rem; }
+    thead { background: var(--charcoal); }
+    thead th { color: rgba(255,255,255,0.85); font-family: var(--font-body); font-weight: 700; font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 12px 16px; text-align: left; }
+    tbody tr { border-bottom: 1px solid var(--light-grey); }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:nth-child(even) { background: var(--off-white); }
+    tbody td { padding: 12px 16px; color: #4a6070; vertical-align: top; line-height: 1.55; }
+    tbody td strong { color: var(--charcoal); font-weight: 700; }
+
+    /* Level badges */
+    .level-badge { display: inline-block; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; padding: 3px 9px; border-radius: 100px; }
+    .level-low    { background: rgba(0,195,153,0.12); color: #00a881; }
+    .level-medium { background: rgba(255,188,66,0.18); color: #cc8f00; }
+    .level-high   { background: rgba(252,89,77,0.12); color: #d93b30; }
+
+    /* Rhythm cards */
+    .rhythm-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin: 20px 0 28px; }
+    @media (max-width: 540px) { .rhythm-grid { grid-template-columns: 1fr; } }
+    .rhythm-card { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+    .rhythm-card .rhythm-label { font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: var(--blue); margin-bottom: 6px; }
+    .rhythm-card h4 { font-family: var(--font-head); font-size: 1rem; font-weight: 600; color: var(--charcoal); margin-bottom: 10px; }
+    .rhythm-card ul { padding-left: 16px; margin: 0; }
+    .rhythm-card ul li { font-size: 0.88rem; color: #4a6070; margin-bottom: 4px; line-height: 1.55; }
+
+    .sidebar { position: sticky; top: 80px; }
+    .sidebar-card { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); margin-bottom: 20px; }
+    .sidebar-card-head { background: var(--charcoal); padding: 14px 18px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.6); }
+    .sidebar-toc { list-style: none; padding: 8px 0; }
+    .sidebar-toc li a { display: block; padding: 9px 18px; color: #4a6070; font-size: 0.85rem; font-weight: 600; text-decoration: none; border-left: 3px solid transparent; transition: color .2s, border-color .2s, background .2s; }
+    .sidebar-toc li a:hover { color: var(--charcoal); border-color: var(--green); background: rgba(0,195,153,0.06); }
+    .sidebar-meta { padding: 16px 18px; }
+    .sidebar-meta p { font-size: 0.82rem; color: var(--mid-grey); margin-bottom: 8px; line-height: 1.5; }
+    .sidebar-meta p strong { color: var(--charcoal); }
+    .back-link { display: inline-flex; align-items: center; gap: 7px; background: var(--green); color: var(--white); text-decoration: none; font-size: 0.85rem; font-weight: 700; padding: 10px 18px; border-radius: var(--radius-sm); transition: background .2s; width: 100%; justify-content: center; margin-top: 4px; }
+    .back-link:hover { background: #00a881; }
+
+    footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.1); padding: clamp(28px,4vw,48px) clamp(16px,5vw,48px); display: flex; flex-wrap: wrap; gap: 24px; justify-content: space-between; align-items: center; }
+    footer img { height: 32px; opacity: 0.7; }
+    .footer-bottom { color: rgba(255,255,255,0.35); font-size: 0.78rem; }
+    .footer-bottom a { color: rgba(255,255,255,0.5); text-decoration: none; }
+    .footer-bottom a:hover { color: var(--green); }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    .hero-inner > * { animation: fadeUp 0.5s ease both; }
+    .hero-tag { animation-delay: 0.0s; }
+    h1 { animation-delay: 0.1s; }
+    .hero-subtitle { animation-delay: 0.2s; }
+  </style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<nav aria-label="Primary navigation">
+  <a href="../index.html" class="nav-logo" aria-label="Back to project index">
+    <img src="../assets/wao-logo-white.png" alt="WAO Cooperative logo" />
+  </a>
+  <ul class="nav-links">
+    <li><a href="../index.html#project-overview">Overview</a></li>
+    <li><a href="../index.html#key-reports">Key Reports</a></li>
+    <li><a href="../index.html#timeline">All Documents</a></li>
+    <li><a href="../phase-1/charter.html">Project Charter</a></li>
+  </ul>
+</nav>
+
+<div class="breadcrumb" aria-label="Breadcrumb">
+  <a href="../index.html">← Project Index</a>
+  <span aria-hidden="true">/</span>
+  <span>Post-Pilot</span>
+  <span aria-hidden="true">/</span>
+  <span>Community Management Plan</span>
+</div>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">
+      <a href="../index.html#timeline">← Post-Pilot Resources</a>
+    </div>
+    <h1>Community <em>Management Plan</em></h1>
+    <p class="hero-subtitle">
+      The operational handbook for running the AIUK community platform — covering moderation, governance, growth thresholds, management rhythms, and continuous improvement.
+    </p>
+  </div>
+</header>
+
+<main id="main">
+  <div class="page-wrap">
+
+    <article class="content">
+
+      <!-- ═══════════════════════════════════════
+           EXECUTIVE SUMMARY
+      ════════════════════════════════════════ -->
+      <section id="executive-summary">
+        <h2>Executive Summary</h2>
+        <p>
+          As documented in our Processes and Workflows document, a community is more than its platform.
+        </p>
+
+        <h3>Our Vision</h3>
+        <p>
+          This plan outlines the strategy to transition AIUK from isolated silos of activity into a connected, resilient network. Our goal is a community where members learn from and support each other, moving through journeys that benefit from our collective expertise and resources. We are moving from a model of lopsided, staff-dependent engagement to one of sustainable, peer-led activism.
+        </p>
+
+        <h3>Why this matters</h3>
+        <p>
+          A thriving community is a living network of relationships. By distributing leadership and supporting peer-to-peer connections, we increase our capacity to act for human rights without proportionally increasing the burden on staff. This shift ensures that every activist — whether a long-standing member or a new arrival — feels valued, equipped, and connected.
+        </p>
+
+        <h3>How we will get there</h3>
+        <p>This document serves as our operational handbook. It details:</p>
+        <ul>
+          <li><strong>Scalable Moderation:</strong> How we share the workload between staff and other community members</li>
+          <li><strong>Governance:</strong> The clear rules and roles that keep the community safe and focused</li>
+          <li><strong>Growth:</strong> The triggers and strategies that will allow us to expand sustainably</li>
+          <li><strong>Continuous Improvement:</strong> How we will use data and feedback to keep getting better</li>
+        </ul>
+
+        <div class="info-card blue-border">
+          <h3>A living document</h3>
+          <p>This document will be reviewed quarterly to ensure it evolves alongside our community's needs.</p>
+        </div>
+
+        <div class="doc-link-banner">
+          <p>This document is held in Google Docs and is accessible to project team members.</p>
+          <a href="https://docs.google.com/document/d/1Znk1-X5OijB48gACygOvRq4RmCHTRch4zdj4Yxq8j3E/edit" rel="noopener" target="_blank">Open in Google Docs ↗</a>
+        </div>
+
+        <h3>Related documents</h3>
+        <ul>
+          <li>Community Metrics</li>
+          <li>Data Privacy for the Community Platform</li>
+          <li>Processes and Workflows</li>
+        </ul>
+      </section>
+
+      <!-- ═══════════════════════════════════════
+           1. SCALABLE MODERATION SYSTEMS
+      ════════════════════════════════════════ -->
+      <section id="scalable-moderation">
+        <h2>1. Scalable Moderation Systems</h2>
+
+        <h3>1.1 Suggested Moderation Approach</h3>
+
+        <h3>1.1.1 Team Structure</h3>
+        <p>
+          In the post-pilot 'Establishment Stage' (3–12 months) we recommend that AIUK uses the following approach when approaching moderation:
+        </p>
+
+        <div class="info-card green-border">
+          <h3>Recommended staffing (Establishment Stage)</h3>
+          <ul>
+            <li><strong>AIUK staff moderators:</strong> 3 (Community Manager + 2 others)</li>
+            <li><strong>Volunteer moderators:</strong> 3 (target of 5 after 12 months)</li>
+            <li><strong>Average individual time per week dedicated to moderation:</strong> 3–4 hours</li>
+            <li><strong>Cross-team coordination:</strong> Activism &amp; Education (primary), DDaT (technical support), Campaigns &amp; Comms (content elevation)</li>
+          </ul>
+        </div>
+
+        <h3>1.1.2 How we moderate together</h3>
+
+        <div class="three-cols">
+          <div class="col-card">
+            <div class="col-icon">🤝</div>
+            <h4>Rules with the community</h4>
+            <p>Our staff and volunteer moderators work as a team to create the guidelines that keep our spaces healthy. We avoid imposing top-down rules — the people who spend the most time in the community know best what it needs.</p>
+          </div>
+          <div class="col-card">
+            <div class="col-icon">🌱</div>
+            <h4>Every generation of activist</h4>
+            <p>Our community brings together decades of experience and fresh energy. Long-standing members (many aged 55+) with deep knowledge work alongside newer activists. Our moderation style helps experienced members mentor others while ensuring newcomers feel welcome.</p>
+          </div>
+          <div class="col-card">
+            <div class="col-icon">📋</div>
+            <h4>Transparent decision-making</h4>
+            <p>We have clear, written agreements on when a moderator can act alone and when they need to ask for help. Everyone, from community members to staff, knows exactly how decisions are made and who is responsible for what.</p>
+          </div>
+        </div>
+
+        <p><strong>Clear roles for staff and community leaders:</strong></p>
+        <ul>
+          <li>Community leader moderators handle day-to-day conversations and help the community govern itself</li>
+          <li>Staff moderators ensure overall safety, step in when specific authority is needed, and support community leaders with guidance</li>
+        </ul>
+
+        <h3>1.1.3 Moderation Workflows</h3>
+        <p>
+          The Community Manager should provide future Admins, site-wide moderators and category moderators with step-by-step moderation procedures, response templates and internal procedures for managing tensions should they arise on the platform.
+        </p>
+        <p>
+          Step-by-step moderation procedures as well as escalation procedures have already been created to support this.
+        </p>
+
+        <h3>1.1.4 Handling Issues: Escalation Matrix</h3>
+        <p>
+          We categorise issues into three levels to ensure the right person handles them.
+        </p>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Level</th>
+                <th>Handled by</th>
+                <th>Examples</th>
+                <th>Action</th>
+                <th>Escalation</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="level-badge level-low">Level 1 — Low</span></td>
+                <td>Category Moderators</td>
+                <td>Spam, minor disagreements, off-topic posts</td>
+                <td>Flag post, send standard reminder message, hide post if necessary</td>
+                <td>None needed unless the user persists</td>
+              </tr>
+              <tr>
+                <td><span class="level-badge level-medium">Level 2 — Medium</span></td>
+                <td>Site-wide Moderators</td>
+                <td>Persistent disruption, Code of Conduct breaches, aggressive behaviour</td>
+                <td>Direct warning, temporary silence (suspension), review of user history</td>
+                <td>Document in the moderator log</td>
+              </tr>
+              <tr>
+                <td><span class="level-badge level-high">Level 3 — High</span></td>
+                <td>Admins / Legal</td>
+                <td>Hate speech, safeguarding concerns, legal threats, serious harassment</td>
+                <td>Immediate suspension, hide all content, escalate to Legal/Safeguarding team</td>
+                <td>Immediate report to Leadership</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════
+           1.2 GROWING WITHOUT BREAKING
+      ════════════════════════════════════════ -->
+      <section id="growing-without-breaking">
+        <h2>1.2 Growing Without Breaking</h2>
+
+        <p>
+          To grow the community without overloading our staff, we use three connected strategies:
+        </p>
+        <ul>
+          <li>Automation handles repetitive tasks</li>
+          <li>Community leaders share the responsibility of moderation</li>
+          <li>Self-governance helps members solve problems together</li>
+        </ul>
+
+        <div class="info-card green-border">
+          <h3>A step-by-step cycle</h3>
+          <p>We do not do everything at once. First, we built the technical tools and automation. Next, we are using those tools to support and train moderators. Finally, as moderators gain confidence, the community takes more control. This moves us from a staff-led group to a mature, member-led community.</p>
+        </div>
+
+        <div class="info-card yellow-border">
+          <h3>Pacing ourselves</h3>
+          <p>We space this work out over the first year. Rushing would overwhelm the team and confuse our members. By taking our time, we can test and refine each part before moving to the next.</p>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Strategy</th>
+                <th>Implementation</th>
+                <th>Timeline</th>
+                <th>Responsible Team</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Discourse Trust Levels</strong></td>
+                <td>Configure automatic permissions progression based on engagement</td>
+                <td>Month 1</td>
+                <td>DDaT</td>
+              </tr>
+              <tr>
+                <td><strong>Automated Moderation</strong></td>
+                <td>Implement spam filters, flagging thresholds, watch/mute lists</td>
+                <td>Months 1–3</td>
+                <td>DDaT with Activism team input</td>
+              </tr>
+              <tr>
+                <td><strong>Community Self-Moderation</strong></td>
+                <td>Enable flag system, peer review, user muting capabilities</td>
+                <td>Months 1–6</td>
+                <td>DDaT implementation</td>
+              </tr>
+              <tr>
+                <td><strong>Moderator Recruitment</strong></td>
+                <td>Identify experienced activists, co-design role description</td>
+                <td>Months 3–6</td>
+                <td>Activism &amp; Education</td>
+              </tr>
+              <tr>
+                <td><strong>Training Programme</strong></td>
+                <td>Moderation and leadership training for community organisers</td>
+                <td>Months 3–6</td>
+                <td>Activism &amp; Education</td>
+              </tr>
+              <tr>
+                <td><strong>Mentorship Programme</strong></td>
+                <td>Long-term activists mentor newer members, document structures</td>
+                <td>Months 6–12</td>
+                <td>Activism &amp; Education</td>
+              </tr>
+              <tr>
+                <td><strong>Content Elevation Process</strong></td>
+                <td>Staff "pull up" interesting themes to landing page</td>
+                <td>Ongoing</td>
+                <td>Activism team with Comms</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════
+           1.3 MODERATOR LIFECYCLE
+      ════════════════════════════════════════ -->
+      <section id="moderator-lifecycle">
+        <h2>1.3 The Moderator Lifecycle</h2>
+        <p>
+          We treat our moderators as a vital part of the team. This is how they join, grow, and eventually step down.
+        </p>
+
+        <h3>1.3.1 Recruitment</h3>
+        <p>We need moderators who know the platform and share our values. Candidates should have:</p>
+        <ul>
+          <li><strong>Experience:</strong> Active participation in AIUK activism for at least 6 months</li>
+          <li><strong>Engagement:</strong> Trust Level 3+ on the platform (or similar involvement)</li>
+          <li><strong>Values:</strong> A clear understanding of human rights and our community guidelines</li>
+          <li><strong>Safety:</strong> A willingness to complete safeguarding training</li>
+          <li><strong>Approach:</strong> A commitment to working with the community, not just enforcing rules</li>
+          <li><strong>Diversity:</strong> We welcome people from all regions, ages, and backgrounds</li>
+        </ul>
+
+        <h3>1.3.2 Training and Support</h3>
+        <p>
+          New site-wide moderators receive structured preparation and ongoing support to build their confidence and capability. The initial training format and duration will be co-designed with the first cohort, recognising that those doing the work are best placed to identify what preparation they need.
+        </p>
+        <p>Support mechanisms include:</p>
+        <ul>
+          <li>Moderation guides with clear procedures for when to moderate, how to report concerns, and escalation paths</li>
+          <li>Regular check-ins to discuss challenges and share learning</li>
+          <li>A moderator-only category on the platform for peer support and coordination</li>
+          <li>Monthly coordination calls bringing together community leaders and staff moderators</li>
+          <li>Decision-making frameworks documenting when to act independently versus when to escalate to staff</li>
+          <li>Mandatory safeguarding training for all moderators</li>
+          <li>Digital security training focused on protecting both themselves and vulnerable community members</li>
+        </ul>
+
+        <h3>1.3.3 Moderator Recognition</h3>
+        <p>We value the hard work site-wide moderators do to keep our community healthy. We show this through:</p>
+        <ul>
+          <li><strong>Visibility:</strong> Clear badges and status on the platform</li>
+          <li><strong>Public thanks:</strong> Mentions in community updates and reports</li>
+          <li><strong>Progression:</strong> Opportunities to step up into senior roles</li>
+          <li><strong>Development:</strong> Access to exclusive training</li>
+          <li><strong>Influence:</strong> A real say in future decisions</li>
+        </ul>
+
+        <h3>1.3.4 Offboarding</h3>
+        <p>
+          When a moderator wants to step down, we celebrate their contribution. They move to "Alumni" status, keeping their badge but losing moderation tools. This allows them to retire gracefully without feeling guilty.
+        </p>
+      </section>
+
+      <!-- ═══════════════════════════════════════
+           2. GOVERNANCE AND DECISION-MAKING
+      ════════════════════════════════════════ -->
+      <section id="governance">
+        <h2>2. Governance and Decision-Making</h2>
+
+        <h3>2.1 Governance Structure</h3>
+        <p>We have clear rules about who decides what to avoid confusion and delays.</p>
+        <ul>
+          <li>The Community Manager makes the day-to-day operational choices</li>
+          <li>Leadership handles major strategic or legal issues</li>
+          <li>Community members have a structured way to shape the rules that affect them</li>
+        </ul>
+
+        <h3>2.1.1 The Community Manager's role</h3>
+        <p>
+          The Community Manager makes the operational decisions that keep the community running smoothly. They handle daily platform choices, plan content and engagement, and coordinate work across teams. They are also responsible for recruiting and supporting moderators, as well as clarifying routine policies.
+        </p>
+
+        <h3>2.1.2 When leadership steps in</h3>
+        <p>Senior leaders handle the high-stakes decisions involving strategy, law, or money. This includes:</p>
+        <ul>
+          <li><strong>Significant rule changes:</strong> Major updates to policies or privacy practices</li>
+          <li><strong>Financial approvals:</strong> Spending above the agreed budget</li>
+          <li><strong>Safety and legality:</strong> Serious legal issues or safeguarding concerns</li>
+          <li><strong>Reputation:</strong> Issues that conflict with the organisation's public stance</li>
+        </ul>
+
+        <h3>2.1.3 How members have their say</h3>
+        <p>We ask members to help make the decisions that affect them. This builds trust and ensures our rules work in practice.</p>
+        <ul>
+          <li><strong>Regular feedback:</strong> Quarterly reviews of how the platform is working</li>
+          <li><strong>Co-design:</strong> Working with members to design how trust is built</li>
+          <li><strong>Moderator input:</strong> Site-wide moderators help shape our policies</li>
+          <li><strong>Surveys:</strong> Opportunities to share views at every stage</li>
+          <li><strong>Representation:</strong> We listen to everyone, from new recruits to long-term activists in every region</li>
+        </ul>
+
+        <h3>2.2 Working Across Teams</h3>
+        <p>
+          Three teams manage the platform together. Each has clear authority over its own area but consults the others to ensure everything works smoothly.
+        </p>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Team</th>
+                <th>Leads on</th>
+                <th>Consults</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Activism &amp; Education Team</strong></td>
+                <td>Community engagement, moderation rules, and mentorship</td>
+                <td>Technical teams on what is possible; Comms on how to share success</td>
+              </tr>
+              <tr>
+                <td><strong>DDaT Team (Digital/Technical)</strong></td>
+                <td>Building the platform, security, and hosting</td>
+                <td>Activism teams on user needs; Legal on privacy rules</td>
+              </tr>
+              <tr>
+                <td><strong>Campaigns &amp; Comms Team</strong></td>
+                <td>Promoting the community externally and celebrating milestones</td>
+                <td>Activism teams to check community feeling before posting</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════
+           2.3 CONFLICT RESOLUTION
+      ════════════════════════════════════════ -->
+      <section id="conflict-resolution">
+        <h2>2.3 Resolving Conflict</h2>
+        <p>
+          Conflict happens in every active community. We have clear, fair procedures to handle disputes and keep trust high.
+        </p>
+
+        <div class="info-card blue-border">
+          <h3>2.3.1 Between Members</h3>
+          <p>
+            When individuals disagree, our community guidelines set the standard. Members can flag concerning behaviour, and moderators will step in using agreed rules. Complex issues are escalated to staff, and while serious breaches may lead to suspension, there is always a clear right to appeal.
+          </p>
+        </div>
+
+        <div class="info-card yellow-border">
+          <h3>2.3.2 Between Groups</h3>
+          <p>
+            Sometimes regional or specialist groups clash. We resolve this by focusing on our shared human rights mission, often using experienced activists or staff to mediate. We document what is agreed and check back later to ensure the solution holds. If needed, the Community Manager makes the final decision.
+          </p>
+        </div>
+
+        <div class="info-card green-border">
+          <h3>2.3.3 Appealing Decisions</h3>
+          <p>
+            Members can question moderation decisions without fear. We explain why an action was taken and offer a clear way to appeal through staff review. The Community Manager has the final say, and we share general patterns of issues to be transparent without naming individuals.
+          </p>
+        </div>
+
+        <h3>2.4 Keeping Our Rules Up to Date</h3>
+        <p>We review our policies regularly to make sure they still work for the community.</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Document / Policy</th>
+                <th>Review Cadence</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Community Guidelines</strong></td>
+                <td>Every 6 months to catch new issues</td>
+              </tr>
+              <tr>
+                <td><strong>Privacy Policy</strong></td>
+                <td>At least once a year, or sooner if laws change</td>
+              </tr>
+              <tr>
+                <td><strong>Community Management Plan (this document)</strong></td>
+                <td>Updated quarterly based on feedback; full refresh annually</td>
+              </tr>
+              <tr>
+                <td><strong>Moderation Procedures</strong></td>
+                <td>Improved continuously with help from the community</td>
+              </tr>
+              <tr>
+                <td><strong>Team Workflows</strong></td>
+                <td>Every three months to keep teams aligned</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════
+           3. UNDERSTANDING OUR LIMITS / GROWTH
+      ════════════════════════════════════════ -->
+      <section id="growth-limits">
+        <h2>3. Understanding Our Limits</h2>
+
+        <h3>3.1 Current Capacity</h3>
+        <p>
+          Before we grow, we need to know what we can handle right now. At launch, and then every three months, we will measure how many members, posts, and leaders our current team can support effectively without burnout. This gives us a baseline for sustainable growth.
+        </p>
+
+        <h3>3.2 When to Scale</h3>
+        <p>
+          We set clear "triggers" to tell us when it is time to expand. Instead of waiting for problems to happen, we agree on specific member counts or activity levels that signal it is time to act. By watching these numbers, we can add resources or new systems before we get overwhelmed.
+        </p>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Metric / Threshold</th>
+                <th>Action Required</th>
+                <th>Resource Implications</th>
+                <th>Timeline</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>500 members</strong></td>
+                <td>Recruit 10 more moderators</td>
+                <td>Training time investment (20–30 hours)</td>
+                <td>Month 6</td>
+              </tr>
+              <tr>
+                <td><strong>1,000 members</strong></td>
+                <td>Implement additional automation, assess staff moderator capacity</td>
+                <td>Plugin costs (£X), potential 0.2 FTE staff</td>
+                <td>Month 9</td>
+              </tr>
+              <tr>
+                <td><strong>50 topics/week</strong></td>
+                <td>Recruit specialist moderators for high-traffic categories</td>
+                <td>Training investment</td>
+                <td>Month 6–9</td>
+              </tr>
+              <tr>
+                <td><strong>25+ local groups</strong></td>
+                <td>Create regional coordinator roles</td>
+                <td>Coordination structure, documentation</td>
+                <td>Month 9</td>
+              </tr>
+              <tr>
+                <td><strong>10+ flags/day</strong></td>
+                <td>Review moderation procedures, increase moderator hours</td>
+                <td>Moderator capacity assessment</td>
+                <td>As needed</td>
+              </tr>
+              <tr>
+                <td><strong>Sense of community score &gt;24</strong></td>
+                <td>Transition to maturity stage approaches, enable more self-governance</td>
+                <td>Policy updates, trust level adjustments</td>
+                <td>Month 12+</td>
+              </tr>
+              <tr>
+                <td><strong>Sub-communities forming</strong></td>
+                <td>Support "mitosis" with dedicated spaces and autonomous governance</td>
+                <td>Platform structure changes</td>
+                <td>Month 18+</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>3.3 Planning For the Future</h3>
+
+        <div class="info-card blue-border">
+          <h3>3.3.1 If we reach 4,000 members</h3>
+          <p>
+            We can manage this by upgrading our existing systems. We would need to ensure Communiteq has capacity, more volunteer moderators, and smarter automation for tasks like spam detection.
+          </p>
+        </div>
+
+        <div class="info-card yellow-border">
+          <h3>3.3.2 If we reach 10,000 members</h3>
+          <p>
+            At this scale, we need structural change. We would require a larger dedicated team, a tiered system of senior moderators, and possibly AI tools to help manage the load. Sub-communities would likely need to govern themselves more independently.
+          </p>
+        </div>
+
+        <div class="info-card red-border">
+          <h3>3.3.3 Limits to watch</h3>
+          <p>To grow safely, we must monitor key risks:</p>
+          <ul>
+            <li><strong>Staff capacity:</strong> We cannot grow without enough trained leaders</li>
+            <li><strong>Costs:</strong> Fees for verification or hosting could rise</li>
+            <li><strong>Culture:</strong> Rapid growth might dilute our values</li>
+            <li><strong>Recruitment:</strong> We need a steady stream of new moderators</li>
+            <li><strong>Safety:</strong> More members means more complex conflicts to manage</li>
+          </ul>
+          <p>Watching these factors helps us fix problems before they stop our progress.</p>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════
+           4. THE MANAGEMENT RHYTHM
+      ════════════════════════════════════════ -->
+      <section id="management-rhythm">
+        <h2>4. The Management Rhythm</h2>
+        <p>
+          We have a set schedule to keep the community healthy without letting tasks pile up.
+        </p>
+
+        <div class="rhythm-grid">
+          <div class="rhythm-card">
+            <div class="rhythm-label">Daily · 30 mins</div>
+            <h4>Day-to-day care</h4>
+            <ul>
+              <li>Check the flag queue</li>
+              <li>Scan for urgent questions</li>
+              <li>Welcome new members in the "Introductions" thread</li>
+            </ul>
+          </div>
+          <div class="rhythm-card">
+            <div class="rhythm-label">Weekly · 2 hours</div>
+            <h4>Weekly review</h4>
+            <ul>
+              <li>Review key discussions</li>
+              <li>Plan upcoming topics or events</li>
+              <li>Check in with site-wide moderators</li>
+            </ul>
+          </div>
+          <div class="rhythm-card">
+            <div class="rhythm-label">Monthly · Half-day</div>
+            <h4>Monthly coordination</h4>
+            <ul>
+              <li>Moderator coordination call</li>
+              <li>Review monthly metrics (active members, response rate)</li>
+              <li>Coordinate with other teams (Comms, DDaT)</li>
+            </ul>
+          </div>
+          <div class="rhythm-card">
+            <div class="rhythm-label">Quarterly · Full day</div>
+            <h4>Quarterly deep dive</h4>
+            <ul>
+              <li>Deep dive into analytics</li>
+              <li>Review and update this Community Management Plan</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════
+           5. ALWAYS IMPROVING
+      ════════════════════════════════════════ -->
+      <section id="always-improving">
+        <h2>5. Always Improving</h2>
+
+        <h3>5.1 Listening to Our Members</h3>
+        <p>
+          We do not guess what our members need; we ask them. By combining surveys, direct conversations, and data, we get a full picture of how the community is feeling.
+        </p>
+        <p>To capture this, we use:</p>
+        <ul>
+          <li><strong>Surveys:</strong> Quarterly checks on community spirit and an annual deep dive into member satisfaction</li>
+          <li><strong>Direct feedback:</strong> Dedicated spaces on the platform, "office hours" with the Community Manager, and regular moderator calls</li>
+          <li><strong>Open forums:</strong> Annual town halls and quarterly reviews where anyone can speak up</li>
+          <li><strong>Data analysis:</strong> Weekly and monthly reviews of activity to spot trends that individual comments might miss</li>
+        </ul>
+
+        <h3>5.2 Experimenting with New Ideas</h3>
+        <p>
+          When we want to try something new — like a different event format or onboarding process — we treat it as an experiment, not a permanent change. We test ideas with small groups first, measure what happens, and only roll them out if they actually work.
+        </p>
+        <p>Every experiment follows a simple cycle:</p>
+
+        <div class="info-card green-border">
+          <h3>The experiment cycle</h3>
+          <ul>
+            <li><strong>Hypothesis:</strong> What are we trying to improve?</li>
+            <li><strong>Design:</strong> How will we test it (and have we asked the community)?</li>
+            <li><strong>Pilot:</strong> Run a small trial</li>
+            <li><strong>Review:</strong> Look at the results and decide whether to keep, change, or drop it</li>
+          </ul>
+        </div>
+
+        <h3>5.3 Learning Never Stops</h3>
+        <p>
+          A community is only as strong as the people running it. We invest in learning at every level:
+        </p>
+        <ul>
+          <li><strong>Staff:</strong> We stay sharp by attending conferences, following industry leaders, and learning from other human rights groups</li>
+          <li><strong>Moderators:</strong> We offer ongoing training, peer learning, and an annual development day to recognise their vital role</li>
+          <li><strong>Members:</strong> We provide community calls, mentorship, and updated guides to help everyone become more effective activists</li>
+        </ul>
+
+        <h3>5.4 Staying Ahead of the Curve</h3>
+        <p>
+          The digital world changes quickly. We actively monitor new laws like the Online Safety Act and keep an eye on digital security threats to ensure our community stays safe and compliant.
+        </p>
+      </section>
+
+    </article>
+
+    <aside class="sidebar" aria-label="Page navigation">
+      <div class="sidebar-card">
+        <div class="sidebar-card-head">On this page</div>
+        <ul class="sidebar-toc">
+          <li><a href="#executive-summary">Executive Summary</a></li>
+          <li><a href="#scalable-moderation">1. Scalable Moderation</a></li>
+          <li><a href="#growing-without-breaking">1.2 Growing Without Breaking</a></li>
+          <li><a href="#moderator-lifecycle">1.3 Moderator Lifecycle</a></li>
+          <li><a href="#governance">2. Governance &amp; Decision-Making</a></li>
+          <li><a href="#conflict-resolution">2.3 Conflict Resolution</a></li>
+          <li><a href="#growth-limits">3. Understanding Our Limits</a></li>
+          <li><a href="#management-rhythm">4. Management Rhythm</a></li>
+          <li><a href="#always-improving">5. Always Improving</a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sidebar-card-head">Document details</div>
+        <div class="sidebar-meta">
+          <p><strong>Phase</strong><br />Post-Pilot</p>
+          <p><strong>Group</strong><br />Post-Pilot Resources</p>
+          <p><strong>Audience</strong><br />Community Manager, AIUK staff, moderators</p>
+          <p><strong>Status</strong><br />Living document — reviewed quarterly</p>
+          <p><strong>Source</strong><br /><a href="https://docs.google.com/document/d/1Znk1-X5OijB48gACygOvRq4RmCHTRch4zdj4Yxq8j3E/edit" rel="noopener" target="_blank">Open in Google Docs ↗</a></p>
+          <a href="../index.html" class="back-link">← Back to full index</a>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+</main>
+
+<footer>
+  <img src="../assets/wao-logo-white.png" alt="WAO Cooperative" />
+  <div class="footer-bottom">
+    <span>AIUK Community Platform Project · Produced by <a href="https://web.archive.org/web/20260330161608/https://weareopen.coop/" rel="noopener">WAO Cooperative</a></span>
+  </div>
+</footer>
+
+</body>
+</html>

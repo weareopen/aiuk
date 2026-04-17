@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Analysis and Comparison of Technical Platforms · AIUK Community Platform Project</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;600;700&family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --charcoal:   #2F495A;
+      --green:      #00C399;
+      --yellow:     #FFBC42;
+      --blue:       #16A8E2;
+      --red:        #FC594D;
+      --white:      #FFFFFF;
+      --off-white:  #F7F9FA;
+      --light-grey: #EDF1F4;
+      --mid-grey:   #8FA3B0;
+      --text:       #2F495A;
+      --font-head: 'Roboto Slab', Georgia, serif;
+      --font-body: 'Nunito', system-ui, sans-serif;
+      --radius: 12px;
+      --radius-sm: 6px;
+      --shadow: 0 4px 24px rgba(47,73,90,0.10);
+      --shadow-hover: 0 8px 36px rgba(47,73,90,0.18);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-body); color: var(--text); background: var(--off-white); line-height: 1.7; font-size: 16px; }
+
+    .skip-link { position: absolute; top: -40px; left: 16px; background: var(--green); color: var(--white); padding: 8px 14px; border-radius: var(--radius-sm); font-weight: 700; z-index: 9999; transition: top .2s; }
+    .skip-link:focus { top: 16px; }
+
+    nav { position: sticky; top: 0; z-index: 100; background: var(--charcoal); display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(16px, 5vw, 48px); height: 60px; box-shadow: 0 2px 12px rgba(0,0,0,0.2); }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .nav-logo img { height: 36px; }
+    .nav-links { display: flex; gap: 4px; list-style: none; flex-wrap: wrap; }
+    .nav-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.82rem; font-weight: 600; letter-spacing: 0.02em; padding: 6px 10px; border-radius: var(--radius-sm); transition: color .2s, background .2s; }
+    .nav-links a:hover { color: var(--white); background: rgba(255,255,255,0.12); }
+
+    .breadcrumb { background: var(--white); border-bottom: 1px solid var(--light-grey); padding: 10px clamp(16px, 5vw, 48px); font-size: 0.82rem; color: var(--mid-grey); display: flex; align-items: center; gap: 8px; }
+    .breadcrumb a { color: var(--mid-grey); text-decoration: none; font-weight: 600; }
+    .breadcrumb a:hover { color: var(--green); }
+    .breadcrumb span { color: var(--charcoal); font-weight: 700; }
+
+    .hero { background: var(--charcoal); padding: clamp(48px, 8vw, 80px) clamp(16px, 5vw, 48px) clamp(40px, 6vw, 64px); position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 50% 90% at 90% 20%, rgba(0,195,153,0.18) 0%, transparent 60%), radial-gradient(ellipse 40% 60% at 5% 90%, rgba(0,195,153,0.12) 0%, transparent 55%); pointer-events: none; }
+    .hero-inner { max-width: 760px; position: relative; }
+    .hero-tag { display: inline-flex; align-items: center; gap: 8px; background: rgba(0,195,153,0.18); border: 1px solid rgba(0,195,153,0.4); color: var(--green); font-size: 0.75rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 14px; border-radius: 100px; margin-bottom: 18px; }
+    .hero-tag a { color: inherit; text-decoration: none; }
+    .hero-tag a:hover { text-decoration: underline; }
+    h1 { font-family: var(--font-head); font-size: clamp(1.8rem, 4.5vw, 3rem); font-weight: 700; color: var(--white); line-height: 1.2; margin-bottom: 16px; }
+    h1 em { font-style: normal; color: var(--green); }
+    .hero-subtitle { font-size: clamp(0.95rem, 1.8vw, 1.1rem); color: rgba(255,255,255,0.7); max-width: 580px; line-height: 1.65; }
+
+    .page-wrap { max-width: 1100px; margin: 0 auto; padding: clamp(32px, 5vw, 64px) clamp(16px, 5vw, 48px); display: grid; grid-template-columns: 1fr 280px; gap: 48px; align-items: start; }
+    @media (max-width: 780px) { .page-wrap { grid-template-columns: 1fr; } .sidebar { order: -1; } }
+
+    .content { min-width: 0; }
+    .content h2 { font-family: var(--font-head); font-size: clamp(1.3rem, 2.5vw, 1.7rem); font-weight: 600; color: var(--charcoal); margin: 40px 0 14px; padding-top: 40px; border-top: 2px solid var(--light-grey); }
+    .content h2:first-child { margin-top: 0; padding-top: 0; border-top: none; }
+    .content h3 { font-family: var(--font-head); font-size: 1.05rem; font-weight: 600; color: var(--charcoal); margin: 24px 0 10px; }
+    .content p { margin-bottom: 16px; color: #4a6070; font-size: 0.97rem; line-height: 1.75; }
+    .content p strong { color: var(--charcoal); font-weight: 700; }
+    .content ul { padding-left: 20px; margin-bottom: 16px; }
+    .content ul li { color: #4a6070; font-size: 0.97rem; margin-bottom: 6px; line-height: 1.7; }
+    .content ul li strong { color: var(--charcoal); font-weight: 700; }
+    .content a { color: var(--blue); text-decoration: none; }
+    .content a:hover { text-decoration: underline; }
+
+    .info-card { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius); padding: 24px 28px; margin: 20px 0; box-shadow: var(--shadow); }
+    .info-card.blue-border  { border-left: 4px solid var(--blue); }
+    .info-card.green-border { border-left: 4px solid var(--green); }
+    .info-card.yellow-border { border-left: 4px solid var(--yellow); }
+    .info-card.red-border  { border-left: 4px solid var(--red); }
+    .info-card h3 { font-family: var(--font-head); font-size: 0.95rem; font-weight: 600; color: var(--charcoal); margin-bottom: 10px; }
+    .info-card p { margin-bottom: 0; font-size: 0.9rem; }
+    .info-card ul { padding-left: 18px; margin-top: 8px; margin-bottom: 0; }
+    .info-card ul li { font-size: 0.9rem; color: #4a6070; margin-bottom: 5px; line-height: 1.6; }
+    .info-card ul li strong { color: var(--charcoal); }
+
+    .doc-link-banner { background: var(--charcoal); border-radius: var(--radius); padding: 24px 28px; margin: 20px 0 32px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+    .doc-link-banner p { color: rgba(255,255,255,0.75); font-size: 0.9rem; margin: 0; }
+    .doc-link-banner a { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: var(--white); text-decoration: none; font-weight: 700; font-size: 0.88rem; padding: 10px 20px; border-radius: var(--radius-sm); white-space: nowrap; transition: background .2s; }
+    .doc-link-banner a:hover { background: #00a881; }
+
+    .three-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 20px 0 28px; }
+    @media (max-width: 640px) { .three-cols { grid-template-columns: 1fr; } }
+    .col-card { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+    .col-card .col-icon { font-size: 1.6rem; margin-bottom: 10px; }
+    .col-card h4 { font-family: var(--font-head); font-size: 0.9rem; font-weight: 600; color: var(--charcoal); margin-bottom: 8px; }
+    .col-card p { font-size: 0.83rem; color: #4a6070; margin: 0; line-height: 1.55; }
+
+    /* Assessment matrix */
+    .matrix-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin: 20px 0 28px; }
+    .matrix-table th { background: var(--charcoal); color: rgba(255,255,255,0.8); text-align: center; padding: 10px 14px; font-size: 0.78rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; }
+    .matrix-table th:first-child { text-align: left; }
+    .matrix-table td { padding: 10px 14px; border-bottom: 1px solid var(--light-grey); color: var(--charcoal); text-align: center; font-weight: 600; font-size: 1.1rem; }
+    .matrix-table td:first-child { text-align: left; font-size: 0.88rem; font-weight: 700; color: var(--charcoal); }
+    .matrix-table tr:last-child td { border-bottom: none; }
+    .matrix-table tr:nth-child(even) td { background: var(--off-white); }
+
+    /* Platform detail cards */
+    .platform-card { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius); padding: 28px; margin: 20px 0; box-shadow: var(--shadow); }
+    .platform-card h3 { font-family: var(--font-head); font-size: 1.1rem; font-weight: 700; color: var(--charcoal); margin-bottom: 16px; padding-bottom: 12px; border-bottom: 2px solid var(--light-grey); }
+    .platform-strengths, .platform-limitations, .platform-drawbacks { margin: 14px 0; }
+    .platform-strengths h4 { color: #00a070; font-size: 0.82rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 8px; }
+    .platform-limitations h4 { color: #c08000; font-size: 0.82rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 8px; }
+    .platform-drawbacks h4 { color: var(--red); font-size: 0.82rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 8px; }
+    .platform-card ul { padding-left: 18px; }
+    .platform-card ul li { font-size: 0.88rem; color: #4a6070; margin-bottom: 6px; line-height: 1.65; }
+    .platform-card ul li strong { color: var(--charcoal); }
+
+    .criteria-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin: 20px 0 28px; }
+    @media (max-width: 640px) { .criteria-grid { grid-template-columns: 1fr; } }
+    .criteria-item { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius-sm); padding: 14px 16px; }
+    .criteria-item h4 { font-family: var(--font-head); font-size: 0.85rem; font-weight: 700; color: var(--charcoal); margin-bottom: 4px; }
+    .criteria-item p { font-size: 0.8rem; color: #4a6070; margin: 0; }
+
+    .sidebar { position: sticky; top: 80px; }
+    .sidebar-card { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); margin-bottom: 20px; }
+    .sidebar-card-head { background: var(--charcoal); padding: 14px 18px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.6); }
+    .sidebar-toc { list-style: none; padding: 8px 0; }
+    .sidebar-toc li a { display: block; padding: 9px 18px; color: #4a6070; font-size: 0.85rem; font-weight: 600; text-decoration: none; border-left: 3px solid transparent; transition: color .2s, border-color .2s, background .2s; }
+    .sidebar-toc li a:hover { color: var(--charcoal); border-color: var(--green); background: rgba(0,195,153,0.06); }
+    .sidebar-meta { padding: 16px 18px; }
+    .sidebar-meta p { font-size: 0.82rem; color: var(--mid-grey); margin-bottom: 8px; line-height: 1.5; }
+    .sidebar-meta p strong { color: var(--charcoal); }
+    .back-link { display: inline-flex; align-items: center; gap: 7px; background: var(--green); color: var(--white); text-decoration: none; font-size: 0.85rem; font-weight: 700; padding: 10px 18px; border-radius: var(--radius-sm); transition: background .2s; width: 100%; justify-content: center; margin-top: 4px; }
+    .back-link:hover { background: #00a881; }
+
+    footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.1); padding: clamp(28px,4vw,48px) clamp(16px,5vw,48px); display: flex; flex-wrap: wrap; gap: 24px; justify-content: space-between; align-items: center; }
+    footer img { height: 32px; opacity: 0.7; }
+    .footer-bottom { color: rgba(255,255,255,0.35); font-size: 0.78rem; }
+    .footer-bottom a { color: rgba(255,255,255,0.5); text-decoration: none; }
+    .footer-bottom a:hover { color: var(--green); }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    .hero-inner > * { animation: fadeUp 0.5s ease both; }
+    .hero-tag { animation-delay: 0.0s; }
+    h1 { animation-delay: 0.1s; }
+    .hero-subtitle { animation-delay: 0.2s; }
+  </style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<nav aria-label="Primary navigation">
+  <a href="../index.html" class="nav-logo" aria-label="Back to project index">
+    <img src="../assets/wao-logo-white.png" alt="WAO Cooperative logo" />
+  </a>
+  <ul class="nav-links">
+    <li><a href="../index.html#project-overview">Overview</a></li>
+    <li><a href="../index.html#key-reports">Key Reports</a></li>
+    <li><a href="../index.html#timeline">All Documents</a></li>
+    <li><a href="../phase-1/charter.html">Project Charter</a></li>
+  </ul>
+</nav>
+
+<div class="breadcrumb" aria-label="Breadcrumb">
+  <a href="../index.html">← Project Index</a>
+  <span aria-hidden="true">/</span>
+  <span>Phase Five: Platform Selection &amp; Strategy</span>
+  <span aria-hidden="true">/</span>
+  <span>Analysis and Comparison of Technical Platforms</span>
+</div>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">
+      <a href="../index.html#timeline">← Phase Five: Platform Selection &amp; Strategy</a>
+    </div>
+    <h1>Analysis and Comparison of <em>Technical Platforms</em></h1>
+    <p class="hero-subtitle">
+      A structured evaluation of 29 candidate platforms, filtered down to a shortlist of four and assessed against six categories — resulting in a clear recommendation for AIUK's community platform.
+    </p>
+  </div>
+</header>
+
+<main id="main">
+  <div class="page-wrap">
+
+    <article class="content">
+
+      <section id="overview">
+        <h2>About this document</h2>
+        <p>
+          This document is structured to help WAO make a decision as to the most appropriate technical solution for AIUK's community platform. It covers the process of moving from a longlist of 29 platforms to a shortlist of four, and then applying a detailed assessment matrix to reach a recommendation.
+        </p>
+        <p>
+          In addition, WAO recommends that AIUK pays attention to the wider community ecosystem. Guidance on what a 'platform stack' might look like is provided in the companion document: <a href="community-ecosystem.html">Building an AIUK community ecosystem</a>.
+        </p>
+
+        <div class="doc-link-banner">
+          <p>This document is held in Google Docs and is accessible to project team members.</p>
+          <a href="https://docs.google.com/document/d/1aBymWIdMEA6KEx1Ig70f-c0Aud0eRPdRzoIr1JAeo9U/edit" rel="noopener" target="_blank">Open in Google Docs ↗</a>
+        </div>
+      </section>
+
+      <section id="summary">
+        <h2>Summary</h2>
+        <p>
+          The Community Platforms Comparison spreadsheet provides a longlist of 29 platforms that WAO deemed candidates for the AIUK community platform. From this, criteria obtained from existing user stories, TBX research, and desk and user research were applied. These criteria are organised into five themes:
+        </p>
+
+        <div class="three-cols">
+          <div class="col-card">
+            <div class="col-icon">💬</div>
+            <h4>Communication &amp; Interaction</h4>
+            <p>How effectively can members communicate, discuss, and coordinate on the platform?</p>
+          </div>
+          <div class="col-card">
+            <div class="col-icon">👤</div>
+            <h4>User Management &amp; Identity</h4>
+            <p>How are members onboarded, managed, and how do they progress through trust levels?</p>
+          </div>
+          <div class="col-card">
+            <div class="col-icon">🔒</div>
+            <h4>Safety &amp; Compliance</h4>
+            <p>Does the platform meet GDPR requirements and support safe moderation of human rights discussions?</p>
+          </div>
+        </div>
+
+        <div class="three-cols">
+          <div class="col-card">
+            <div class="col-icon">🏅</div>
+            <h4>Recognition &amp; Motivation</h4>
+            <p>Can the platform recognise different types of activism and engagement?</p>
+          </div>
+          <div class="col-card">
+            <div class="col-icon">♿</div>
+            <h4>Accessibility &amp; Usability</h4>
+            <p>Is the platform usable by all AIUK activists, including those with accessibility needs?</p>
+          </div>
+          <div class="col-card">
+            <div class="col-icon">⚙️</div>
+            <h4>Technical Constraints</h4>
+            <p>Integration with Azure AD B2C SSO, data sovereignty (non-US), and sustainability requirements.</p>
+          </div>
+        </div>
+
+        <div class="info-card green-border">
+          <h3>The outcome</h3>
+          <p>After applying three sets of filters, four platforms remained: Discourse, Mattermost, Rocket.Chat, and Zulip. The assessment matrix resulted in a clear recommendation of <strong>Discourse</strong> as the primary platform, with the other three as strong alternative options.</p>
+        </div>
+      </section>
+
+      <section id="shortlist">
+        <h2>Creating a shortlist</h2>
+        <p>
+          Working logically through three filters allows us to create a shortlist of platforms that meet AIUK requirements.
+        </p>
+
+        <h3>Filter 1: Critical Requirements</h3>
+        <p>
+          This filter removes platforms incompatible with the operational realities of a human rights NGO. The aim is to remove platforms which may pose existential risks.
+        </p>
+
+        <div class="info-card red-border">
+          <h3>Constraint 1a: Security &amp; Privacy</h3>
+          <p>Platforms were eliminated if they do not comply with GDPR (or equivalent), allow some form of self-hosting for sensitive data, or have adequate security. This removed <strong>15 platforms</strong> — including Slack, Discord, Facebook Groups, and Hivebrite.</p>
+        </div>
+
+        <div class="info-card yellow-border">
+          <h3>Constraint 1b: Budget &amp; Sustainability</h3>
+          <p>Licensing fees for some proprietary platforms exceed £20/user/month. This removed <strong>7 platforms</strong>, including Circle.so and Mighty Networks due to their prohibitive pricing models.</p>
+        </div>
+
+        <div class="info-card blue-border">
+          <h3>Constraint 1c: Functional Alignment</h3>
+          <p>Some platforms were focused on monetising communities (e.g. GroupApp, Beam.gg) or on niche use cases (e.g. LiquidFeedback for governance). These were removed as misaligned with AIUK's needs.</p>
+        </div>
+
+        <h3>Filter 2: Integration Requirements</h3>
+        <p>
+          After Filter 1, seven platforms remained: Bonfire, Discourse, Element, Mattermost, Open Social, Rocket.Chat, and Zulip. Three further constraints were applied:
+        </p>
+        <ul>
+          <li><strong>Constraint 2a: Seamless Collaboration</strong> — Bonfire, while promising in its embrace of interoperable social networking, is likely to confuse users accustomed to email. Removed.</li>
+          <li><strong>Constraint 2b: SSO Integration</strong> — TBX requested Azure AD B2C integration for SSO. Platforms needed native SAML/OIDC support, not just "possible via custom development". Open Social was removed due to Drupal module dependency risk.</li>
+          <li><strong>Constraint 2c: Email Functionality</strong> — Automated notifications and the ability to interact with the platform via email were required. Element was removed as email interaction is not possible.</li>
+        </ul>
+
+        <h3>Filter 3: Future Requirements</h3>
+        <p>
+          Four platforms remained after Filter 2: Discourse, Mattermost, Rocket.Chat, and Zulip. Three further constraints checked long-term viability:
+        </p>
+        <ul>
+          <li><strong>Constraint 3a: Open Source Viability</strong> — All four have robust track records. Discourse has over one million communities; Mattermost has 30K+ GitHub stars.</li>
+          <li><strong>Constraint 3b: Threat Model Alignment</strong> — All four can be deployed on-premise and have built-in moderation features for high-risk discussions.</li>
+          <li><strong>Constraint 3c: Exit Strategy Feasibility</strong> — All four allow full data export without vendor lock-in and use standardised APIs for easy integration.</li>
+        </ul>
+      </section>
+
+      <section id="criteria">
+        <h2>Assessment criteria</h2>
+        <p>
+          To choose between the four shortlisted platforms, criteria obtained from user stories, TBX research, and desk and user research were used. These criteria were organised into six categories:
+        </p>
+
+        <div class="criteria-grid">
+          <div class="criteria-item">
+            <h4>Communication</h4>
+            <p>Direct messaging, email integration, notifications, and search functionality.</p>
+          </div>
+          <div class="criteria-item">
+            <h4>User Management</h4>
+            <p>Onboarding, permissions, profiles, and trust level systems.</p>
+          </div>
+          <div class="criteria-item">
+            <h4>Safety &amp; Moderation</h4>
+            <p>Content warnings, GDPR compliance, moderation tools, and privacy controls.</p>
+          </div>
+          <div class="criteria-item">
+            <h4>Recognition Systems</h4>
+            <p>Engagement tracking, digital badges, impact reporting, and activism visibility.</p>
+          </div>
+          <div class="criteria-item">
+            <h4>Accessibility</h4>
+            <p>Screen reader compatibility, multi-language support, and inclusive design.</p>
+          </div>
+          <div class="criteria-item">
+            <h4>Content Management</h4>
+            <p>Bookmarking, pinning, templates, and easy sharing capabilities.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="matrix">
+        <h2>Assessment matrix</h2>
+        <p>
+          A traffic-light approach was applied to the six categories across the four shortlisted platforms:
+        </p>
+
+        <div style="overflow-x: auto; margin: 20px 0;">
+          <table class="matrix-table">
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th>Discourse</th>
+                <th>Mattermost</th>
+                <th>Rocket.Chat</th>
+                <th>Zulip</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Communication</td>
+                <td>🟢</td>
+                <td>🟡</td>
+                <td>🟡</td>
+                <td>🟢</td>
+              </tr>
+              <tr>
+                <td>User Management</td>
+                <td>🟢</td>
+                <td>🟡</td>
+                <td>🟡</td>
+                <td>🟡</td>
+              </tr>
+              <tr>
+                <td>Safety &amp; Moderation</td>
+                <td>🟢</td>
+                <td>🟢</td>
+                <td>🟢</td>
+                <td>🟡</td>
+              </tr>
+              <tr>
+                <td>Recognition Systems</td>
+                <td>🟢</td>
+                <td>🔴</td>
+                <td>🔴</td>
+                <td>🔴</td>
+              </tr>
+              <tr>
+                <td>Accessibility</td>
+                <td>🟡</td>
+                <td>🟡</td>
+                <td>🟢</td>
+                <td>🟡</td>
+              </tr>
+              <tr>
+                <td>Content Management</td>
+                <td>🟢</td>
+                <td>🟢</td>
+                <td>🟡</td>
+                <td>🟡</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="font-size: 0.82rem; color: var(--mid-grey);">🟢 Strong &nbsp;|&nbsp; 🟡 Adequate with limitations &nbsp;|&nbsp; 🔴 Significant drawbacks</p>
+      </section>
+
+      <section id="platform-assessments">
+        <h2>Detailed platform assessments</h2>
+
+        <div class="platform-card">
+          <h3>Discourse — Recommended</h3>
+          <div class="platform-strengths">
+            <h4>🟢 Strengths</h4>
+            <ul>
+              <li><strong>Email Integration Excellence:</strong> Mailing list mode allows complete platform interaction via email, essential for engaging activists who prefer email communication.</li>
+              <li><strong>Sophisticated Trust System:</strong> Five-tier progression system (New → Basic → Member → Regular → Leader) with automated advancement based on reading time and community engagement.</li>
+              <li><strong>Advanced Moderation:</strong> Category-specific moderators with comprehensive tools including content warnings via spoiler tags and watched words for offensive language detection.</li>
+              <li><strong>Recognition Systems:</strong> Built-in badge system with potential for Open Badges integration, supporting recognition of different activism types.</li>
+              <li><strong>Content Management:</strong> Native support for pinning content, bookmarking functionality, and templates for consistent posting.</li>
+            </ul>
+          </div>
+          <div class="platform-limitations">
+            <h4>🟡 Limitations</h4>
+            <ul>
+              <li><strong>Accessibility:</strong> Ongoing improvements but still challenges with screen reader compatibility and dropdown functionality. Discourse uses a non-standard dropdown navigation that is not 100% ARIA compliant.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="platform-card">
+          <h3>Mattermost</h3>
+          <div class="platform-strengths">
+            <h4>🟢 Strengths</h4>
+            <ul>
+              <li><strong>Security Leadership:</strong> Enterprise-grade privacy with comprehensive GDPR compliance and self-hosting capabilities.</li>
+              <li><strong>Content Management:</strong> Robust bookmarking system (up to 50 bookmarks per channel) and message pinning functionality.</li>
+              <li><strong>Safety &amp; Moderation:</strong> Sophisticated channel moderation settings with granular permission controls.</li>
+            </ul>
+          </div>
+          <div class="platform-limitations">
+            <h4>🟡 Limitations</h4>
+            <ul>
+              <li><strong>Core Communication:</strong> Limited to basic notifications, lacking digest functionality crucial for email-preferring demographics.</li>
+              <li><strong>User Management:</strong> Role-based permissions without community progression pathways.</li>
+              <li><strong>Accessibility:</strong> Basic accessibility features with limited screen reader optimisation.</li>
+            </ul>
+          </div>
+          <div class="platform-drawbacks">
+            <h4>🔴 Drawbacks</h4>
+            <ul>
+              <li><strong>Recognition Systems:</strong> No native badge system or activism engagement tracking.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="platform-card">
+          <h3>Rocket.Chat</h3>
+          <div class="platform-strengths">
+            <h4>🟢 Strengths</h4>
+            <ul>
+              <li><strong>Accessibility:</strong> Significant improvements in version 6.8 with enhanced keyboard navigation and screen reader compatibility.</li>
+              <li><strong>Security &amp; Privacy:</strong> Strong encryption and self-hosting options with comprehensive user role management.</li>
+              <li><strong>File Sharing:</strong> Excellent integration with Google Drive and other collaboration tools.</li>
+            </ul>
+          </div>
+          <div class="platform-limitations">
+            <h4>🟡 Limitations</h4>
+            <ul>
+              <li><strong>Email Integration:</strong> Weak digest functionality, problematic for activists preferring email interaction.</li>
+              <li><strong>User Management:</strong> Basic role-based system without community progression.</li>
+              <li><strong>Content Management:</strong> Limited pinning functionality, particularly in direct messages.</li>
+            </ul>
+          </div>
+          <div class="platform-drawbacks">
+            <h4>🔴 Drawbacks</h4>
+            <ul>
+              <li><strong>Recognition Systems:</strong> No engagement tracking or digital badge capabilities.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="platform-card">
+          <h3>Zulip</h3>
+          <div class="platform-strengths">
+            <h4>🟢 Strengths</h4>
+            <ul>
+              <li><strong>Communication:</strong> Topic-based threading and strong email digest capabilities.</li>
+              <li><strong>Email Integration:</strong> Strong digest capabilities and incoming email gateway for email-first engagement.</li>
+              <li><strong>Internationalisation:</strong> Robust multi-language support with translation capabilities.</li>
+            </ul>
+          </div>
+          <div class="platform-limitations">
+            <h4>🟡 Limitations</h4>
+            <ul>
+              <li><strong>User Management:</strong> Recent flexible permissions system but lacks traditional community progression pathways.</li>
+              <li><strong>Safety &amp; Moderation:</strong> Minimal content hiding capabilities compared to other options (e.g. Discourse).</li>
+              <li><strong>Safety &amp; Moderation:</strong> Basic moderation tools without sophisticated category-specific controls.</li>
+            </ul>
+          </div>
+          <div class="platform-drawbacks">
+            <h4>🔴 Drawbacks</h4>
+            <ul>
+              <li><strong>Recognition Systems:</strong> No badge system or activism visibility features.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+    </article>
+
+    <aside class="sidebar" aria-label="Page navigation">
+      <div class="sidebar-card">
+        <div class="sidebar-card-head">On this page</div>
+        <ul class="sidebar-toc">
+          <li><a href="#overview">About this document</a></li>
+          <li><a href="#summary">Summary</a></li>
+          <li><a href="#shortlist">Creating a shortlist</a></li>
+          <li><a href="#criteria">Assessment criteria</a></li>
+          <li><a href="#matrix">Assessment matrix</a></li>
+          <li><a href="#platform-assessments">Platform assessments</a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sidebar-card-head">Document details</div>
+        <div class="sidebar-meta">
+          <p><strong>Phase</strong><br />Phase Five: Platform Selection &amp; Strategy</p>
+          <p><strong>Status</strong><br />✅ Referenced in final reports</p>
+          <p><strong>Audience</strong><br />Project team, AIUK stakeholders</p>
+          <p><strong>Recommendation</strong><br />Discourse (primary)</p>
+          <p><strong>Related</strong><br /><a href="community-ecosystem.html">Community Ecosystem</a></p>
+          <p><strong>Source</strong><br /><a href="https://docs.google.com/document/d/1aBymWIdMEA6KEx1Ig70f-c0Aud0eRPdRzoIr1JAeo9U/edit" rel="noopener" target="_blank">Open in Google Docs ↗</a></p>
+          <a href="../index.html" class="back-link">← Back to full index</a>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+</main>
+
+<footer>
+  <img src="../assets/wao-logo-white.png" alt="WAO Cooperative" />
+  <div class="footer-bottom">
+    <span>AIUK Community Platform Project · Produced by <a href="https://web.archive.org/web/20260330161608/https://weareopen.coop/" rel="noopener">WAO Cooperative</a></span>
+  </div>
+</footer>
+
+</body>
+</html>

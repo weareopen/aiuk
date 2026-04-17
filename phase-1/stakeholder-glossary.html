@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stakeholder Mapping + Glossary · AIUK Community Platform Project</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;600;700&family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --charcoal:   #2F495A;
+      --green:      #00C399;
+      --yellow:     #FFBC42;
+      --blue:       #16A8E2;
+      --red:        #FC594D;
+      --white:      #FFFFFF;
+      --off-white:  #F7F9FA;
+      --light-grey: #EDF1F4;
+      --mid-grey:   #8FA3B0;
+      --text:       #2F495A;
+      --font-head: 'Roboto Slab', Georgia, serif;
+      --font-body: 'Nunito', system-ui, sans-serif;
+      --radius: 12px;
+      --radius-sm: 6px;
+      --shadow: 0 4px 24px rgba(47,73,90,0.10);
+      --shadow-hover: 0 8px 36px rgba(47,73,90,0.18);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-body); color: var(--text); background: var(--off-white); line-height: 1.7; font-size: 16px; }
+
+    .skip-link { position: absolute; top: -40px; left: 16px; background: var(--green); color: var(--white); padding: 8px 14px; border-radius: var(--radius-sm); font-weight: 700; z-index: 9999; transition: top .2s; }
+    .skip-link:focus { top: 16px; }
+
+    nav { position: sticky; top: 0; z-index: 100; background: var(--charcoal); display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(16px, 5vw, 48px); height: 60px; box-shadow: 0 2px 12px rgba(0,0,0,0.2); }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .nav-logo img { height: 36px; }
+    .nav-links { display: flex; gap: 4px; list-style: none; flex-wrap: wrap; }
+    .nav-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.82rem; font-weight: 600; letter-spacing: 0.02em; padding: 6px 10px; border-radius: var(--radius-sm); transition: color .2s, background .2s; }
+    .nav-links a:hover { color: var(--white); background: rgba(255,255,255,0.12); }
+
+    .breadcrumb { background: var(--white); border-bottom: 1px solid var(--light-grey); padding: 10px clamp(16px, 5vw, 48px); font-size: 0.82rem; color: var(--mid-grey); display: flex; align-items: center; gap: 8px; }
+    .breadcrumb a { color: var(--mid-grey); text-decoration: none; font-weight: 600; }
+    .breadcrumb a:hover { color: var(--green); }
+    .breadcrumb span { color: var(--charcoal); font-weight: 700; }
+
+    .hero { background: var(--charcoal); padding: clamp(48px, 8vw, 80px) clamp(16px, 5vw, 48px) clamp(40px, 6vw, 64px); position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 50% 90% at 90% 20%, rgba(0,195,153,0.18) 0%, transparent 60%), radial-gradient(ellipse 40% 60% at 5% 90%, rgba(0,195,153,0.12) 0%, transparent 55%); pointer-events: none; }
+    .hero-inner { max-width: 760px; position: relative; }
+    .hero-tag { display: inline-flex; align-items: center; gap: 8px; background: rgba(0,195,153,0.18); border: 1px solid rgba(0,195,153,0.4); color: var(--green); font-size: 0.75rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 14px; border-radius: 100px; margin-bottom: 18px; }
+    .hero-tag a { color: inherit; text-decoration: none; }
+    .hero-tag a:hover { text-decoration: underline; }
+    h1 { font-family: var(--font-head); font-size: clamp(1.8rem, 4.5vw, 3rem); font-weight: 700; color: var(--white); line-height: 1.2; margin-bottom: 16px; }
+    h1 em { font-style: normal; color: var(--green); }
+    .hero-subtitle { font-size: clamp(0.95rem, 1.8vw, 1.1rem); color: rgba(255,255,255,0.7); max-width: 580px; line-height: 1.65; }
+
+    .page-wrap { max-width: 1100px; margin: 0 auto; padding: clamp(32px, 5vw, 64px) clamp(16px, 5vw, 48px); display: grid; grid-template-columns: 1fr 280px; gap: 48px; align-items: start; }
+    @media (max-width: 780px) { .page-wrap { grid-template-columns: 1fr; } .sidebar { order: -1; } }
+
+    .content { min-width: 0; }
+    .content h2 { font-family: var(--font-head); font-size: clamp(1.3rem, 2.5vw, 1.7rem); font-weight: 600; color: var(--charcoal); margin: 40px 0 14px; padding-top: 40px; border-top: 2px solid var(--light-grey); }
+    .content h2:first-child { margin-top: 0; padding-top: 0; border-top: none; }
+    .content h3 { font-family: var(--font-head); font-size: 1.05rem; font-weight: 600; color: var(--charcoal); margin: 28px 0 10px; }
+    .content p { margin-bottom: 16px; color: #4a6070; font-size: 0.97rem; line-height: 1.75; }
+    .content p strong { color: var(--charcoal); font-weight: 700; }
+    .content ul { padding-left: 20px; margin-bottom: 16px; }
+    .content ul li { font-size: 0.95rem; color: #4a6070; margin-bottom: 6px; line-height: 1.65; }
+    .content ul li strong { color: var(--charcoal); }
+
+    .info-card { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius); padding: 24px 28px; margin: 20px 0; box-shadow: var(--shadow); }
+    .info-card.blue-border  { border-left: 4px solid var(--blue); }
+    .info-card.green-border { border-left: 4px solid var(--green); }
+    .info-card.yellow-border { border-left: 4px solid var(--yellow); }
+    .info-card.red-border  { border-left: 4px solid var(--red); }
+    .info-card h3 { font-family: var(--font-head); font-size: 0.95rem; font-weight: 600; color: var(--charcoal); margin-bottom: 10px; }
+    .info-card p { margin-bottom: 0; font-size: 0.9rem; }
+    .info-card ul { padding-left: 18px; margin-top: 8px; }
+    .info-card ul li { font-size: 0.9rem; color: #4a6070; margin-bottom: 5px; line-height: 1.6; }
+    .info-card ul li strong { color: var(--charcoal); }
+
+    .doc-link-banner { background: var(--charcoal); border-radius: var(--radius); padding: 24px 28px; margin: 20px 0 32px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+    .doc-link-banner p { color: rgba(255,255,255,0.75); font-size: 0.9rem; margin: 0; }
+    .doc-link-banner a { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: var(--white); text-decoration: none; font-weight: 700; font-size: 0.88rem; padding: 10px 20px; border-radius: var(--radius-sm); white-space: nowrap; transition: background .2s; }
+    .doc-link-banner a:hover { background: #00a881; }
+
+    /* Quadrant grid */
+    .quadrant-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0 32px; }
+    @media (max-width: 620px) { .quadrant-grid { grid-template-columns: 1fr; } }
+    .quadrant-card { border-radius: var(--radius); padding: 24px 26px; box-shadow: var(--shadow); }
+    .quadrant-card.manage { background: rgba(0,195,153,0.10); border: 2px solid rgba(0,195,153,0.35); }
+    .quadrant-card.satisfy { background: rgba(22,168,226,0.10); border: 2px solid rgba(22,168,226,0.30); }
+    .quadrant-card.inform  { background: rgba(255,188,66,0.12); border: 2px solid rgba(255,188,66,0.40); }
+    .quadrant-card.monitor { background: rgba(143,163,176,0.12); border: 2px solid rgba(143,163,176,0.35); }
+    .quadrant-label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px; }
+    .quadrant-card.manage .quadrant-label  { color: #009970; }
+    .quadrant-card.satisfy .quadrant-label { color: #0e82b0; }
+    .quadrant-card.inform .quadrant-label  { color: #b8820a; }
+    .quadrant-card.monitor .quadrant-label { color: var(--mid-grey); }
+    .quadrant-card h4 { font-family: var(--font-head); font-size: 0.95rem; font-weight: 600; color: var(--charcoal); margin-bottom: 10px; }
+
+    .stakeholder-group { margin-bottom: 14px; }
+    .stakeholder-group-label { font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: var(--mid-grey); margin-bottom: 6px; }
+    .stakeholder-list { list-style: none; padding: 0; }
+    .stakeholder-list li { font-size: 0.85rem; color: #4a6070; padding: 4px 0 4px 14px; border-left: 2px solid var(--light-grey); margin-bottom: 3px; line-height: 1.45; }
+
+    .axis-diagram { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius); padding: 28px; box-shadow: var(--shadow); margin: 20px 0 32px; }
+    .axis-diagram h3 { font-family: var(--font-head); font-size: 0.95rem; font-weight: 600; color: var(--charcoal); margin-bottom: 16px; }
+    .axis-grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 4px; border: 1px solid var(--light-grey); border-radius: 8px; overflow: hidden; }
+    .axis-cell { padding: 16px; text-align: center; font-size: 0.82rem; font-weight: 700; }
+    .axis-cell.tl { background: rgba(22,168,226,0.12); color: #0e82b0; }
+    .axis-cell.tr { background: rgba(0,195,153,0.12); color: #009970; }
+    .axis-cell.bl { background: rgba(143,163,176,0.10); color: var(--mid-grey); }
+    .axis-cell.br { background: rgba(255,188,66,0.12); color: #b8820a; }
+    .axis-cell small { display: block; font-weight: 400; font-size: 0.73rem; margin-top: 4px; opacity: 0.8; }
+    .axis-label { text-align: center; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--mid-grey); margin-top: 10px; }
+
+    /* Glossary */
+    .glossary-list { list-style: none; padding: 0; margin: 16px 0; }
+    .glossary-item { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius-sm); padding: 16px 20px; margin-bottom: 10px; box-shadow: 0 2px 8px rgba(47,73,90,0.06); }
+    .glossary-term { font-family: var(--font-head); font-size: 0.95rem; font-weight: 700; color: var(--charcoal); margin-bottom: 6px; display: flex; align-items: center; gap: 10px; }
+    .glossary-term::before { content: ''; display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
+    .glossary-def { font-size: 0.88rem; color: #4a6070; line-height: 1.65; margin: 0; }
+
+    .three-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 20px 0 28px; }
+    @media (max-width: 640px) { .three-cols { grid-template-columns: 1fr; } }
+    .col-card { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+    .col-card .col-icon { font-size: 1.6rem; margin-bottom: 10px; }
+    .col-card h4 { font-family: var(--font-head); font-size: 0.9rem; font-weight: 600; color: var(--charcoal); margin-bottom: 8px; }
+    .col-card p { font-size: 0.83rem; color: #4a6070; margin: 0; line-height: 1.55; }
+
+    .sidebar { position: sticky; top: 80px; }
+    .sidebar-card { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); margin-bottom: 20px; }
+    .sidebar-card-head { background: var(--charcoal); padding: 14px 18px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.6); }
+    .sidebar-toc { list-style: none; padding: 8px 0; }
+    .sidebar-toc li a { display: block; padding: 9px 18px; color: #4a6070; font-size: 0.85rem; font-weight: 600; text-decoration: none; border-left: 3px solid transparent; transition: color .2s, border-color .2s, background .2s; }
+    .sidebar-toc li a:hover { color: var(--charcoal); border-color: var(--green); background: rgba(0,195,153,0.06); }
+    .sidebar-meta { padding: 16px 18px; }
+    .sidebar-meta p { font-size: 0.82rem; color: var(--mid-grey); margin-bottom: 8px; line-height: 1.5; }
+    .sidebar-meta p strong { color: var(--charcoal); }
+    .back-link { display: inline-flex; align-items: center; gap: 7px; background: var(--green); color: var(--white); text-decoration: none; font-size: 0.85rem; font-weight: 700; padding: 10px 18px; border-radius: var(--radius-sm); transition: background .2s; width: 100%; justify-content: center; margin-top: 4px; }
+    .back-link:hover { background: #00a881; }
+
+    footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.1); padding: clamp(28px,4vw,48px) clamp(16px,5vw,48px); display: flex; flex-wrap: wrap; gap: 24px; justify-content: space-between; align-items: center; }
+    footer img { height: 32px; opacity: 0.7; }
+    .footer-bottom { color: rgba(255,255,255,0.35); font-size: 0.78rem; }
+    .footer-bottom a { color: rgba(255,255,255,0.5); text-decoration: none; }
+    .footer-bottom a:hover { color: var(--green); }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    .hero-inner > * { animation: fadeUp 0.5s ease both; }
+    .hero-tag { animation-delay: 0.0s; }
+    h1 { animation-delay: 0.1s; }
+    .hero-subtitle { animation-delay: 0.2s; }
+  </style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<nav aria-label="Primary navigation">
+  <a href="../index.html" class="nav-logo" aria-label="Back to project index">
+    <img src="../assets/wao-logo-white.png" alt="WAO Cooperative logo" />
+  </a>
+  <ul class="nav-links">
+    <li><a href="../index.html#project-overview">Overview</a></li>
+    <li><a href="../index.html#key-reports">Key Reports</a></li>
+    <li><a href="../index.html#timeline">All Documents</a></li>
+    <li><a href="charter.html">Project Charter</a></li>
+  </ul>
+</nav>
+
+<div class="breadcrumb" aria-label="Breadcrumb">
+  <a href="../index.html">← Project Index</a>
+  <span aria-hidden="true">/</span>
+  <span>Phase One: Kickoff &amp; Planning</span>
+  <span aria-hidden="true">/</span>
+  <span>Stakeholder Mapping + Glossary</span>
+</div>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">
+      <a href="../index.html#timeline">← Phase One: Kickoff &amp; Planning</a>
+    </div>
+    <h1>Stakeholder Mapping<br /><em>+ Glossary</em></h1>
+    <p class="hero-subtitle">
+      A comprehensive mapping of everyone connected to the AIUK Community Platform project — categorised by interest and involvement — alongside a shared glossary of key terms used throughout the project.
+    </p>
+  </div>
+</header>
+
+<main id="main">
+  <div class="page-wrap">
+
+    <article class="content">
+
+      <section id="overview">
+        <h2>About this document</h2>
+        <p>
+          This document was produced during Phase One as part of the project's planning and stakeholder engagement work. It builds on an earlier initial mapping exercise to provide a more detailed and refined picture of who is connected to the AIUK Community Platform project — and in what capacity.
+        </p>
+        <p>
+          Alongside the stakeholder map, the document includes a <strong>shared glossary of terms</strong> used across the project. This was important because the project brought together people from different parts of Amnesty — staff, volunteers, activists, and external partners — each with their own vocabulary for community organising, technology, and engagement.
+        </p>
+
+        <div class="doc-link-banner">
+          <p>This document is held in Google Docs and is accessible to project team members.</p>
+          <a href="https://docs.google.com/document/d/1HWA8n_ssLZr0lKUF2vS5ooe1g3Po8vAssFqoG4wjeQY/edit" rel="noopener" target="_blank">Open in Google Docs ↗</a>
+        </div>
+
+        <div class="three-cols">
+          <div class="col-card">
+            <div class="col-icon">🗺️</div>
+            <h4>Stakeholder map</h4>
+            <p>All individuals and groups connected to the project, categorised into four quadrants by interest and involvement level.</p>
+          </div>
+          <div class="col-card">
+            <div class="col-icon">📖</div>
+            <h4>Shared glossary</h4>
+            <p>Key terms and definitions agreed across the team to ensure consistent language throughout the project lifecycle.</p>
+          </div>
+          <div class="col-card">
+            <div class="col-icon">🔗</div>
+            <h4>Kumu map</h4>
+            <p>An interactive visual version of the stakeholder map was produced on Kumu, allowing stakeholders to be explored by relationship and influence.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="quadrants">
+        <h2>The stakeholder quadrants</h2>
+        <p>
+          Stakeholders are categorised using a standard two-axis model: <strong>interest</strong> (how much they care about the project outcome) and <strong>involvement</strong> (how actively engaged they are in the work). This produces four quadrants, each calling for a different engagement approach.
+        </p>
+
+        <div class="axis-diagram" aria-label="Interest vs involvement quadrant diagram">
+          <h3>Interest × Involvement matrix</h3>
+          <div class="axis-grid">
+            <div class="axis-cell tl">Keep Satisfied<small>High interest · Lower involvement</small></div>
+            <div class="axis-cell tr">Manage Closely<small>High interest · High involvement</small></div>
+            <div class="axis-cell bl">Monitor<small>Lower interest · Lower involvement</small></div>
+            <div class="axis-cell br">Keep Informed<small>Lower interest · Higher involvement</small></div>
+          </div>
+          <p class="axis-label">← Lower interest &nbsp;&nbsp;|&nbsp;&nbsp; Higher interest →</p>
+        </div>
+
+        <div class="quadrant-grid">
+          <div class="quadrant-card manage">
+            <div class="quadrant-label">High interest · High involvement</div>
+            <h4>Manage Closely</h4>
+            <div class="stakeholder-group">
+              <div class="stakeholder-group-label">Paid Staff</div>
+              <ul class="stakeholder-list">
+                <li><strong>Community Organisers (×2)</strong> — shape engagement strategies and mobilise activists</li>
+                <li><strong>Community Platform Project Group</strong> — integral to decision-making and implementation</li>
+                <li><strong>Education Officers</strong> — organise educational groups and resources</li>
+                <li><strong>Community Manager</strong> — manages platform community, engagement, and safeguarding</li>
+                <li><strong>Director of Activism and Education</strong> (project sponsor) — strategic oversight</li>
+                <li><strong>Activist and Education Department Managers</strong> — integrate content and activism tools</li>
+                <li><strong>Activist Events Organisers</strong> — coordinate logistics for events</li>
+              </ul>
+            </div>
+            <div class="stakeholder-group">
+              <div class="stakeholder-group-label">Volunteers</div>
+              <ul class="stakeholder-list">
+                <li><strong>Right holders</strong> — central to the platform's development</li>
+                <li><strong>Lead Activists</strong> — 360 individuals with Amnesty email addresses; provide feedback and mobilise campaigns</li>
+                <li><strong>Building a Powerful Movement</strong> (board committee) — strategic oversight</li>
+                <li><strong>Country Coordinators</strong> — specialise in country-specific human rights campaigning</li>
+                <li><strong>Activism Reps</strong> — provide regional support to activists</li>
+              </ul>
+            </div>
+            <div class="stakeholder-group">
+              <div class="stakeholder-group-label">Networks</div>
+              <ul class="stakeholder-list">
+                <li><strong>Feminist Network</strong> — collaborates closely on gender equality in platform design</li>
+              </ul>
+            </div>
+            <div class="stakeholder-group">
+              <div class="stakeholder-group-label">Agencies</div>
+              <ul class="stakeholder-list">
+                <li><strong>WAO</strong> — core delivery team alongside AIUK</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="quadrant-card satisfy">
+            <div class="quadrant-label">High interest · Lower involvement</div>
+            <h4>Keep Satisfied</h4>
+            <div class="stakeholder-group">
+              <div class="stakeholder-group-label">Paid Staff</div>
+              <ul class="stakeholder-list">
+                <li><strong>Fundraising Team</strong> — updates on fundraising alignment</li>
+                <li><strong>Campaigns Team</strong> — insights on campaign alignment</li>
+                <li><strong>AIUK Transformation Oversight Committee</strong> — periodic progress reports</li>
+                <li><strong>Data, Digital and Tech Transformation team</strong> — kept informed for cross-project alignment</li>
+                <li><strong>Digital Engagement Team</strong> — important for alignment across teams</li>
+                <li><strong>Supporter Communications Team</strong> — currently manage many activist queries</li>
+              </ul>
+            </div>
+            <div class="stakeholder-group">
+              <div class="stakeholder-group-label">Volunteers</div>
+              <ul class="stakeholder-list">
+                <li><strong>Trade Union Network</strong></li>
+                <li><strong>Teacher Advisory Group</strong></li>
+                <li><strong>Network Committees</strong></li>
+                <li><strong>Nations</strong> (staff and activists across UK regions)</li>
+                <li><strong>Activist Events Committee</strong></li>
+              </ul>
+            </div>
+            <div class="stakeholder-group">
+              <div class="stakeholder-group-label">Networks</div>
+              <ul class="stakeholder-list">
+                <li><strong>Coalition and partners</strong></li>
+                <li><strong>Anti-Racism Network</strong></li>
+              </ul>
+            </div>
+            <div class="stakeholder-group">
+              <div class="stakeholder-group-label">Other</div>
+              <ul class="stakeholder-list">
+                <li><strong>Digital Action Takers</strong></li>
+                <li><strong>Online Course Takers</strong> (first-touch engagement)</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="quadrant-card inform">
+            <div class="quadrant-label">Lower interest · Higher involvement</div>
+            <h4>Keep Informed</h4>
+            <div class="stakeholder-group">
+              <div class="stakeholder-group-label">Volunteers</div>
+              <ul class="stakeholder-list">
+                <li><strong>Youth Collective</strong></li>
+                <li><strong>Activist-Led Campaigns</strong></li>
+                <li><strong>Working Party / Resolution Proposers</strong></li>
+                <li><strong>Students and youth networks</strong> (schools, FE, universities)</li>
+              </ul>
+            </div>
+            <div class="stakeholder-group">
+              <div class="stakeholder-group-label">Networks</div>
+              <ul class="stakeholder-list">
+                <li><strong>Local Groups</strong></li>
+                <li><strong>Words That Burn</strong> (Creatives for Human Rights)</li>
+                <li><strong>Student Action Network</strong></li>
+                <li><strong>Children's Human Rights Network</strong></li>
+              </ul>
+            </div>
+            <div class="stakeholder-group">
+              <div class="stakeholder-group-label">Agencies</div>
+              <ul class="stakeholder-list">
+                <li><strong>Torchbox</strong> — UX/web partner ensuring seamless platform integration</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="quadrant-card monitor">
+            <div class="quadrant-label">Lower interest · Lower involvement</div>
+            <h4>Monitor</h4>
+            <div class="stakeholder-group">
+              <div class="stakeholder-group-label">Paid Staff</div>
+              <ul class="stakeholder-list">
+                <li><strong>Amnesty International Secretariat</strong> (AIIS community platform staff)</li>
+                <li><strong>Comms Team</strong></li>
+              </ul>
+            </div>
+            <div class="stakeholder-group">
+              <div class="stakeholder-group-label">Volunteers</div>
+              <ul class="stakeholder-list">
+                <li><strong>Rise Up participants and alumni</strong></li>
+                <li><strong>Teachers / Educators</strong></li>
+                <li><strong>Football Welcomes / Women's Leadership Programme</strong></li>
+                <li><strong>Disabled People's Human Rights Network</strong></li>
+                <li><strong>Youth Coaches</strong></li>
+              </ul>
+            </div>
+            <div class="stakeholder-group">
+              <div class="stakeholder-group-label">Networks</div>
+              <ul class="stakeholder-list">
+                <li><strong>Anti-Death Penalty Project</strong></li>
+                <li><strong>Rainbow Network</strong></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-card green-border">
+          <h3>Kumu interactive map</h3>
+          <p>An interactive version of the stakeholder map was produced on Kumu, allowing stakeholders to be explored visually by relationship and influence. This was shared with the project group for use in planning and communications: <a href="https://kumu.io/weareopen/aiuk-stakeholder-mapping#global-community" rel="noopener" target="_blank">kumu.io/weareopen/aiuk-stakeholder-mapping</a></p>
+        </div>
+      </section>
+
+      <section id="notes-on-mapping">
+        <h2>Notes on the mapping</h2>
+        <p>
+          The mapping exercise surfaced several important observations that shaped how the project engaged its stakeholders throughout the subsequent phases.
+        </p>
+
+        <div class="info-card yellow-border">
+          <h3>Key observations from the mapping process</h3>
+          <ul>
+            <li><strong>Overrepresentation of older activists</strong> — the initial mapping placed too many stakeholders in the "Manage Closely" quadrant, particularly older and more established activist groups. The revised mapping aimed for more proportionate representation.</li>
+            <li><strong>Activist diversity</strong> — AIUK's activist community spans an enormous range: from Lead Activists and Country Coordinators to local groups, student networks, and specialist networks. This diversity had to be reflected accurately in any engagement strategy.</li>
+            <li><strong>Volunteer vs staff distinctions</strong> — many key stakeholders are volunteers with no formal employment relationship with AIUK, requiring different approaches to communication and consent.</li>
+            <li><strong>Sensitivity considerations</strong> — some activists operate in high-risk contexts (diaspora activists, those working on specific countries). Their privacy and security needs shaped how the project communicated with and about them.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="glossary">
+        <h2>Shared glossary of terms</h2>
+        <p>
+          The glossary was developed collaboratively by the project team to establish common language across AIUK staff, WAO consultants, and the wider activist community. Terms were drawn from the overlapping worlds of community organising, digital platforms, and human rights advocacy.
+        </p>
+
+        <ul class="glossary-list">
+          <li class="glossary-item">
+            <div class="glossary-term">Activist</div>
+            <p class="glossary-def">An individual who takes action in support of Amnesty International UK's campaigns and human rights goals. Activists may be Lead Activists (with formal roles), network members, local group members, or individual supporters who take actions online or in person.</p>
+          </li>
+          <li class="glossary-item">
+            <div class="glossary-term">Lead Activist</div>
+            <p class="glossary-def">A volunteer who has taken on a defined leadership role within AIUK's activist community. There are approximately 360 Lead Activists, each with an Amnesty email address and access to safeguarding, GDPR, and diversity training.</p>
+          </li>
+          <li class="glossary-item">
+            <div class="glossary-term">Community Organiser</div>
+            <p class="glossary-def">A paid AIUK staff member (×2 at project start) responsible for supporting and mobilising the activist community. Community Organisers are primary users of the platform and central to its design and governance.</p>
+          </li>
+          <li class="glossary-item">
+            <div class="glossary-term">Country Coordinator</div>
+            <p class="glossary-def">A volunteer activist who specialises in human rights issues in a specific country or region. Country Coordinators connect the global Amnesty movement with UK-based activism on particular issues.</p>
+          </li>
+          <li class="glossary-item">
+            <div class="glossary-term">Network</div>
+            <p class="glossary-def">A thematic or identity-based community of activists within AIUK, such as the Feminist Network, Rainbow Network, Anti-Racism Network, or Children's Human Rights Network. Networks self-organise around shared causes or identities, and may have their own committees.</p>
+          </li>
+          <li class="glossary-item">
+            <div class="glossary-term">Local Group</div>
+            <p class="glossary-def">A geographically based group of Amnesty activists, typically in a town or city, who organise campaign actions and events locally. Local groups are one of the most established forms of Amnesty community in the UK.</p>
+          </li>
+          <li class="glossary-item">
+            <div class="glossary-term">Community Platform</div>
+            <p class="glossary-def">The online space that this project set out to design and build. Intended as infrastructure that enables activists to connect, share resources, and coordinate — not a replacement for existing channels, but a complement to them. The platform selected was Discourse, deployed at community.amnesty.org.uk.</p>
+          </li>
+          <li class="glossary-item">
+            <div class="glossary-term">Stakeholder</div>
+            <p class="glossary-def">Any individual or group with an interest in or connection to the AIUK Community Platform project. Stakeholders range from those who will actively use and moderate the platform (primary) to those who may be affected by it in a more peripheral way (tertiary).</p>
+          </li>
+          <li class="glossary-item">
+            <div class="glossary-term">Safeguarding</div>
+            <p class="glossary-def">Measures and protocols designed to protect vulnerable individuals — particularly children, young people, and those at risk — from harm. Safeguarding requirements directly shaped the platform's design decisions around permissions, age-gating, and moderation.</p>
+          </li>
+          <li class="glossary-item">
+            <div class="glossary-term">Moderation</div>
+            <p class="glossary-def">The process of reviewing and managing content and behaviour on the platform to ensure it aligns with community guidelines and the code of conduct. The project agreed that moderation should not be the sole responsibility of volunteers — a hybrid approach was favoured.</p>
+          </li>
+          <li class="glossary-item">
+            <div class="glossary-term">Right Holder</div>
+            <p class="glossary-def">In Amnesty's framing, the individuals whose rights are at stake — those directly affected by human rights abuses. Right holders are distinct from activists who campaign on their behalf, and their needs are central to how the platform was designed.</p>
+          </li>
+          <li class="glossary-item">
+            <div class="glossary-term">WAO (We Are Open Co-op)</div>
+            <p class="glossary-def">The cooperative that designed and delivered the AIUK Community Platform project alongside AIUK. WAO provided strategic facilitation, community design, research, and technical expertise across all project phases.</p>
+          </li>
+          <li class="glossary-item">
+            <div class="glossary-term">AIUK</div>
+            <p class="glossary-def">Amnesty International UK — the UK section of Amnesty International, the client organisation for this project. AIUK's Activism and Education Directorate led the project internally.</p>
+          </li>
+          <li class="glossary-item">
+            <div class="glossary-term">Architecture of Participation (AoP)</div>
+            <p class="glossary-def">A framework used to design the community structure, defining how different roles, permissions, and participation pathways are organised to encourage meaningful engagement. Applied during the platform configuration phase.</p>
+          </li>
+          <li class="glossary-item">
+            <div class="glossary-term">Pilot</div>
+            <p class="glossary-def">A structured trial phase in which a defined group of users tests the platform before it is opened more widely. The AIUK pilot ran across four phases from February to April 2026, starting with community leaders and moderators and expanding progressively.</p>
+          </li>
+          <li class="glossary-item">
+            <div class="glossary-term">Discourse</div>
+            <p class="glossary-def">The community forum platform selected for the AIUK Community Platform, hosted by Communiteq. The official URL is community.amnesty.org.uk. Selected following a structured user research and platform testing process in Phases One and Two.</p>
+          </li>
+        </ul>
+      </section>
+
+      <section id="related">
+        <h2>Related documents</h2>
+        <p>This document sits alongside several other Phase One outputs that together established the strategic foundations for the project:</p>
+
+        <div class="info-card blue-border">
+          <h3>See also</h3>
+          <ul>
+            <li><strong><a href="stakeholder-mapping.html">Initial Stakeholder Mapping</a></strong> — the earlier, simpler quadrant mapping that preceded this document</li>
+            <li><strong><a href="charter.html">Project Charter</a></strong> — defines scope, objectives, and governance for the project</li>
+            <li><strong><a href="../phase-2/user-research-guide.html">User Research and Platform Testing Guide</a></strong> — describes how stakeholders informed the research process in Phase Two</li>
+          </ul>
+        </div>
+      </section>
+
+    </article>
+
+    <aside class="sidebar" aria-label="Page navigation">
+      <div class="sidebar-card">
+        <div class="sidebar-card-head">On this page</div>
+        <ul class="sidebar-toc">
+          <li><a href="#overview">About this document</a></li>
+          <li><a href="#quadrants">The stakeholder quadrants</a></li>
+          <li><a href="#notes-on-mapping">Notes on the mapping</a></li>
+          <li><a href="#glossary">Shared glossary</a></li>
+          <li><a href="#related">Related documents</a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sidebar-card-head">Document details</div>
+        <div class="sidebar-meta">
+          <p><strong>Phase</strong><br />Phase One: Kickoff &amp; Planning</p>
+          <p><strong>Group</strong><br />Stakeholder Mapping</p>
+          <p><strong>Audience</strong><br />Project team and committee members</p>
+          <p><strong>Status</strong><br />Completed</p>
+          <p><strong>Source</strong><br /><a href="https://docs.google.com/document/d/1HWA8n_ssLZr0lKUF2vS5ooe1g3Po8vAssFqoG4wjeQY/edit" rel="noopener" target="_blank">Open in Google Docs ↗</a></p>
+          <a href="../index.html" class="back-link">← Back to full index</a>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+</main>
+
+<footer>
+  <img src="../assets/wao-logo-white.png" alt="WAO Cooperative" />
+  <div class="footer-bottom">
+    <span>AIUK Community Platform Project · Produced by <a href="https://web.archive.org/web/20260330161608/https://weareopen.coop/" rel="noopener">WAO Cooperative</a></span>
+  </div>
+</footer>
+
+</body>
+</html>

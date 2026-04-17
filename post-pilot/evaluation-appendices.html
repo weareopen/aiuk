@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AIUK Final Evaluation — Appendices · AIUK Community Platform Project</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;600;700&family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --charcoal:   #2F495A;
+      --green:      #00C399;
+      --yellow:     #FFBC42;
+      --blue:       #16A8E2;
+      --red:        #FC594D;
+      --white:      #FFFFFF;
+      --off-white:  #F7F9FA;
+      --light-grey: #EDF1F4;
+      --mid-grey:   #8FA3B0;
+      --text:       #2F495A;
+      --font-head: 'Roboto Slab', Georgia, serif;
+      --font-body: 'Nunito', system-ui, sans-serif;
+      --radius: 12px;
+      --radius-sm: 6px;
+      --shadow: 0 4px 24px rgba(47,73,90,0.10);
+      --shadow-hover: 0 8px 36px rgba(47,73,90,0.18);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-body); color: var(--text); background: var(--off-white); line-height: 1.7; font-size: 16px; }
+
+    .skip-link { position: absolute; top: -40px; left: 16px; background: var(--green); color: var(--white); padding: 8px 14px; border-radius: var(--radius-sm); font-weight: 700; z-index: 9999; transition: top .2s; }
+    .skip-link:focus { top: 16px; }
+
+    nav { position: sticky; top: 0; z-index: 100; background: var(--charcoal); display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(16px, 5vw, 48px); height: 60px; box-shadow: 0 2px 12px rgba(0,0,0,0.2); }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .nav-logo img { height: 36px; }
+    .nav-links { display: flex; gap: 4px; list-style: none; flex-wrap: wrap; }
+    .nav-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.82rem; font-weight: 600; letter-spacing: 0.02em; padding: 6px 10px; border-radius: var(--radius-sm); transition: color .2s, background .2s; }
+    .nav-links a:hover { color: var(--white); background: rgba(255,255,255,0.12); }
+
+    .breadcrumb { background: var(--white); border-bottom: 1px solid var(--light-grey); padding: 10px clamp(16px, 5vw, 48px); font-size: 0.82rem; color: var(--mid-grey); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .breadcrumb a { color: var(--mid-grey); text-decoration: none; font-weight: 600; }
+    .breadcrumb a:hover { color: var(--green); }
+    .breadcrumb span { color: var(--charcoal); font-weight: 700; }
+
+    .hero { background: var(--charcoal); padding: clamp(48px, 8vw, 80px) clamp(16px, 5vw, 48px) clamp(40px, 6vw, 64px); position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 50% 90% at 90% 20%, rgba(22,168,226,0.18) 0%, transparent 60%), radial-gradient(ellipse 40% 60% at 5% 90%, rgba(0,195,153,0.12) 0%, transparent 55%); pointer-events: none; }
+    .hero-inner { max-width: 760px; position: relative; }
+    .hero-tag { display: inline-flex; align-items: center; gap: 8px; background: rgba(22,168,226,0.18); border: 1px solid rgba(22,168,226,0.4); color: var(--blue); font-size: 0.75rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 14px; border-radius: 100px; margin-bottom: 18px; }
+    .hero-tag a { color: inherit; text-decoration: none; }
+    .hero-tag a:hover { text-decoration: underline; }
+    h1 { font-family: var(--font-head); font-size: clamp(1.8rem, 4.5vw, 3rem); font-weight: 700; color: var(--white); line-height: 1.2; margin-bottom: 16px; }
+    h1 em { font-style: normal; color: var(--blue); }
+    .hero-subtitle { font-size: clamp(0.95rem, 1.8vw, 1.1rem); color: rgba(255,255,255,0.7); max-width: 580px; line-height: 1.65; }
+    .hero-subtitle a { color: var(--blue); text-decoration: none; font-weight: 600; }
+    .hero-subtitle a:hover { text-decoration: underline; }
+
+    .page-wrap { max-width: 1100px; margin: 0 auto; padding: clamp(32px, 5vw, 64px) clamp(16px, 5vw, 48px); display: grid; grid-template-columns: 1fr 280px; gap: 48px; align-items: start; }
+    @media (max-width: 780px) { .page-wrap { grid-template-columns: 1fr; } .sidebar { order: -1; } }
+
+    .content { min-width: 0; }
+    .content h2 { font-family: var(--font-head); font-size: clamp(1.3rem, 2.5vw, 1.7rem); font-weight: 600; color: var(--charcoal); margin: 40px 0 14px; padding-top: 40px; border-top: 2px solid var(--light-grey); }
+    .content h2:first-child { margin-top: 0; padding-top: 0; border-top: none; }
+    .content h3 { font-family: var(--font-head); font-size: 1.05rem; font-weight: 600; color: var(--charcoal); margin: 28px 0 10px; }
+    .content p { margin-bottom: 16px; color: #4a6070; font-size: 0.97rem; line-height: 1.75; }
+    .content p strong { color: var(--charcoal); font-weight: 700; }
+    .content a { color: var(--blue); text-decoration: none; font-weight: 600; }
+    .content a:hover { text-decoration: underline; }
+
+    .info-card { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius); padding: 24px 28px; margin: 20px 0; box-shadow: var(--shadow); }
+    .info-card.blue-border  { border-left: 4px solid var(--blue); }
+    .info-card.green-border { border-left: 4px solid var(--green); }
+    .info-card.yellow-border { border-left: 4px solid var(--yellow); }
+    .info-card.red-border  { border-left: 4px solid var(--red); }
+    .info-card h3 { font-family: var(--font-head); font-size: 0.95rem; font-weight: 600; color: var(--charcoal); margin-bottom: 10px; }
+    .info-card p { margin-bottom: 0; font-size: 0.9rem; }
+    .info-card ul { padding-left: 18px; margin-top: 8px; }
+    .info-card ul li { font-size: 0.9rem; color: #4a6070; margin-bottom: 5px; line-height: 1.6; }
+    .info-card ul li strong { color: var(--charcoal); }
+
+    .doc-link-banner { background: var(--charcoal); border-radius: var(--radius); padding: 24px 28px; margin: 20px 0 32px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+    .doc-link-banner p { color: rgba(255,255,255,0.75); font-size: 0.9rem; margin: 0; }
+    .doc-link-banner a { display: inline-flex; align-items: center; gap: 8px; background: var(--blue); color: var(--white); text-decoration: none; font-weight: 700; font-size: 0.88rem; padding: 10px 20px; border-radius: var(--radius-sm); white-space: nowrap; transition: background .2s; }
+    .doc-link-banner a:hover { background: #0f8ec0; }
+
+    /* Appendix nav cards */
+    .appendix-nav { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin: 20px 0 32px; }
+    @media (max-width: 860px) { .appendix-nav { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 520px) { .appendix-nav { grid-template-columns: 1fr 1fr; } }
+    .appendix-nav-item { background: var(--white); border: 1px solid var(--light-grey); border-top: 3px solid var(--blue); border-radius: var(--radius-sm); padding: 14px 12px; text-align: center; text-decoration: none; color: var(--charcoal); transition: box-shadow .2s, transform .2s; display: block; }
+    .appendix-nav-item:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); }
+    .appendix-nav-item .app-num { font-size: 0.7rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blue); display: block; margin-bottom: 4px; }
+    .appendix-nav-item .app-title { font-family: var(--font-head); font-size: 0.8rem; font-weight: 600; color: var(--charcoal); line-height: 1.35; display: block; }
+
+    /* Appendix sections */
+    .appendix-section { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius); margin: 24px 0; box-shadow: var(--shadow); overflow: hidden; }
+    .appendix-section-head { background: rgba(22,168,226,0.08); border-bottom: 1px solid rgba(22,168,226,0.2); padding: 18px 24px; display: flex; align-items: flex-start; gap: 16px; }
+    .appendix-badge { display: inline-flex; align-items: center; justify-content: center; background: var(--blue); color: var(--white); font-family: var(--font-head); font-size: 0.75rem; font-weight: 700; width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0; }
+    .appendix-section-head-text h3 { font-family: var(--font-head); font-size: 1rem; font-weight: 600; color: var(--charcoal); margin: 0 0 3px; }
+    .appendix-section-head-text p { font-size: 0.82rem; color: var(--mid-grey); margin: 0; }
+    .appendix-section-body { padding: 20px 24px; }
+    .appendix-section-body p { font-size: 0.93rem; color: #4a6070; margin-bottom: 12px; line-height: 1.7; }
+    .appendix-section-body p:last-child { margin-bottom: 0; }
+
+    /* Checklist */
+    .checklist { list-style: none; padding: 0; margin: 12px 0 0; }
+    .checklist li { display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--light-grey); font-size: 0.9rem; color: #4a6070; line-height: 1.6; }
+    .checklist li:last-child { border-bottom: none; padding-bottom: 0; }
+    .checklist-box { width: 18px; height: 18px; border: 2px solid var(--mid-grey); border-radius: 4px; flex-shrink: 0; margin-top: 2px; background: var(--off-white); }
+    .checklist li strong { color: var(--charcoal); font-weight: 700; }
+    .checklist li a { color: var(--blue); text-decoration: none; font-weight: 600; }
+    .checklist li a:hover { text-decoration: underline; }
+
+    .checklist-group { margin: 18px 0; }
+    .checklist-group-label { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mid-grey); margin-bottom: 6px; padding-bottom: 6px; border-bottom: 1px solid var(--light-grey); }
+
+    /* Tables */
+    .data-table { width: 100%; border-collapse: collapse; margin: 14px 0 20px; font-size: 0.88rem; }
+    .data-table th { background: var(--charcoal); color: rgba(255,255,255,0.85); font-family: var(--font-head); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; padding: 11px 14px; text-align: left; }
+    .data-table td { padding: 10px 14px; border-bottom: 1px solid var(--light-grey); color: #4a6070; vertical-align: top; }
+    .data-table td strong { color: var(--charcoal); font-weight: 700; }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:nth-child(even) td { background: rgba(22,168,226,0.03); }
+    .data-table a { color: var(--blue); text-decoration: none; font-weight: 600; font-size: 0.82rem; }
+    .data-table a:hover { text-decoration: underline; }
+
+    /* Companion notice */
+    .companion-notice { background: rgba(22,168,226,0.06); border: 1px solid rgba(22,168,226,0.25); border-radius: var(--radius); padding: 16px 20px; display: flex; align-items: center; gap: 14px; margin: 0 0 24px; }
+    .companion-notice-icon { font-size: 1.3rem; flex-shrink: 0; }
+    .companion-notice p { font-size: 0.88rem; color: #4a6070; margin: 0; line-height: 1.55; }
+    .companion-notice a { color: var(--blue); font-weight: 700; text-decoration: none; }
+    .companion-notice a:hover { text-decoration: underline; }
+
+    .sidebar { position: sticky; top: 80px; }
+    .sidebar-card { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); margin-bottom: 20px; }
+    .sidebar-card-head { background: var(--charcoal); padding: 14px 18px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.6); }
+    .sidebar-toc { list-style: none; padding: 8px 0; }
+    .sidebar-toc li a { display: block; padding: 9px 18px; color: #4a6070; font-size: 0.85rem; font-weight: 600; text-decoration: none; border-left: 3px solid transparent; transition: color .2s, border-color .2s, background .2s; }
+    .sidebar-toc li a:hover { color: var(--charcoal); border-color: var(--blue); background: rgba(22,168,226,0.06); }
+    .sidebar-toc li.sub a { padding-left: 28px; font-size: 0.8rem; font-weight: 500; }
+    .sidebar-meta { padding: 16px 18px; }
+    .sidebar-meta p { font-size: 0.82rem; color: var(--mid-grey); margin-bottom: 8px; line-height: 1.5; }
+    .sidebar-meta p strong { color: var(--charcoal); }
+    .back-link { display: inline-flex; align-items: center; gap: 7px; background: var(--blue); color: var(--white); text-decoration: none; font-size: 0.85rem; font-weight: 700; padding: 10px 18px; border-radius: var(--radius-sm); transition: background .2s; width: 100%; justify-content: center; margin-top: 4px; }
+    .back-link:hover { background: #0f8ec0; }
+    .companion-link { display: inline-flex; align-items: center; gap: 7px; background: rgba(22,168,226,0.12); color: var(--blue); border: 1px solid rgba(22,168,226,0.3); text-decoration: none; font-size: 0.82rem; font-weight: 700; padding: 9px 18px; border-radius: var(--radius-sm); transition: background .2s; width: 100%; justify-content: center; margin-top: 8px; }
+    .companion-link:hover { background: rgba(22,168,226,0.2); }
+
+    footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.1); padding: clamp(28px,4vw,48px) clamp(16px,5vw,48px); display: flex; flex-wrap: wrap; gap: 24px; justify-content: space-between; align-items: center; }
+    footer img { height: 32px; opacity: 0.7; }
+    .footer-bottom { color: rgba(255,255,255,0.35); font-size: 0.78rem; }
+    .footer-bottom a { color: rgba(255,255,255,0.5); text-decoration: none; }
+    .footer-bottom a:hover { color: var(--blue); }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    .hero-inner > * { animation: fadeUp 0.5s ease both; }
+    .hero-tag { animation-delay: 0.0s; }
+    h1 { animation-delay: 0.1s; }
+    .hero-subtitle { animation-delay: 0.2s; }
+  </style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<nav aria-label="Primary navigation">
+  <a href="../index.html" class="nav-logo" aria-label="Back to project index">
+    <img src="../assets/wao-logo-white.png" alt="WAO Cooperative logo" />
+  </a>
+  <ul class="nav-links">
+    <li><a href="../index.html#project-overview">Overview</a></li>
+    <li><a href="../index.html#key-reports">Key Reports</a></li>
+    <li><a href="../index.html#timeline">All Documents</a></li>
+    <li><a href="evaluation-report.html">Final Evaluation</a></li>
+  </ul>
+</nav>
+
+<div class="breadcrumb" aria-label="Breadcrumb">
+  <a href="../index.html">← Project Index</a>
+  <span aria-hidden="true">/</span>
+  <span>Post-Pilot</span>
+  <span aria-hidden="true">/</span>
+  <span>Final Evaluation Appendices</span>
+</div>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">
+      <a href="../index.html#timeline">← Post-Pilot</a>
+    </div>
+    <h1>AIUK Final Evaluation —<br /><em>Appendices</em></h1>
+    <p class="hero-subtitle">
+      Supporting data and handover notes from the Amnesty Community pilot (ended March 2025). A companion document to the <a href="evaluation-report.html">Final Evaluation Report</a> — read together they form the complete record of the pilot's outcomes and outstanding actions.
+    </p>
+  </div>
+</header>
+
+<main id="main">
+  <div class="page-wrap">
+
+    <article class="content">
+
+      <section id="overview">
+        <h2>About this document</h2>
+
+        <div class="companion-notice">
+          <div class="companion-notice-icon">📋</div>
+          <p>These appendices accompany the <a href="evaluation-report.html">Final Evaluation Report</a>. The report contains the narrative findings; this document holds the supporting data and technical handover notes. The two should be read together.</p>
+        </div>
+
+        <p>
+          This appendix set was produced at the close of the Amnesty Community pilot, hosted at <a href="https://community.amnesty.org.uk/" rel="noopener" target="_blank">community.amnesty.org.uk</a>. The platform is built on <strong>Discourse</strong>, hosted by Communiteq via Discoursehosting. The appendices document what was measured, what users said, and what remains to be done.
+        </p>
+
+        <div class="doc-link-banner">
+          <p>The full appendices document is held in Google Docs and is accessible to project team members.</p>
+          <a href="https://docs.google.com/document/d/1tDWXePviEe5LBE_70cB7u43oU5QkKNXxnyMkn8O43oM/edit" rel="noopener" target="_blank">Open in Google Docs ↗</a>
+        </div>
+
+        <p>There are five appendices in total. Appendices 1–4 capture quantitative and qualitative data from the pilot period. Appendix 5 — the Product Handover Notes — is the most immediately actionable, containing a detailed checklist of outstanding technical work for the Discourse platform.</p>
+
+        <div class="appendix-nav" role="navigation" aria-label="Jump to appendix">
+          <a href="#appendix-1" class="appendix-nav-item">
+            <span class="app-num">Appendix 1</span>
+            <span class="app-title">SUS Scores</span>
+          </a>
+          <a href="#appendix-2" class="appendix-nav-item">
+            <span class="app-num">Appendix 2</span>
+            <span class="app-title">Usage &amp; Analytics</span>
+          </a>
+          <a href="#appendix-3" class="appendix-nav-item">
+            <span class="app-num">Appendix 3</span>
+            <span class="app-title">User Feedback Survey</span>
+          </a>
+          <a href="#appendix-4" class="appendix-nav-item">
+            <span class="app-num">Appendix 4</span>
+            <span class="app-title">Week-One Pilot Data</span>
+          </a>
+          <a href="#appendix-5" class="appendix-nav-item">
+            <span class="app-num">Appendix 5</span>
+            <span class="app-title">Product Handover Notes</span>
+          </a>
+        </div>
+      </section>
+
+      <section id="appendices-1-4">
+        <h2>Appendices 1–4: Pilot Measurement Data</h2>
+        <p>
+          The first four appendices provide the quantitative and qualitative evidence base for the evaluation. They are primarily intended for readers of the <a href="evaluation-report.html">Final Evaluation Report</a> who want to examine the underlying data supporting the report's findings.
+        </p>
+
+        <div class="appendix-section" id="appendix-1">
+          <div class="appendix-section-head">
+            <div class="appendix-badge">1</div>
+            <div class="appendix-section-head-text">
+              <h3>System Usability Scale (SUS) Scores</h3>
+              <p>Standardised usability scoring from pilot participants</p>
+            </div>
+          </div>
+          <div class="appendix-section-body">
+            <p>
+              The System Usability Scale is an industry-standard 10-item questionnaire that produces a composite usability score between 0 and 100. Participants in the Amnesty Community pilot completed a SUS survey to give the team a standardised measure of how usable the Discourse platform felt to actual users.
+            </p>
+            <p>
+              SUS scores provide a consistent benchmark that can be compared against other digital products and against future iterations of the platform. A score above 68 is generally considered above average; scores above 80 indicate strong usability. The full results are recorded in this appendix.
+            </p>
+            <div class="info-card blue-border">
+              <h3>Why SUS?</h3>
+              <p>The SUS questionnaire is technology-agnostic and quick to administer, making it well suited to community platform evaluation where participant time is limited. It is widely used in civic technology and third-sector digital projects.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="appendix-section" id="appendix-2">
+          <div class="appendix-section-head">
+            <div class="appendix-badge">2</div>
+            <div class="appendix-section-head-text">
+              <h3>Usage and Analytics Metrics</h3>
+              <p>Platform engagement data across the pilot period</p>
+            </div>
+          </div>
+          <div class="appendix-section-body">
+            <p>
+              This appendix records platform usage data gathered during the pilot. Metrics cover site visits, active users, post volume, topic creation, and other engagement indicators drawn from Discourse's built-in analytics and any supplementary tracking tools in use.
+            </p>
+            <p>
+              The data provides a factual picture of how much the platform was used during the pilot and where activity was concentrated — which categories, which time periods, and which user cohorts were most active. This informs the evaluation's findings on adoption and engagement.
+            </p>
+          </div>
+        </div>
+
+        <div class="appendix-section" id="appendix-3">
+          <div class="appendix-section-head">
+            <div class="appendix-badge">3</div>
+            <div class="appendix-section-head-text">
+              <h3>User Feedback Survey Results</h3>
+              <p>Qualitative and structured feedback from pilot participants</p>
+            </div>
+          </div>
+          <div class="appendix-section-body">
+            <p>
+              A structured feedback survey was distributed to pilot participants to capture their experiences of the platform. The survey gathered both quantitative ratings and open-text responses, giving the evaluation team a picture of what users valued, what frustrated them, and what they would change.
+            </p>
+            <p>
+              This appendix contains the full survey results. Key themes from the open-text responses are summarised in the <a href="evaluation-report.html">Final Evaluation Report</a>; the raw data is recorded here for reference.
+            </p>
+            <div class="info-card green-border">
+              <h3>Connecting data to action</h3>
+              <p>Several items in the Appendix 5 product checklist were directly informed by the feedback survey — particularly around the calendar/event plugin experience and the navigation and homepage design.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="appendix-section" id="appendix-4">
+          <div class="appendix-section-head">
+            <div class="appendix-badge">4</div>
+            <div class="appendix-section-head-text">
+              <h3>Week-One Pilot Data</h3>
+              <p>Early adoption metrics from the platform's first week</p>
+            </div>
+          </div>
+          <div class="appendix-section-body">
+            <p>
+              The first week of a community platform launch is a distinctive moment — early adopter behaviour, onboarding friction, and initial engagement patterns are often markedly different from steady-state activity. This appendix records the specific data gathered during week one of the pilot to capture that early-stage picture.
+            </p>
+            <p>
+              Week-one data is useful for understanding the effectiveness of the launch approach, the ease of the onboarding flow, and which features or content areas drew users in first. It provides a baseline against which later engagement data (Appendix 2) can be compared.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="appendix-5-section">
+        <h2>Appendix 5: Product Handover Notes</h2>
+        <p>
+          The Product Handover Notes are the most actionable output in this appendix set. They document outstanding technical items for the <a href="https://community.amnesty.org.uk/" rel="noopener" target="_blank">community.amnesty.org.uk</a> Discourse platform that were identified during the pilot but not completed before handover. These items now fall to the AIUK Product Lead and platform partners to resolve.
+        </p>
+
+        <div class="info-card yellow-border">
+          <h3>Who this section is for</h3>
+          <ul>
+            <li><strong>AIUK Product Lead</strong> — owns prioritisation and the feature request process</li>
+            <li><strong>Communiteq</strong> — Discourse hosting partner, responsible for component bugs and staging</li>
+            <li><strong>Torchbox (TBX)</strong> — CMS provider, needed for the search integration workstream</li>
+          </ul>
+        </div>
+
+        <div class="appendix-section" id="appendix-5">
+          <div class="appendix-section-head">
+            <div class="appendix-badge">5</div>
+            <div class="appendix-section-head-text">
+              <h3>Product Handover Notes</h3>
+              <p>Outstanding technical items for the Discourse platform at community.amnesty.org.uk</p>
+            </div>
+          </div>
+          <div class="appendix-section-body">
+
+            <h3 id="platform-environments">Platform Environments</h3>
+            <p>The Amnesty Community platform operates across two live environments, with a dedicated support channel for issue tracking:</p>
+
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Environment</th>
+                  <th>URL</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Production</strong></td>
+                  <td><a href="https://community.amnesty.org.uk/" rel="noopener" target="_blank">community.amnesty.org.uk</a></td>
+                </tr>
+                <tr>
+                  <td><strong>Staging</strong></td>
+                  <td><a href="https://amnestyukstaging.discoursehosting.net/" rel="noopener" target="_blank">amnestyukstaging.discoursehosting.net</a></td>
+                </tr>
+                <tr>
+                  <td><strong>Communiteq Support</strong></td>
+                  <td><a href="https://support.communiteq.com/c/amnestyuk/38" rel="noopener" target="_blank">support.communiteq.com/c/amnestyuk/38</a></td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h3 id="checklist">Outstanding Items Checklist</h3>
+            <p>The items below were identified during the pilot as needing attention post-handover. They are grouped by area. None were completed before the end of the pilot period (March 2025).</p>
+
+            <div class="checklist-group">
+              <div class="checklist-group-label">Feature &amp; Process Gaps</div>
+              <ul class="checklist">
+                <li>
+                  <div class="checklist-box" aria-hidden="true"></div>
+                  <div>
+                    <strong>Feature Request Process</strong> — No formal process exists for community members or AIUK colleagues to submit feature requests. The Product Lead needs to establish this. Without a structured process, ad hoc plugin and component installation risks platform bloat and user confusion.
+                  </div>
+                </li>
+                <li>
+                  <div class="checklist-box" aria-hidden="true"></div>
+                  <div>
+                    <strong>User Stories</strong> — A range of user stories were prepared during the pilot but not actioned. These should be reviewed and prioritised by the Product Lead. See: <a href="https://docs.google.com/spreadsheets/d/1auNL5QeZnSSKoZSQA5sDI1OXosl0w8wXXtnriNC49p8/edit?gid=1799765408#gid=1799765408" rel="noopener" target="_blank">User Stories — Community Persona Spectrums (Google Sheets)</a>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            <div class="checklist-group">
+              <div class="checklist-group-label">Calendar &amp; Event Plugin</div>
+              <ul class="checklist">
+                <li>
+                  <div class="checklist-box" aria-hidden="true"></div>
+                  <div>
+                    <strong>Full requirements research</strong> — Event functionality needs a thorough requirements review before further development work is commissioned.
+                  </div>
+                </li>
+                <li>
+                  <div class="checklist-box" aria-hidden="true"></div>
+                  <div>
+                    <strong>Mobile UX fix</strong> — In mobile view, events currently display as a grid layout. They should display as a schedule/list view to be readable on small screens.
+                  </div>
+                </li>
+                <li>
+                  <div class="checklist-box" aria-hidden="true"></div>
+                  <div>
+                    <strong>"Create Event" button visibility</strong> — Event creation is currently buried inside the Options menu when composing a new post, and is trust-level dependent. The recommendation is to add a visible "Create Event" button directly on the Calendar view and in the Navigation Menu.
+                  </div>
+                </li>
+                <li>
+                  <div class="checklist-box" aria-hidden="true"></div>
+                  <div>
+                    <strong>Accessibility review</strong> — Mobile UX and accessibility issues with the Calendar/Event plugin need addressing before the plugin is considered production-ready.
+                  </div>
+                </li>
+                <li>
+                  <div class="checklist-box" aria-hidden="true"></div>
+                  <div>
+                    <strong>Wider event tool audit</strong> — <a href="https://trello.com/c/m4CZaZFD" rel="noopener" target="_blank">Multiple event tools</a> are in use across the organisation. These need rationalising to avoid duplication and confusion for activists.
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            <div class="checklist-group">
+              <div class="checklist-group-label">Homepage / Front Page</div>
+              <ul class="checklist">
+                <li>
+                  <div class="checklist-box" aria-hidden="true"></div>
+                  <div>
+                    <strong>Map on front page</strong> — A map component was originally planned for the homepage but was not implemented. Adding it requires custom templating and development work because the front page is generated by the Category Groups component, which limits what can be added without custom templates.
+                  </div>
+                </li>
+                <li>
+                  <div class="checklist-box" aria-hidden="true"></div>
+                  <div>
+                    <strong>Homepage redesign</strong> — A full homepage redesign using a custom template is recommended to make the landing page more graphic and welcoming for new and returning members.
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            <div class="checklist-group">
+              <div class="checklist-group-label">Updates &amp; Bugs</div>
+              <ul class="checklist">
+                <li>
+                  <div class="checklist-box" aria-hidden="true"></div>
+                  <div>
+                    <strong>Component testing on staging</strong> — Several components need to be tested on the staging server before being promoted to production. This should be a standing process rule going forward.
+                  </div>
+                </li>
+                <li>
+                  <div class="checklist-box" aria-hidden="true"></div>
+                  <div>
+                    <strong>Category Groups component update breaks custom styles</strong> — An update to the Category Groups component breaks custom styles applied to the platform. Issue logged at: <a href="https://support.communiteq.com/t/category-groups-component-update-breaks-custom-styles/1287" rel="noopener" target="_blank">Communiteq support thread #1287</a>
+                  </div>
+                </li>
+                <li>
+                  <div class="checklist-box" aria-hidden="true"></div>
+                  <div>
+                    <strong>Quick Profile Links bug</strong> — The Quick Profile Links component (used to help users find their own profiles) has a known bug. AIUK needs to decide whether to prioritise a fix. Bug logged at: <a href="https://support.communiteq.com/t/email-notifications-bug/1288" rel="noopener" target="_blank">Communiteq support thread #1288</a>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            <div class="checklist-group">
+              <div class="checklist-group-label">Search Integration</div>
+              <ul class="checklist">
+                <li>
+                  <div class="checklist-box" aria-hidden="true"></div>
+                  <div>
+                    <strong>Cross-platform search</strong> — Users should be able to search external Amnesty platforms (Knowledge Hub, main website) from within the Community Platform. Importantly, Community Platform content should <em>not</em> be surfaced via the Knowledge Hub or Website — the flow is one-way inbound.
+                  </div>
+                </li>
+                <li>
+                  <div class="checklist-box" aria-hidden="true"></div>
+                  <div>
+                    <strong>Search plugin decision required</strong> — Two options have been identified:
+                    <ul style="padding-left:18px; margin-top:6px;">
+                      <li style="margin-bottom:4px;"><a href="https://meta.discourse.org/t/discourse-algolia-search/73517" rel="noopener" target="_blank">Discourse Algolia Search plugin</a></li>
+                      <li><a href="https://meta.discourse.org/t/elasticsearch-and-discourse/322014" rel="noopener" target="_blank">Elasticsearch integration</a> — Torchbox's CMS already uses Elasticsearch, which may simplify this path</li>
+                    </ul>
+                    <p style="margin-top:8px; margin-bottom:0;">A decision requires collaboration between <strong>Torchbox (TBX)</strong> and <strong>Communiteq</strong> to agree on approach and technical ownership.</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+
+        <h3 id="key-third-parties">Key Third Parties</h3>
+        <p>Resolving the outstanding items above will require engagement with the following organisations:</p>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Party</th>
+              <th>Role</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Communiteq</strong></td>
+              <td>Discourse hosting provider. Primary support contact for platform bugs, component issues, and staging environment. Support channel: <a href="https://support.communiteq.com/c/amnestyuk/38" rel="noopener" target="_blank">support.communiteq.com/c/amnestyuk/38</a></td>
+            </tr>
+            <tr>
+              <td><strong>Torchbox (TBX)</strong></td>
+              <td>CMS provider for Amnesty UK's main web properties. Uses Elasticsearch in their CMS stack. Collaboration required to agree on search integration approach.</td>
+            </tr>
+            <tr>
+              <td><strong>AIUK Product Lead</strong></td>
+              <td>Internal owner. Responsible for establishing the feature request process, prioritising outstanding checklist items, and co-ordinating with Communiteq and Torchbox on technical decisions.</td>
+            </tr>
+          </tbody>
+        </table>
+
+      </section>
+
+      <section id="next-steps">
+        <h2>Reading this alongside the Evaluation Report</h2>
+        <p>
+          These appendices are reference material. The narrative interpretation of what the pilot achieved — including usability findings, adoption rates, community sentiment, and recommendations — is contained in the <a href="evaluation-report.html">Final Evaluation Report</a>.
+        </p>
+        <div class="info-card blue-border">
+          <h3>Suggested reading order</h3>
+          <ul>
+            <li><strong>Start with the <a href="evaluation-report.html">Final Evaluation Report</a></strong> for the headline findings, context, and strategic recommendations.</li>
+            <li><strong>Return to Appendices 1–4</strong> if you want to examine the underlying data behind specific findings in the report.</li>
+            <li><strong>Use Appendix 5</strong> (this section) as a working document — the checklist items should be triaged and assigned by the AIUK Product Lead as part of the post-pilot handover.</li>
+          </ul>
+        </div>
+      </section>
+
+    </article>
+
+    <aside class="sidebar" aria-label="Page navigation">
+      <div class="sidebar-card">
+        <div class="sidebar-card-head">On this page</div>
+        <ul class="sidebar-toc">
+          <li><a href="#overview">About this document</a></li>
+          <li><a href="#appendices-1-4">Appendices 1–4</a></li>
+          <li class="sub"><a href="#appendix-1">1. SUS Scores</a></li>
+          <li class="sub"><a href="#appendix-2">2. Usage &amp; Analytics</a></li>
+          <li class="sub"><a href="#appendix-3">3. User Feedback Survey</a></li>
+          <li class="sub"><a href="#appendix-4">4. Week-One Pilot Data</a></li>
+          <li><a href="#appendix-5-section">Appendix 5: Handover Notes</a></li>
+          <li class="sub"><a href="#platform-environments">Platform Environments</a></li>
+          <li class="sub"><a href="#checklist">Outstanding Items</a></li>
+          <li class="sub"><a href="#key-third-parties">Key Third Parties</a></li>
+          <li><a href="#next-steps">Reading with the Report</a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sidebar-card-head">Document details</div>
+        <div class="sidebar-meta">
+          <p><strong>Phase</strong><br />Post-Pilot</p>
+          <p><strong>Group</strong><br />Adjacent to the Final Evaluation Report</p>
+          <p><strong>Platform</strong><br /><a href="https://community.amnesty.org.uk/" rel="noopener" target="_blank">community.amnesty.org.uk</a></p>
+          <p><strong>Pilot end date</strong><br />March 2025</p>
+          <p><strong>Status</strong><br />Handover — items pending</p>
+          <p><strong>Source</strong><br /><a href="https://docs.google.com/document/d/1tDWXePviEe5LBE_70cB7u43oU5QkKNXxnyMkn8O43oM/edit" rel="noopener" target="_blank">Open in Google Docs ↗</a></p>
+          <a href="evaluation-report.html" class="companion-link">→ Final Evaluation Report</a>
+          <a href="../index.html" class="back-link">← Back to full index</a>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+</main>
+
+<footer>
+  <img src="../assets/wao-logo-white.png" alt="WAO Cooperative" />
+  <div class="footer-bottom">
+    <span>AIUK Community Platform Project · Produced by <a href="https://web.archive.org/web/20260330161608/https://weareopen.coop/" rel="noopener">WAO Cooperative</a></span>
+  </div>
+</footer>
+
+</body>
+</html>
