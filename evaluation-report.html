@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AIUK Final Evaluation Report · AIUK Community Platform Project</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;600;700&family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --charcoal:   #2F495A;
+      --green:      #00C399;
+      --yellow:     #FFBC42;
+      --blue:       #16A8E2;
+      --red:        #FC594D;
+      --white:      #FFFFFF;
+      --off-white:  #F7F9FA;
+      --light-grey: #EDF1F4;
+      --mid-grey:   #8FA3B0;
+      --text:       #2F495A;
+      --font-head: 'Roboto Slab', Georgia, serif;
+      --font-body: 'Nunito', system-ui, sans-serif;
+      --radius: 12px;
+      --radius-sm: 6px;
+      --shadow: 0 4px 24px rgba(47,73,90,0.10);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-body); color: var(--text); background: var(--off-white); line-height: 1.7; font-size: 16px; }
+
+    .skip-link { position: absolute; top: -40px; left: 16px; background: var(--green); color: var(--white); padding: 8px 14px; border-radius: var(--radius-sm); font-weight: 700; z-index: 9999; transition: top .2s; }
+    .skip-link:focus { top: 16px; }
+
+    nav { position: sticky; top: 0; z-index: 100; background: var(--charcoal); display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(16px, 5vw, 48px); height: 60px; box-shadow: 0 2px 12px rgba(0,0,0,0.2); }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .nav-logo img { height: 36px; }
+    .nav-links { display: flex; gap: 4px; list-style: none; flex-wrap: wrap; }
+    .nav-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.82rem; font-weight: 600; letter-spacing: 0.02em; padding: 6px 10px; border-radius: var(--radius-sm); transition: color .2s, background .2s; }
+    .nav-links a:hover { color: var(--white); background: rgba(255,255,255,0.12); }
+
+    .breadcrumb { background: var(--white); border-bottom: 1px solid var(--light-grey); padding: 10px clamp(16px, 5vw, 48px); font-size: 0.82rem; color: var(--mid-grey); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .breadcrumb a { color: var(--mid-grey); text-decoration: none; font-weight: 600; }
+    .breadcrumb a:hover { color: var(--green); }
+    .breadcrumb span { color: var(--charcoal); font-weight: 700; }
+
+    .hero { background: var(--charcoal); padding: clamp(48px, 8vw, 80px) clamp(16px, 5vw, 48px) clamp(40px, 6vw, 64px); position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 50% 90% at 90% 20%, rgba(22,168,226,0.20) 0%, transparent 60%), radial-gradient(ellipse 40% 60% at 5% 90%, rgba(0,195,153,0.14) 0%, transparent 55%); pointer-events: none; }
+    .hero-inner { max-width: 760px; position: relative; }
+    .anchor-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(22,168,226,0.18); border: 1px solid rgba(22,168,226,0.35); color: var(--blue); font-size: 0.72rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 12px; border-radius: 100px; margin-bottom: 16px; }
+    h1 { font-family: var(--font-head); font-size: clamp(1.8rem, 4.5vw, 3rem); font-weight: 700; color: var(--white); line-height: 1.2; margin-bottom: 16px; }
+    h1 em { font-style: normal; color: var(--blue); }
+    .hero-subtitle { font-size: clamp(0.95rem, 1.8vw, 1.1rem); color: rgba(255,255,255,0.7); max-width: 580px; line-height: 1.65; }
+
+    .page-wrap { max-width: 1100px; margin: 0 auto; padding: clamp(32px, 5vw, 64px) clamp(16px, 5vw, 48px); display: grid; grid-template-columns: 1fr 280px; gap: 48px; align-items: start; }
+    @media (max-width: 780px) { .page-wrap { grid-template-columns: 1fr; } .sidebar { order: -1; } }
+
+    .content { min-width: 0; }
+    .content h2 { font-family: var(--font-head); font-size: clamp(1.3rem, 2.5vw, 1.7rem); font-weight: 600; color: var(--charcoal); margin: 40px 0 14px; padding-top: 40px; border-top: 2px solid var(--light-grey); }
+    .content h2:first-child { margin-top: 0; padding-top: 0; border-top: none; }
+    .content p { margin-bottom: 16px; color: #4a6070; font-size: 0.97rem; line-height: 1.75; }
+    .content p strong { color: var(--charcoal); font-weight: 700; }
+
+    .info-card { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius); padding: 24px 28px; margin: 20px 0; box-shadow: var(--shadow); }
+    .info-card.blue-border  { border-left: 4px solid var(--blue); }
+    .info-card.green-border { border-left: 4px solid var(--green); }
+    .info-card.yellow-border { border-left: 4px solid var(--yellow); }
+    .info-card h3 { font-family: var(--font-head); font-size: 0.95rem; font-weight: 600; color: var(--charcoal); margin-bottom: 10px; }
+    .info-card p { margin-bottom: 0; font-size: 0.9rem; }
+    .info-card ul { padding-left: 18px; margin-top: 8px; }
+    .info-card ul li { font-size: 0.9rem; color: #4a6070; margin-bottom: 5px; line-height: 1.6; }
+    .info-card ul li strong { color: var(--charcoal); }
+
+    .eval-areas { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 20px 0 28px; }
+    @media (max-width: 600px) { .eval-areas { grid-template-columns: 1fr; } }
+    .eval-card { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+    .eval-card .eval-icon { font-size: 1.5rem; margin-bottom: 10px; }
+    .eval-card h4 { font-family: var(--font-head); font-size: 0.9rem; font-weight: 600; color: var(--charcoal); margin-bottom: 6px; }
+    .eval-card p { font-size: 0.83rem; color: #4a6070; margin: 0; line-height: 1.5; }
+
+    .timeline-strip { display: flex; gap: 0; margin: 20px 0 28px; overflow: hidden; border-radius: var(--radius); box-shadow: var(--shadow); }
+    .timeline-step { flex: 1; padding: 16px 18px; background: var(--white); border-right: 1px solid var(--light-grey); }
+    .timeline-step:last-child { border-right: none; }
+    .timeline-step .step-num { font-size: 1.2rem; font-weight: 800; color: var(--mid-grey); margin-bottom: 4px; }
+    .timeline-step h4 { font-size: 0.82rem; font-weight: 700; color: var(--charcoal); margin-bottom: 4px; }
+    .timeline-step p { font-size: 0.75rem; color: #4a6070; margin: 0; line-height: 1.45; }
+    @media (max-width: 640px) { .timeline-strip { flex-direction: column; } .timeline-step { border-right: none; border-bottom: 1px solid var(--light-grey); } .timeline-step:last-child { border-bottom: none; } }
+
+    .sidebar { position: sticky; top: 80px; }
+    .sidebar-card { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); margin-bottom: 20px; }
+    .sidebar-card-head { background: var(--charcoal); padding: 14px 18px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.6); }
+    .sidebar-toc { list-style: none; padding: 8px 0; }
+    .sidebar-toc li a { display: block; padding: 9px 18px; color: #4a6070; font-size: 0.85rem; font-weight: 600; text-decoration: none; border-left: 3px solid transparent; transition: color .2s, border-color .2s, background .2s; }
+    .sidebar-toc li a:hover { color: var(--charcoal); border-color: var(--green); background: rgba(0,195,153,0.06); }
+    .sidebar-meta { padding: 16px 18px; }
+    .sidebar-meta p { font-size: 0.82rem; color: var(--mid-grey); margin-bottom: 8px; line-height: 1.5; }
+    .sidebar-meta p strong { color: var(--charcoal); }
+    .back-link { display: inline-flex; align-items: center; gap: 7px; background: var(--green); color: var(--white); text-decoration: none; font-size: 0.85rem; font-weight: 700; padding: 10px 18px; border-radius: var(--radius-sm); transition: background .2s; width: 100%; justify-content: center; margin-top: 4px; }
+    .back-link:hover { background: #00a881; }
+
+    footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.1); padding: clamp(28px,4vw,48px) clamp(16px,5vw,48px); display: flex; flex-wrap: wrap; gap: 24px; justify-content: space-between; align-items: center; }
+    footer img { height: 32px; opacity: 0.7; }
+    .footer-bottom { color: rgba(255,255,255,0.35); font-size: 0.78rem; }
+    .footer-bottom a { color: rgba(255,255,255,0.5); text-decoration: none; }
+    .footer-bottom a:hover { color: var(--green); }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    .hero-inner > * { animation: fadeUp 0.5s ease both; }
+    .anchor-badge { animation-delay: 0.0s; }
+    h1 { animation-delay: 0.1s; }
+    .hero-subtitle { animation-delay: 0.2s; }
+  </style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<nav aria-label="Primary navigation">
+  <a href="index.html" class="nav-logo" aria-label="Back to project index">
+    <img src="https://wiki.weareopen.coop/wao_logo_whitetr_1500.png" alt="WAO Cooperative logo" />
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html#project-overview">Overview</a></li>
+    <li><a href="index.html#key-reports">Key Reports</a></li>
+    <li><a href="index.html#timeline">All Documents</a></li>
+    <li><a href="charter.html">Project Charter</a></li>
+  </ul>
+</nav>
+
+<div class="breadcrumb" aria-label="Breadcrumb">
+  <a href="index.html">← Project Index</a>
+  <span aria-hidden="true">/</span>
+  <span>Post-Pilot</span>
+  <span aria-hidden="true">/</span>
+  <span>AIUK Final Evaluation Report</span>
+</div>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="anchor-badge">🔍 Anchor document</div>
+    <h1>AIUK Final<br /><em>Evaluation Report</em></h1>
+    <p class="hero-subtitle">
+      The summative evaluation of the full project — assessing what was achieved against the original goals, what the pilot revealed, and what comes next for the AIUK activist community platform.
+    </p>
+  </div>
+</header>
+
+<main id="main">
+  <div class="page-wrap">
+
+    <article class="content">
+
+      <section id="overview">
+        <h2>About this report</h2>
+        <p>
+          The AIUK Final Evaluation Report is the second anchor document of the AIUK Community Platform project. It was produced at the conclusion of the pilot phase and provides a summative assessment of the full eighteen-month project — from the original goals set out in the Statement of Work through to the outcomes observed during the pilot.
+        </p>
+        <p>
+          Where the Technical Discovery Report and Recommendations set out <em>what to build and why</em>, this evaluation report answers the question: <strong>did it work, and what did we learn?</strong>
+        </p>
+
+        <div class="info-card blue-border">
+          <h3>What this report is not</h3>
+          <p>This is an evaluation of the project, not the community. A pilot-phase community is still finding its footing — it would be unfair and inaccurate to evaluate the long-term potential of the activist community based on a short pilot. The report evaluates the process, the decisions made, and the early evidence from the pilot against the goals that were set.</p>
+        </div>
+      </section>
+
+      <section id="evaluation-approach">
+        <h2>Evaluation approach</h2>
+        <p>
+          The evaluation draws on multiple sources of evidence gathered across the project: the original goals and acceptance criteria from the Statement of Work, community metrics tracked during the pilot, feedback from pilot participants, and the project team's own reflective assessment.
+        </p>
+
+        <div class="timeline-strip" aria-label="Evaluation evidence sources">
+          <div class="timeline-step">
+            <div class="step-num">01</div>
+            <h4>Goals &amp; criteria</h4>
+            <p>Original SoW goals and the acceptance criteria agreed with AIUK at the start of the project.</p>
+          </div>
+          <div class="timeline-step">
+            <div class="step-num">02</div>
+            <h4>Pilot metrics</h4>
+            <p>Platform usage data and community metrics tracked against the KPI framework developed in Phase Four.</p>
+          </div>
+          <div class="timeline-step">
+            <div class="step-num">03</div>
+            <h4>Participant feedback</h4>
+            <p>Feedback gathered from pilot participants — activists, community managers, and AIUK staff — on their experience of the platform.</p>
+          </div>
+          <div class="timeline-step">
+            <div class="step-num">04</div>
+            <h4>Team reflection</h4>
+            <p>The WAO and AIUK team's own retrospective assessment of what worked and what they would do differently.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="what-it-evaluates">
+        <h2>What the report evaluates</h2>
+        <p>
+          The evaluation covers the full scope of the project, not only the pilot. It assesses both the process (how the project was run) and the outcomes (what it produced).
+        </p>
+
+        <div class="eval-areas">
+          <div class="eval-card">
+            <div class="eval-icon">🗺️</div>
+            <h4>Research and discovery</h4>
+            <p>Did the research phase give the project team the understanding it needed? Were the right people consulted? Did the findings hold up in practice?</p>
+          </div>
+          <div class="eval-card">
+            <div class="eval-icon">🧭</div>
+            <h4>Community strategy</h4>
+            <p>Did the personas, user journeys, and community design decisions reflect the reality of how activists used the platform during the pilot?</p>
+          </div>
+          <div class="eval-card">
+            <div class="eval-icon">⚙️</div>
+            <h4>Technology selection</h4>
+            <p>Did the recommended platform perform as expected? What worked well in practice, and what required adjustment or workarounds?</p>
+          </div>
+          <div class="eval-card">
+            <div class="eval-icon">🌱</div>
+            <h4>Pilot outcomes</h4>
+            <p>How did activists engage during the pilot? What does early adoption data tell us about the platform's potential for the wider community?</p>
+          </div>
+          <div class="eval-card">
+            <div class="eval-icon">🤝</div>
+            <h4>Ways of working</h4>
+            <p>How well did the heartbeat approach, the WAO/AIUK collaboration, and the project governance model work across eighteen months?</p>
+          </div>
+          <div class="eval-card">
+            <div class="eval-icon">📐</div>
+            <h4>Lessons learned</h4>
+            <p>What would the team do differently? What advice would they give to another organisation embarking on a similar project?</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="referenced-documents">
+        <h2>Documents referenced in this report</h2>
+        <p>
+          Like the Technical Discovery Report, this evaluation references a range of project documents — evidence for the assessments it makes. All documents marked ✅ in the project index are referenced in one or both of the anchor documents.
+        </p>
+
+        <div class="info-card green-border">
+          <h3>Key referenced documents</h3>
+          <ul>
+            <li><strong>Platform testing plan with users (Jan 2026)</strong> — the structured testing process carried out ahead of the pilot launch</li>
+            <li><strong>Accessibility Testing</strong> — assessment of the platform's accessibility against WCAG standards</li>
+            <li><strong>Post-pilot Readiness Assessment Framework</strong> — used as a lens for assessing whether the pilot demonstrated readiness to scale</li>
+            <li><strong>Community Metrics</strong> — the KPI framework that provided the measurement basis for the evaluation</li>
+            <li><strong>User Journey</strong> — used to assess whether the platform actually supported the journeys designed in Phase Four</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="looking-forward">
+        <h2>Looking forward</h2>
+        <p>
+          The evaluation report is not only a retrospective — it also sets direction for what comes next. Based on what the pilot revealed, the report includes recommendations for the next phase of the platform's life: how to grow participation, what to address in the configuration, and how AIUK might sustain and develop the community over time.
+        </p>
+        <p>
+          These recommendations connect directly to the post-pilot planning documents — the <strong>Integration Roadmap</strong> and the <strong>Community Management Plan</strong> — which translate the evaluation's findings into practical next steps.
+        </p>
+
+        <div class="info-card yellow-border">
+          <h3>Companion document</h3>
+          <p>This report should be read alongside the <a href="technical-discovery.html">Technical Discovery Report and Recommendations</a>, which sets out the strategic and technical basis that this evaluation assesses. Together they form the complete record of evidence-based decision-making across the project.</p>
+        </div>
+      </section>
+
+    </article>
+
+    <aside class="sidebar" aria-label="Page navigation">
+      <div class="sidebar-card">
+        <div class="sidebar-card-head">On this page</div>
+        <ul class="sidebar-toc">
+          <li><a href="#overview">About this report</a></li>
+          <li><a href="#evaluation-approach">Evaluation approach</a></li>
+          <li><a href="#what-it-evaluates">What it evaluates</a></li>
+          <li><a href="#referenced-documents">Referenced documents</a></li>
+          <li><a href="#looking-forward">Looking forward</a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sidebar-card-head">Document details</div>
+        <div class="sidebar-meta">
+          <p><strong>Phase</strong><br />Post-Pilot</p>
+          <p><strong>Status</strong><br />Anchor document · Completed</p>
+          <p><strong>Audience</strong><br />AIUK leadership, DDaT team, project committee</p>
+          <p><strong>Companion</strong><br /><a href="technical-discovery.html">Technical Discovery Report &amp; Recommendations</a></p>
+          <a href="index.html" class="back-link">← Back to full index</a>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+</main>
+
+<footer>
+  <img src="https://wiki.weareopen.coop/wao_logo_whitetr_1500.png" alt="WAO Cooperative" />
+  <div class="footer-bottom">
+    <span>AIUK Community Platform Project · Produced by <a href="https://weareopen.coop" rel="noopener">WAO Cooperative</a></span>
+  </div>
+</footer>
+
+</body>
+</html>

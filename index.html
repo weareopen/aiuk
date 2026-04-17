@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AIUK Community Platform Project</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;600;700&family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    /* ── WAO Brand Tokens ── */
+    :root {
+      --charcoal:   #2F495A;
+      --green:      #00C399;
+      --yellow:     #FFBC42;
+      --blue:       #16A8E2;
+      --red:        #FC594D;
+      --white:      #FFFFFF;
+      --off-white:  #F7F9FA;
+      --light-grey: #EDF1F4;
+      --mid-grey:   #8FA3B0;
+      --text:       #2F495A;
+
+      --font-head: 'Roboto Slab', Georgia, serif;
+      --font-body: 'Nunito', system-ui, sans-serif;
+
+      --radius: 12px;
+      --radius-sm: 6px;
+      --shadow: 0 4px 24px rgba(47,73,90,0.10);
+      --shadow-hover: 0 8px 36px rgba(47,73,90,0.18);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--text);
+      background: var(--off-white);
+      line-height: 1.7;
+      font-size: 16px;
+    }
+
+    /* ── SKIP LINK ── */
+    .skip-link {
+      position: absolute; top: -40px; left: 16px;
+      background: var(--green); color: var(--white);
+      padding: 8px 14px; border-radius: var(--radius-sm);
+      font-weight: 700; z-index: 9999; transition: top .2s;
+    }
+    .skip-link:focus { top: 16px; }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--charcoal);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 clamp(16px, 5vw, 48px);
+      height: 60px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none;
+    }
+    .nav-logo img { height: 36px; }
+    .nav-links {
+      display: flex; gap: 4px; list-style: none;
+      flex-wrap: wrap;
+    }
+    .nav-links a {
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      padding: 6px 10px;
+      border-radius: var(--radius-sm);
+      transition: color .2s, background .2s;
+    }
+    .nav-links a:hover {
+      color: var(--white);
+      background: rgba(255,255,255,0.12);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--charcoal);
+      padding: clamp(60px, 10vw, 100px) clamp(16px, 5vw, 48px) clamp(48px, 8vw, 80px);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 80% at 80% 30%, rgba(0,195,153,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 60% at 10% 80%, rgba(22,168,226,0.15) 0%, transparent 55%);
+      pointer-events: none;
+    }
+    .hero-inner {
+      max-width: 860px;
+      position: relative;
+    }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(0,195,153,0.18);
+      border: 1px solid rgba(0,195,153,0.4);
+      color: var(--green);
+      font-size: 0.78rem; font-weight: 800;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 6px 14px; border-radius: 100px;
+      margin-bottom: 20px;
+    }
+    .hero-tag span { width: 7px; height: 7px; background: var(--green); border-radius: 50%; display: inline-block; }
+    h1 {
+      font-family: var(--font-head);
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.2;
+      margin-bottom: 20px;
+    }
+    h1 em {
+      font-style: normal;
+      color: var(--green);
+    }
+    .hero-subtitle {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: rgba(255,255,255,0.72);
+      max-width: 600px;
+      margin-bottom: 36px;
+      font-weight: 400;
+    }
+    .hero-meta {
+      display: flex; flex-wrap: wrap; gap: 16px;
+    }
+    .hero-pill {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.85);
+      padding: 8px 18px;
+      border-radius: 100px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: flex; align-items: center; gap: 7px;
+    }
+    .hero-pill svg { opacity: 0.7; }
+
+    /* ── INTRO STRIP ── */
+    .intro-strip {
+      background: var(--green);
+      padding: clamp(24px,4vw,40px) clamp(16px,5vw,48px);
+    }
+    .intro-strip p {
+      max-width: 780px;
+      color: var(--charcoal);
+      font-size: clamp(1rem, 1.8vw, 1.15rem);
+      font-weight: 600;
+      line-height: 1.65;
+    }
+    .intro-strip p strong { font-weight: 800; }
+
+    /* ── KEY REPORTS ── */
+    .key-reports {
+      padding: clamp(48px,6vw,80px) clamp(16px,5vw,48px);
+      background: var(--white);
+    }
+    .section-label {
+      font-size: 0.75rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--mid-grey); margin-bottom: 8px;
+    }
+    .section-title {
+      font-family: var(--font-head);
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      font-weight: 600;
+      color: var(--charcoal);
+      margin-bottom: 32px;
+    }
+    .report-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .report-card {
+      border-radius: var(--radius);
+      padding: 28px;
+      display: flex; flex-direction: column; gap: 12px;
+      box-shadow: var(--shadow);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .report-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+    .report-card.green  { background: linear-gradient(135deg, #00C399 0%, #00a881 100%); color: var(--white); }
+    .report-card.blue   { background: linear-gradient(135deg, #16A8E2 0%, #1090c5 100%); color: var(--white); }
+    .report-card-icon { font-size: 1.6rem; }
+    .report-card h3 {
+      font-family: var(--font-head); font-size: 1.1rem; font-weight: 600; line-height: 1.3;
+    }
+    .report-card p { font-size: 0.88rem; opacity: 0.9; line-height: 1.5; }
+    .report-card a {
+      margin-top: auto;
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,0.25);
+      color: var(--white);
+      text-decoration: none;
+      font-size: 0.82rem; font-weight: 700;
+      padding: 8px 14px; border-radius: var(--radius-sm);
+      border: 1px solid rgba(255,255,255,0.4);
+      transition: background .2s;
+      width: fit-content;
+    }
+    .report-card a:hover { background: rgba(255,255,255,0.4); }
+
+    /* ── TIMELINE ── */
+    .timeline-section {
+      padding: clamp(48px,6vw,80px) clamp(16px,5vw,48px);
+      background: var(--off-white);
+    }
+    .timeline {
+      position: relative;
+      padding-left: 36px;
+      max-width: 900px;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute; left: 12px; top: 8px; bottom: 8px; width: 3px;
+      background: linear-gradient(180deg, var(--green) 0%, var(--blue) 50%, var(--yellow) 100%);
+      border-radius: 3px;
+    }
+    .tl-phase {
+      position: relative;
+      margin-bottom: 48px;
+    }
+    .tl-phase:last-child { margin-bottom: 0; }
+    .tl-dot {
+      position: absolute; left: -31px; top: 4px;
+      width: 20px; height: 20px; border-radius: 50%;
+      border: 3px solid var(--white);
+      box-shadow: 0 0 0 2px currentColor;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .tl-dot.p1 { color: var(--green); background: var(--green); }
+    .tl-dot.p2 { color: var(--blue); background: var(--blue); }
+    .tl-dot.p3 { color: var(--yellow); background: var(--yellow); }
+    .tl-dot.p4 { color: var(--red); background: var(--red); }
+    .tl-dot.p5 { color: var(--green); background: var(--green); }
+    .tl-dot.pp { color: var(--charcoal); background: var(--charcoal); }
+    .tl-dot.post { color: var(--blue); background: var(--blue); }
+
+    .tl-header {
+      display: flex; align-items: flex-start; gap: 12px; flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .tl-badge {
+      font-size: 0.7rem; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 0.08em; padding: 3px 10px;
+      border-radius: 100px;
+      white-space: nowrap;
+    }
+    .tl-badge.p1 { background: rgba(0,195,153,0.15); color: #009970; }
+    .tl-badge.p2 { background: rgba(22,168,226,0.15); color: #0e82b0; }
+    .tl-badge.p3 { background: rgba(255,188,66,0.2); color: #b8820a; }
+    .tl-badge.p4 { background: rgba(252,89,77,0.15); color: #c0352a; }
+    .tl-badge.p5 { background: rgba(0,195,153,0.15); color: #009970; }
+    .tl-badge.pp { background: rgba(47,73,90,0.12); color: var(--charcoal); }
+    .tl-badge.post { background: rgba(22,168,226,0.15); color: #0e82b0; }
+
+    .tl-phase h3 {
+      font-family: var(--font-head);
+      font-size: 1.15rem; font-weight: 600; color: var(--charcoal);
+    }
+    .tl-description {
+      font-size: 0.9rem; color: #5a7080; margin-bottom: 16px;
+      max-width: 640px;
+    }
+
+    /* doc groups */
+    .doc-group { margin-bottom: 14px; }
+    .doc-group-title {
+      font-size: 0.78rem; font-weight: 800; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--mid-grey);
+      margin-bottom: 8px;
+    }
+    .doc-list {
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .doc-item {
+      display: flex; align-items: center; gap: 10px;
+      background: var(--white);
+      border: 1px solid var(--light-grey);
+      border-radius: var(--radius-sm);
+      padding: 9px 14px;
+      text-decoration: none;
+      color: var(--text);
+      font-size: 0.88rem;
+      font-weight: 600;
+      transition: border-color .2s, box-shadow .2s, transform .15s;
+    }
+    .doc-item:hover {
+      border-color: var(--green);
+      box-shadow: 0 2px 10px rgba(0,195,153,0.15);
+      transform: translateX(3px);
+    }
+    .doc-item .doc-icon {
+      width: 24px; height: 24px; border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.7rem; font-weight: 900; flex-shrink: 0;
+    }
+    .doc-item .doc-icon.gdoc  { background: #e8f0fe; color: #4285f4; }
+    .doc-item .doc-icon.gslide { background: #fff3e0; color: #fb8c00; }
+    .doc-item .doc-icon.gsheet { background: #e6f4ea; color: #34a853; }
+    .doc-item .doc-icon.link   { background: rgba(0,195,153,0.12); color: var(--green); }
+    .doc-item .doc-icon.blog   { background: rgba(252,89,77,0.12); color: var(--red); }
+    .doc-item .checked::after {
+      content: '✅';
+      font-size: 0.75rem;
+      margin-left: auto;
+    }
+    .doc-item .doc-label { flex: 1; }
+    .ref-badge {
+      font-size: 0.65rem; font-weight: 800; letter-spacing: 0.05em;
+      background: rgba(0,195,153,0.15); color: #009970;
+      padding: 2px 7px; border-radius: 100px; white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .doc-item.no-link {
+      color: var(--mid-grey);
+      cursor: default;
+    }
+    .doc-item.no-link:hover {
+      border-color: var(--light-grey);
+      box-shadow: none;
+      transform: none;
+    }
+
+    /* ── STATS STRIP ── */
+    .stats-strip {
+      background: var(--charcoal);
+      padding: clamp(36px, 5vw, 56px) clamp(16px, 5vw, 48px);
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 24px;
+      max-width: 860px;
+    }
+    .stat-item { text-align: center; }
+    .stat-number {
+      font-family: var(--font-head);
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .stat-label {
+      font-size: 0.82rem; font-weight: 600;
+      color: rgba(255,255,255,0.6);
+      text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    .stat-item:nth-child(1) .stat-number { color: var(--green); }
+    .stat-item:nth-child(2) .stat-number { color: var(--yellow); }
+    .stat-item:nth-child(3) .stat-number { color: var(--blue); }
+    .stat-item:nth-child(4) .stat-number { color: var(--red); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--charcoal);
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding: clamp(32px,5vw,56px) clamp(16px,5vw,48px);
+      display: flex; flex-wrap: wrap; gap: 32px;
+      justify-content: space-between; align-items: flex-start;
+    }
+    .footer-brand img { height: 40px; margin-bottom: 12px; display: block; }
+    .footer-brand p {
+      color: rgba(255,255,255,0.5);
+      font-size: 0.83rem; max-width: 280px; line-height: 1.6;
+    }
+    .footer-links h4 {
+      font-size: 0.75rem; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 0.1em; color: rgba(255,255,255,0.4); margin-bottom: 12px;
+    }
+    .footer-links ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+    .footer-links a {
+      color: rgba(255,255,255,0.65); text-decoration: none;
+      font-size: 0.85rem; font-weight: 600;
+      transition: color .2s;
+    }
+    .footer-links a:hover { color: var(--green); }
+    .footer-bottom {
+      width: 100%; border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 20px; margin-top: 8px;
+      color: rgba(255,255,255,0.35); font-size: 0.78rem;
+      display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .timeline { padding-left: 24px; }
+      .timeline::before { left: 6px; }
+      .tl-dot { left: -22px; }
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero-inner > * {
+      animation: fadeUp 0.6s ease both;
+    }
+    .hero-tag          { animation-delay: 0.0s; }
+    h1                 { animation-delay: 0.1s; }
+    .hero-subtitle     { animation-delay: 0.2s; }
+    .hero-meta         { animation-delay: 0.3s; }
+  </style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<!-- NAV -->
+<nav aria-label="Primary navigation">
+  <a href="#" class="nav-logo" aria-label="WAO Cooperative">
+    <img src="https://wiki.weareopen.coop/wao_logo_whitetr_1500.png" alt="WAO Cooperative logo" />
+  </a>
+  <ul class="nav-links">
+    <li><a href="#project-overview">Overview</a></li>
+    <li><a href="#key-reports">Key Reports</a></li>
+    <li><a href="#timeline">All Documents</a></li>
+    <li><a href="charter.html">Project Charter</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag"><span></span>Project Archive</div>
+    <h1>AIUK Community<br /><em>Platform Project</em></h1>
+    <p class="hero-subtitle">
+      A comprehensive record of an eighteen-month journey — from discovery and community consultation through to technology selection, platform configuration, and governance — building a home for Amnesty International UK's activist community.
+    </p>
+    <div class="hero-meta">
+      <div class="hero-pill">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        ~18 months
+      </div>
+      <div class="hero-pill">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+        50+ documents
+      </div>
+      <div class="hero-pill">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        5 project phases
+      </div>
+      <div class="hero-pill">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+        Amnesty International UK
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- INTRO STRIP -->
+<section id="project-overview" class="intro-strip" aria-labelledby="intro-heading">
+  <p id="intro-heading">
+    This index brings together every <strong>official deliverable and finished document</strong> from the AIUK Community Platform project. Documents are organised by phase, as agreed in the original Statement of Work. The two anchor documents — the <strong>Technical Discovery Report and Recommendations</strong> and the <strong>AIUK Final Evaluation Report</strong> — reference the items marked ✅ throughout.
+  </p>
+</section>
+
+<!-- KEY REPORTS -->
+<section id="key-reports" class="key-reports" aria-labelledby="reports-heading">
+  <div class="section-label">Anchor documents</div>
+  <h2 class="section-title" id="reports-heading">The Two Key Reports</h2>
+  <div class="report-cards">
+    <div class="report-card green">
+      <div class="report-card-icon">📋</div>
+      <h3>Technical Discovery Report &amp; Recommendations</h3>
+      <p>The primary technical output of the project. Synthesises research, testing and community input into a clear platform recommendation.</p>
+      <a href="technical-discovery.html" aria-label="Open Technical Discovery Report">Open report →</a>
+    </div>
+    <div class="report-card blue">
+      <div class="report-card-icon">🔍</div>
+      <h3>AIUK Final Evaluation Report</h3>
+      <p>The summative evaluation of the full project, assessing what was achieved against the original goals and setting out lessons learned.</p>
+      <a href="evaluation-report.html" aria-label="Open Final Evaluation Report">Open report →</a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats-strip" aria-label="Project at a glance">
+  <div class="stats-grid">
+    <div class="stat-item">
+      <div class="stat-number">5</div>
+      <div class="stat-label">Project Phases</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">50+</div>
+      <div class="stat-label">Documents Created</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">18</div>
+      <div class="stat-label">Months of Work</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">2</div>
+      <div class="stat-label">Anchor Reports</div>
+    </div>
+  </div>
+</section>
+
+<!-- FULL DOCUMENT TIMELINE -->
+<main id="main">
+<section id="timeline" class="timeline-section" aria-labelledby="timeline-heading">
+  <div class="section-label">Complete document index</div>
+  <h2 class="section-title" id="timeline-heading">All Documents by Phase</h2>
+
+  <div class="timeline">
+
+    <!-- ── PHASE ONE ── -->
+    <div class="tl-phase">
+      <div class="tl-dot p1" aria-hidden="true"></div>
+      <div class="tl-header">
+        <span class="tl-badge p1">Phase One</span>
+        <h3>Kickoff &amp; Planning</h3>
+      </div>
+      <p class="tl-description">Establishing the project structure, mapping who was involved, and planning how to reach users for research.</p>
+
+      <div class="doc-group">
+        <div class="doc-group-title">Project Plan, Charter &amp; Backlog</div>
+        <div class="doc-list">
+          <a class="doc-item no-link" aria-label="AIUK Project Timeline and Risks (no link available)">
+            <span class="doc-icon gsheet" aria-hidden="true">GS</span>
+            <span class="doc-label">AIUK: Project timeline + risks</span>
+          </a>
+          <a class="doc-item" href="charter.html">
+            <span class="doc-icon gdoc" aria-hidden="true">GD</span>
+            <span class="doc-label">Project Charter: AIUK Project</span>
+          </a>
+          <a class="doc-item no-link">
+            <span class="doc-icon gslide" aria-hidden="true">GS</span>
+            <span class="doc-label">Visual Project Charter</span>
+          </a>
+          <a class="doc-item no-link">
+            <span class="doc-icon blog" aria-hidden="true">✍</span>
+            <span class="doc-label">Announcing an Amnesty Community Project (blogpost)</span>
+          </a>
+          <a class="doc-item" href="project-management.html">
+            <span class="doc-icon gdoc" aria-hidden="true">GD</span>
+            <span class="doc-label">Project Management Notes</span>
+          </a>
+          <a class="doc-item" href="strengthening-community.html">
+            <span class="doc-icon gdoc" aria-hidden="true">GD</span>
+            <span class="doc-label">Strengthening Community: Building Bridges for Human Rights with AIUK</span>
+          </a>
+          <a class="doc-item" href="backlog.html">
+            <span class="doc-icon gdoc" aria-hidden="true">GD</span>
+            <span class="doc-label">Backlog</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="doc-group">
+        <div class="doc-group-title">Stakeholder Mapping</div>
+        <div class="doc-list">
+          <a class="doc-item" href="stakeholder-mapping.html">
+            <span class="doc-icon gdoc" aria-hidden="true">GD</span>
+            <span class="doc-label">Initial Stakeholder Mapping</span>
+          </a>
+          <a class="doc-item no-link">
+            <span class="doc-icon gdoc" aria-hidden="true">GD</span>
+            <span class="doc-label">Stakeholder Mapping + Glossary</span>
+          </a>
+          <a class="doc-item no-link">
+            <span class="doc-icon gsheet" aria-hidden="true">GS</span>
+            <span class="doc-label">Stakeholder Mapping</span>
+          </a>
+          <a class="doc-item" href="https://kumu.io" rel="noopener" target="_blank">
+            <span class="doc-icon link" aria-hidden="true">↗</span>
+            <span class="doc-label">Interactive Map on Kumu</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="doc-group">
+        <div class="doc-group-title">User Recruitment Plan</div>
+        <div class="doc-list">
+          <a class="doc-item no-link">
+            <span class="doc-icon gdoc" aria-hidden="true">GD</span>
+            <span class="doc-label">User Recruitment (interviews)</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PHASE TWO ── -->
+    <div class="tl-phase">
+      <div class="tl-dot p2" aria-hidden="true"></div>
+      <div class="tl-header">
+        <span class="tl-badge p2">Phase Two</span>
+        <h3>Discovery &amp; Research</h3>
+      </div>
+      <p class="tl-description">Gathering community insight through interviews, focus groups and surveys — in collaboration with Torchbox.</p>
+
+      <div class="doc-group">
+        <div class="doc-group-title">Research Methodology &amp; Strategy</div>
+        <div class="doc-list">
+          <a class="doc-item no-link">
+            <span class="doc-icon gdoc" aria-hidden="true">GD</span>
+            <span class="doc-label">User Research and Platform Testing Guide</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="doc-group">
+        <div class="doc-group-title">Interview &amp; Focus Group Notes</div>
+        <div class="doc-list">
+          <a class="doc-item no-link">
+            <span class="doc-icon gdoc" aria-hidden="true">GD</span>
+            <span class="doc-label">Interview Notes (AIUK)</span>
+          </a>
+          <a class="doc-item no-link">
+            <span class="doc-icon gdoc" aria-hidden="true">GD</span>
+            <span class="doc-label">Focus Group themes</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="doc-group">
+        <div class="doc-group-title">Survey</div>
+        <div class="doc-list">
+          <a class="doc-item no-link">
+            <span class="doc-icon link" aria-hidden="true">↗</span>
+            <span class="doc-label">Help Us Improve the AIUK Activist Experience – Community Platform Questionnaire</span>
+          </a>
+          <a class="doc-item no-link">
+            <span class="doc-icon gdoc" aria-hidden="true">GD</span>
+            <span class="doc-label">Survey questions in our user research guide</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PHASE THREE ── -->
+    <div class="tl-phase">
+      <div class="tl-dot p3" aria-hidden="true"></div>
+      <div class="tl-header">
+        <span class="tl-badge p3">Phase Three</span>
+        <h3>Analysis &amp; Findings</h3>
+      </div>
+      <p class="tl-description">Making sense of quantitative and qualitative data gathered from the community research phase.</p>
+
+      <div class="doc-group">
+        <div class="doc-group-title">Data Reports</div>
+        <div class="doc-list">
+          <a class="doc-item no-link">
+            <span class="doc-icon gdoc" aria-hidden="true">GD</span>
+            <span class="doc-label">Data Report: A little platform, a lot of strategy</span>
+            <span class="ref-badge">✅ Referenced</span>
+          </a>
+          <a class="doc-item no-link">
+            <span class="doc-icon gsheet" aria-hidden="true">GS</span>
+            <span class="doc-label">AIUK Data Dump</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PHASE FOUR ── -->
+    <div class="tl-phase">
+      <div class="tl-dot p4" aria-hidden="true"></div>
+      <div class="tl-header">
+        <span class="tl-badge p4">Phase Four</span>
+        <h3>Community Strategy Design</h3>
+      </div>
+      <p class="tl-description">Translating research into a community strategy — personas, user journeys, KPIs, workflows and recognition systems.</p>
+
+      <div class="doc-group">
+        <div class="doc-group-title">Co-creation &amp; Workshops</div>
+        <div class="doc-list">
+          <a class="doc-item no-link">
+            <span class="doc-icon blog" aria-hidden="true">✍</span>
+            <span class="doc-label">Amplifying Community Engagement (blogpost)</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="doc-group">
+        <div class="doc-group-title">Personas &amp; User Journey</div>
+        <div class="doc-list">
+          <a class="doc-item no-link">
+            <span class="doc-icon gdoc" aria-hidden="true">GD</span>
+            <span class="doc-label">Audience refinement and personas spectrum</span>
+          </a>
+          <a class="doc-item no-link">
+            <span class="doc-icon gdoc" aria-hidden="true">GD</span>
+            <span class="doc-label">User Journey</span>
+            <span class="ref-badge">✅ Referenced</span>
+          </a>
+          <a class="doc-item no-link">
+            <span class="doc-icon blog" aria-hidden="true">✍</span>
+            <span class="doc-label">Building power and making change (blogpost &amp; cross-post)</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="doc-group">
+        <div class="doc-group-title">KPIs, Processes &amp; Recognition</div>
+        <div class="doc-list">
+          <a class="doc-item no-link">
+            <span class="doc-icon gdoc" aria-hidden="true">GD</span>
+            <span class="doc-label">Community Metrics</span>
+            <span class="ref-badge">✅ Referenced</span>
+          </a>
+          <a class="doc-item no-link">
+            <span class="doc-icon gdoc" aria-hidden="true">GD</span>
+            <span class="doc-label">Processes and Workflows</span>
+            <span class="ref-badge">✅ Referenced</span>
+          </a>
+          <a class="doc-item no-link">
+            <span class="doc-icon gdoc" aria-hidden="true">GD</span>
+            <span class="doc-label">Recognition ecosystem</span>
+            <span class="ref-badge">✅ Referenced</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PHASE FIVE ── -->
+    <div class="tl-phase">
+      <div class="tl-dot p5" aria-hidden="true"></div>
+      <div class="tl-header">
+        <span class="tl-badge p5">Phase Five</span>
+        <h3>Technology Selection</h3>
+      </div>
+      <p class="tl-description">Mapping the technical landscape, comparing platforms, and producing the definitive recommendation.</p>
+
+      <div class="doc-group">
+        <div class="doc-group-title">Ecosystem &amp; Platform Analysis</div>
+        <div class="doc-list">
+          <a class="doc-item no-link">
+            <span class="doc-icon gdoc" aria-hidden="true">GD</span>
+            <span class="doc-label">Building an AIUK community ecosystem</span>
+            <span class="ref-badge">✅ Referenced</span>
+          </a>
+          <a class="doc-item no-link">
+            <span class="doc-icon gdoc" aria-hidden="true">GD</span>
+            <span class="doc-label">Community Platforms Comparison</span>
+            <span class="ref-badge">✅ Referenced</span>
+          </a>
+          <a class="doc-item no-link">
+            <span class="doc-icon gdoc" aria-hidden="true">GD</span>
+            <span class="doc-label">Analysis and comparison of technical platforms</span>
+            <span class="ref-badge">✅ Referenced</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="doc-group">
+        <div class="doc-group-title">Technical Discovery Report (inputs)</div>
+        <div class="doc-list">
+          <a class="doc-item no-link">
+            <span class="doc-icon gdoc" aria-hidden="true">GD</span>
+            <span class="doc-label">User stories madlib</span>
+          </a>
+          <a class="doc-item no-link">
+            <span class="doc-icon gdoc" aria-hidden="true">GD</span>
+            <span class="doc-label">User Stories – Community Persona Spectrums</span>
+          </a>
+          <a class="doc-item no-link">
+            <span class="doc-icon gdoc" aria-hidden="true">GD</span>
+            <span class="doc-label">Considerations for 55+ demographic</span>
+            <span class="ref-badge">✅ Referenced</span>
+          </a>
+          <a class="doc-item no-link">
+            <span class="doc-icon gdoc" aria-hidden="true">GD</span>
+            <span class="doc-label">Considerations for Youth demographic</span>
+            <span class="ref-badge">✅ Referenced</span>
+          </a>
+          <a class="doc-item no-link">
+            <span class="doc-icon gdoc" aria-hidden="true">GD</span>
+            <span class="doc-label">Technical Discovery Report and Recommendations</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PLANNING & PREP FOR PILOT ── -->
+    <div class="tl-phase">
+      <div class="tl-dot pp" aria-hidden="true"></div>
+      <div class="tl-header">
+        <span class="tl-badge pp">Pilot Prep</span>
+        <h3>Planning &amp; Preparation for the Pilot</h3>
+      </div>
+      <p class="tl-description">Configuring the chosen platform, creating content, and running accessibility and user testing ahead of the pilot launch.</p>
+
+      <div class="doc-group">
+        <div class="doc-group-title">Tech Strategy &amp; Configuration</div>
+        <div class="doc-list">
+          <a class="doc-item no-link">
+            <span class="doc-icon gdoc" aria-hidden="true">GD</span>
+            <span class="doc-label">Configuration Brief</span>
+          </a>
+          <a class="doc-item no-link">
+            <span class="doc-icon gdoc" aria-hidden="true">GD</span>
+            <span class="doc-label">Data Privacy for the Community Platform</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="doc-group">
+        <div class="doc-group-title">Content</div>
+        <div class="doc-list">
+          <a class="doc-item no-link">
+            <span class="doc-icon gdoc" aria-hidden="true">GD</span>
+            <span class="doc-label">Training Plan</span>
+          </a>
+          <a class="doc-item no-link">
+            <span class="doc-icon gdoc" aria-hidden="true">GD</span>
+            <span class="doc-label">Sample posts to test moderation</span>
+          </a>
+          <a class="doc-item no-link">
+            <span class="doc-icon gdoc" aria-hidden="true">GD</span>
+            <span class="doc-label">Badges &amp; permissions</span>
+          </a>
+          <a class="doc-item no-link">
+            <span class="doc-icon gdoc" aria-hidden="true">GD</span>
+            <span class="doc-label">Community Platform Content</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="doc-group">
+        <div class="doc-group-title">Testing</div>
+        <div class="doc-list">
+          <a class="doc-item no-link">
+            <span class="doc-icon gdoc" aria-hidden="true">GD</span>
+            <span class="doc-label">Platform testing plan with users (Jan 2026)</span>
+            <span class="ref-badge">✅ Referenced</span>
+          </a>
+          <a class="doc-item no-link">
+            <span class="doc-icon gdoc" aria-hidden="true">GD</span>
+            <span class="doc-label">Platform testing notes (personal data – names)</span>
+          </a>
+          <a class="doc-item no-link">
+            <span class="doc-icon gdoc" aria-hidden="true">GD</span>
+            <span class="doc-label">Accessibility Testing</span>
+            <span class="ref-badge">✅ Referenced</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="doc-group">
+        <div class="doc-group-title">Pilot Resources</div>
+        <div class="doc-list">
+          <a class="doc-item no-link">
+            <span class="doc-icon gdoc" aria-hidden="true">GD</span>
+            <span class="doc-label">Discourse Missions</span>
+          </a>
+          <a class="doc-item no-link">
+            <span class="doc-icon gdoc" aria-hidden="true">GD</span>
+            <span class="doc-label">Online Safety Act advice and guidance</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── POST PILOT ── -->
+    <div class="tl-phase">
+      <div class="tl-dot post" aria-hidden="true"></div>
+      <div class="tl-header">
+        <span class="tl-badge post">Post-Pilot</span>
+        <h3>Post-Pilot Resources</h3>
+      </div>
+      <p class="tl-description">Assessing readiness to scale, planning integration, and putting in place sustainable community management.</p>
+
+      <div class="doc-list">
+        <a class="doc-item no-link">
+          <span class="doc-icon gdoc" aria-hidden="true">GD</span>
+          <span class="doc-label">Post-pilot Readiness Assessment Framework</span>
+        </a>
+        <a class="doc-item no-link">
+          <span class="doc-icon gdoc" aria-hidden="true">GD</span>
+          <span class="doc-label">Post Pilot Planning: Integration Roadmap</span>
+        </a>
+        <a class="doc-item no-link">
+          <span class="doc-icon gdoc" aria-hidden="true">GD</span>
+          <span class="doc-label">Community management plan</span>
+        </a>
+      </div>
+    </div>
+
+  </div><!-- end .timeline -->
+</section>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">
+    <img src="https://wiki.weareopen.coop/wao_logo_whitetr_1500.png" alt="WAO Cooperative" />
+    <p>WAO (We Are Open Cooperative) is an open cooperative working on open education, community strategy and collaborative technology.</p>
+  </div>
+  <div class="footer-links">
+    <h4>On this page</h4>
+    <ul>
+      <li><a href="#project-overview">Project Overview</a></li>
+      <li><a href="#key-reports">Key Reports</a></li>
+      <li><a href="#timeline">Phase One: Kickoff &amp; Planning</a></li>
+      <li><a href="#timeline">Phase Two: Discovery &amp; Research</a></li>
+      <li><a href="#timeline">Phase Three: Analysis &amp; Findings</a></li>
+      <li><a href="#timeline">Phase Four: Community Strategy</a></li>
+      <li><a href="#timeline">Phase Five: Technology Selection</a></li>
+      <li><a href="#timeline">Pilot Prep &amp; Post-Pilot</a></li>
+    </ul>
+  </div>
+  <div class="footer-links">
+    <h4>Links</h4>
+    <ul>
+      <li><a href="https://weareopen.coop" rel="noopener">weareopen.coop</a></li>
+      <li><a href="https://amnesty.org.uk" rel="noopener">amnesty.org.uk</a></li>
+    </ul>
+  </div>
+  <div class="footer-bottom">
+    <span>AIUK Community Platform Project · Produced by WAO Cooperative</span>
+    <span>Access permissions are managed on individual documents.</span>
+  </div>
+</footer>
+
+</body>
+</html>

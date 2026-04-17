@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project Management Notes · AIUK Community Platform Project</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;600;700&family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --charcoal:   #2F495A;
+      --green:      #00C399;
+      --yellow:     #FFBC42;
+      --blue:       #16A8E2;
+      --red:        #FC594D;
+      --white:      #FFFFFF;
+      --off-white:  #F7F9FA;
+      --light-grey: #EDF1F4;
+      --mid-grey:   #8FA3B0;
+      --text:       #2F495A;
+      --font-head: 'Roboto Slab', Georgia, serif;
+      --font-body: 'Nunito', system-ui, sans-serif;
+      --radius: 12px;
+      --radius-sm: 6px;
+      --shadow: 0 4px 24px rgba(47,73,90,0.10);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-body); color: var(--text); background: var(--off-white); line-height: 1.7; font-size: 16px; }
+
+    .skip-link { position: absolute; top: -40px; left: 16px; background: var(--green); color: var(--white); padding: 8px 14px; border-radius: var(--radius-sm); font-weight: 700; z-index: 9999; transition: top .2s; }
+    .skip-link:focus { top: 16px; }
+
+    nav { position: sticky; top: 0; z-index: 100; background: var(--charcoal); display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(16px, 5vw, 48px); height: 60px; box-shadow: 0 2px 12px rgba(0,0,0,0.2); }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .nav-logo img { height: 36px; }
+    .nav-links { display: flex; gap: 4px; list-style: none; flex-wrap: wrap; }
+    .nav-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.82rem; font-weight: 600; letter-spacing: 0.02em; padding: 6px 10px; border-radius: var(--radius-sm); transition: color .2s, background .2s; }
+    .nav-links a:hover { color: var(--white); background: rgba(255,255,255,0.12); }
+
+    .breadcrumb { background: var(--white); border-bottom: 1px solid var(--light-grey); padding: 10px clamp(16px, 5vw, 48px); font-size: 0.82rem; color: var(--mid-grey); display: flex; align-items: center; gap: 8px; }
+    .breadcrumb a { color: var(--mid-grey); text-decoration: none; font-weight: 600; }
+    .breadcrumb a:hover { color: var(--green); }
+    .breadcrumb span { color: var(--charcoal); font-weight: 700; }
+
+    .hero { background: var(--charcoal); padding: clamp(48px, 8vw, 80px) clamp(16px, 5vw, 48px) clamp(40px, 6vw, 64px); position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 50% 90% at 90% 20%, rgba(255,188,66,0.14) 0%, transparent 60%), radial-gradient(ellipse 40% 60% at 5% 90%, rgba(0,195,153,0.12) 0%, transparent 55%); pointer-events: none; }
+    .hero-inner { max-width: 760px; position: relative; }
+    .hero-tag { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,188,66,0.18); border: 1px solid rgba(255,188,66,0.4); color: var(--yellow); font-size: 0.75rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 14px; border-radius: 100px; margin-bottom: 18px; }
+    .hero-tag a { color: inherit; text-decoration: none; }
+    .hero-tag a:hover { text-decoration: underline; }
+    h1 { font-family: var(--font-head); font-size: clamp(1.8rem, 4.5vw, 3rem); font-weight: 700; color: var(--white); line-height: 1.2; margin-bottom: 16px; }
+    h1 em { font-style: normal; color: var(--yellow); }
+    .hero-subtitle { font-size: clamp(0.95rem, 1.8vw, 1.1rem); color: rgba(255,255,255,0.7); max-width: 580px; line-height: 1.65; }
+
+    .page-wrap { max-width: 1100px; margin: 0 auto; padding: clamp(32px, 5vw, 64px) clamp(16px, 5vw, 48px); display: grid; grid-template-columns: 1fr 280px; gap: 48px; align-items: start; }
+    @media (max-width: 780px) { .page-wrap { grid-template-columns: 1fr; } .sidebar { order: -1; } }
+
+    .content { min-width: 0; }
+    .content h2 { font-family: var(--font-head); font-size: clamp(1.3rem, 2.5vw, 1.7rem); font-weight: 600; color: var(--charcoal); margin: 40px 0 14px; padding-top: 40px; border-top: 2px solid var(--light-grey); }
+    .content h2:first-child { margin-top: 0; padding-top: 0; border-top: none; }
+    .content p { margin-bottom: 16px; color: #4a6070; font-size: 0.97rem; line-height: 1.75; }
+    .content p strong { color: var(--charcoal); font-weight: 700; }
+
+    .info-card { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius); padding: 24px 28px; margin: 20px 0; box-shadow: var(--shadow); }
+    .info-card.blue-border  { border-left: 4px solid var(--blue); }
+    .info-card.green-border { border-left: 4px solid var(--green); }
+    .info-card.yellow-border { border-left: 4px solid var(--yellow); }
+    .info-card h3 { font-family: var(--font-head); font-size: 0.95rem; font-weight: 600; color: var(--charcoal); margin-bottom: 10px; }
+    .info-card p { margin-bottom: 0; font-size: 0.9rem; }
+    .info-card ul { padding-left: 18px; margin-top: 8px; }
+    .info-card ul li { font-size: 0.9rem; color: #4a6070; margin-bottom: 5px; line-height: 1.6; }
+    .info-card ul li strong { color: var(--charcoal); }
+
+    .heartbeat-box { background: var(--charcoal); color: var(--white); border-radius: var(--radius); padding: 28px 32px; margin: 20px 0 32px; position: relative; overflow: hidden; }
+    .heartbeat-box::after { content: '♥'; position: absolute; right: 24px; top: 50%; transform: translateY(-50%); font-size: 5rem; opacity: 0.06; pointer-events: none; }
+    .heartbeat-box h3 { font-family: var(--font-head); font-size: 1rem; font-weight: 600; color: var(--green); margin-bottom: 10px; }
+    .heartbeat-box p { color: rgba(255,255,255,0.75); font-size: 0.9rem; margin-bottom: 0; }
+
+    .standup-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0 28px; }
+    @media (max-width: 600px) { .standup-strip { grid-template-columns: 1fr; } }
+    .standup-card { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius); padding: 18px 20px; box-shadow: var(--shadow); }
+    .standup-num { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.85rem; margin-bottom: 10px; }
+    .standup-card:nth-child(1) .standup-num { background: rgba(0,195,153,0.15); color: #009970; }
+    .standup-card:nth-child(2) .standup-num { background: rgba(22,168,226,0.15); color: #0e82b0; }
+    .standup-card:nth-child(3) .standup-num { background: rgba(255,188,66,0.20); color: #b8820a; }
+    .standup-card h4 { font-family: var(--font-head); font-size: 0.88rem; font-weight: 600; color: var(--charcoal); margin-bottom: 6px; }
+    .standup-card p { font-size: 0.82rem; color: #4a6070; margin: 0; line-height: 1.5; }
+
+    .sidebar { position: sticky; top: 80px; }
+    .sidebar-card { background: var(--white); border: 1px solid var(--light-grey); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); margin-bottom: 20px; }
+    .sidebar-card-head { background: var(--charcoal); padding: 14px 18px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.6); }
+    .sidebar-toc { list-style: none; padding: 8px 0; }
+    .sidebar-toc li a { display: block; padding: 9px 18px; color: #4a6070; font-size: 0.85rem; font-weight: 600; text-decoration: none; border-left: 3px solid transparent; transition: color .2s, border-color .2s, background .2s; }
+    .sidebar-toc li a:hover { color: var(--charcoal); border-color: var(--green); background: rgba(0,195,153,0.06); }
+    .sidebar-meta { padding: 16px 18px; }
+    .sidebar-meta p { font-size: 0.82rem; color: var(--mid-grey); margin-bottom: 8px; line-height: 1.5; }
+    .sidebar-meta p strong { color: var(--charcoal); }
+    .back-link { display: inline-flex; align-items: center; gap: 7px; background: var(--green); color: var(--white); text-decoration: none; font-size: 0.85rem; font-weight: 700; padding: 10px 18px; border-radius: var(--radius-sm); transition: background .2s; width: 100%; justify-content: center; margin-top: 4px; }
+    .back-link:hover { background: #00a881; }
+
+    footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.1); padding: clamp(28px,4vw,48px) clamp(16px,5vw,48px); display: flex; flex-wrap: wrap; gap: 24px; justify-content: space-between; align-items: center; }
+    footer img { height: 32px; opacity: 0.7; }
+    .footer-bottom { color: rgba(255,255,255,0.35); font-size: 0.78rem; }
+    .footer-bottom a { color: rgba(255,255,255,0.5); text-decoration: none; }
+    .footer-bottom a:hover { color: var(--green); }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    .hero-inner > * { animation: fadeUp 0.5s ease both; }
+    .hero-tag { animation-delay: 0.0s; }
+    h1 { animation-delay: 0.1s; }
+    .hero-subtitle { animation-delay: 0.2s; }
+  </style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<nav aria-label="Primary navigation">
+  <a href="index.html" class="nav-logo" aria-label="Back to project index">
+    <img src="https://wiki.weareopen.coop/wao_logo_whitetr_1500.png" alt="WAO Cooperative logo" />
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html#project-overview">Overview</a></li>
+    <li><a href="index.html#key-reports">Key Reports</a></li>
+    <li><a href="index.html#timeline">All Documents</a></li>
+    <li><a href="charter.html">Project Charter</a></li>
+  </ul>
+</nav>
+
+<div class="breadcrumb" aria-label="Breadcrumb">
+  <a href="index.html">← Project Index</a>
+  <span aria-hidden="true">/</span>
+  <span>Phase One: Kickoff &amp; Planning</span>
+  <span aria-hidden="true">/</span>
+  <span>Project Management Notes</span>
+</div>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">
+      <a href="index.html#timeline">← Phase One: Kickoff &amp; Planning</a>
+    </div>
+    <h1>Project<br /><em>Management Notes</em></h1>
+    <p class="hero-subtitle">
+      A running record of decisions, stand-ups, and retrospectives across the full life of the project — the backup and companion to the primary Trello-based project management board.
+    </p>
+  </div>
+</header>
+
+<main id="main">
+  <div class="page-wrap">
+
+    <article class="content">
+
+      <section id="overview">
+        <h2>About this document</h2>
+        <p>
+          The Project Management Notes document is a longitudinal record of the AIUK Community Platform project — capturing decisions made, actions agreed, blockers surfaced, and progress noted across the full eighteen months. It was listed in the project index as the "back up AIUK Community Platform PM doc" and exists alongside the primary project management board in Trello.
+        </p>
+        <p>
+          Where Trello captures individual tasks and their associated comments, this document captures the narrative thread — the <strong>why</strong> behind decisions, the texture of discussions, and the evolving understanding of the project as it moved through its phases.
+        </p>
+
+        <div class="info-card yellow-border">
+          <h3>Why this document exists</h3>
+          <p>Trello is excellent for task management but less good as a narrative record. This document serves as an accessible, searchable companion — useful for onboarding new team members, reflecting at retrospectives, and maintaining an honest account of how the project developed.</p>
+        </div>
+      </section>
+
+      <section id="how-it-works">
+        <h2>How the project was managed</h2>
+        <p>
+          The project ran on <strong>two-week heartbeats</strong> — a rhythm described in the Project Charter. At the start of each heartbeat the team assessed upcoming work; at the end there was a short retrospective. The notes document captures the outputs of both.
+        </p>
+
+        <div class="heartbeat-box">
+          <h3>The heartbeat rhythm</h3>
+          <p>Each two-week cycle began with a lightweight planning check-in and ended with a brief "what went well / what could be better" retro. This kept the project responsive without introducing the overhead of formal sprint ceremonies.</p>
+        </div>
+
+        <p>
+          Stand-ups between WAO and AIUK team members happened asynchronously in text, with fortnightly video calls to make decisions and clear blockers. Notes from those calls were captured here.
+        </p>
+      </section>
+
+      <section id="standup-format">
+        <h2>Stand-up format</h2>
+        <p>
+          Text-based stand-ups followed a simple three-part format, allowing team members to update asynchronously across different schedules and time zones.
+        </p>
+
+        <div class="standup-strip">
+          <div class="standup-card">
+            <div class="standup-num">1</div>
+            <h4>What I did</h4>
+            <p>A brief note on progress since the last stand-up — tasks completed, documents drafted, meetings held.</p>
+          </div>
+          <div class="standup-card">
+            <div class="standup-num">2</div>
+            <h4>What I'm working on</h4>
+            <p>Current focus for the heartbeat — what's in progress and what's being planned.</p>
+          </div>
+          <div class="standup-card">
+            <div class="standup-num">3</div>
+            <h4>Any blockers</h4>
+            <p>Anything that needs a decision, a conversation, or help from another team member to move forward.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="what-is-captured">
+        <h2>What the notes contain</h2>
+        <p>
+          Across the life of the project, the notes document captures:
+        </p>
+
+        <div class="info-card green-border">
+          <h3>Types of content across the document</h3>
+          <ul>
+            <li><strong>Bi-weekly check-in notes</strong> — summaries of WAO/AIUK video calls, including decisions made and next actions agreed</li>
+            <li><strong>Stand-up entries</strong> — asynchronous text updates from team members across the heartbeat</li>
+            <li><strong>Retrospective outputs</strong> — what worked, what didn't, what to change in the next heartbeat</li>
+            <li><strong>Decision log</strong> — key decisions and the reasoning behind them, particularly where the team chose between options</li>
+            <li><strong>Risk notes</strong> — emerging risks surfaced during meetings, alongside the actions taken to address them</li>
+            <li><strong>Handover information</strong> — notes useful for any new team members joining mid-project</li>
+          </ul>
+        </div>
+
+        <p>
+          The document also includes links to key Trello cards, Google Docs, and other resources — making it a useful entry point for navigating the full project archive.
+        </p>
+      </section>
+
+      <section id="relationship-to-trello">
+        <h2>Relationship to the Trello board</h2>
+        <p>
+          The primary project management tool was Trello, chosen because it keeps tasks and comments together in a transparent, living record that anyone can check at any time. The Project Management Notes document is the narrative complement — the Trello board shows <em>what</em> was being worked on; this document records <em>how</em> the team was thinking about it.
+        </p>
+
+        <div class="info-card blue-border">
+          <h3>Access and permissions</h3>
+          <p>The Trello board is internal to AIUK staff and the project team. The Project Management Notes document is accessible to project team members. Both are referenced in the project's Charter as the primary mechanisms for tracking progress and decisions.</p>
+        </div>
+      </section>
+
+    </article>
+
+    <aside class="sidebar" aria-label="Page navigation">
+      <div class="sidebar-card">
+        <div class="sidebar-card-head">On this page</div>
+        <ul class="sidebar-toc">
+          <li><a href="#overview">About this document</a></li>
+          <li><a href="#how-it-works">How the project was managed</a></li>
+          <li><a href="#standup-format">Stand-up format</a></li>
+          <li><a href="#what-is-captured">What the notes contain</a></li>
+          <li><a href="#relationship-to-trello">Relationship to Trello</a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sidebar-card-head">Document details</div>
+        <div class="sidebar-meta">
+          <p><strong>Phase</strong><br />Phase One: Kickoff &amp; Planning (and ongoing throughout)</p>
+          <p><strong>Group</strong><br />Project Plan, Charter &amp; Backlog</p>
+          <p><strong>Audience</strong><br />Project team members</p>
+          <p><strong>Access</strong><br />Internal — project team only</p>
+          <p><strong>Status</strong><br />Completed — covers full project lifecycle</p>
+          <a href="index.html" class="back-link">← Back to full index</a>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+</main>
+
+<footer>
+  <img src="https://wiki.weareopen.coop/wao_logo_whitetr_1500.png" alt="WAO Cooperative" />
+  <div class="footer-bottom">
+    <span>AIUK Community Platform Project · Produced by <a href="https://weareopen.coop" rel="noopener">WAO Cooperative</a></span>
+  </div>
+</footer>
+
+</body>
+</html>
